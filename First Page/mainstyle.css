@@ -17,6 +17,24 @@ header span {
     padding: 0.5em;
 }
 
+#buttonMenu,
+#runMenu,
+#saveMenu {
+    outline: none;
+    background: none;
+    outline: none;
+    border: 1px solid white;
+    padding: 1em;
+    color: white;
+    transition: 0.3s;
+}
+
+#buttonMenu:hover,
+#runMenu:hover,
+#saveMenu:hover {
+    background: gray;
+}
+
 button.Menu {
     outline: none;
     background: none;
@@ -29,6 +47,21 @@ button.Menu {
 
 button:hover.Menu {
     background: gray;
+}
+
+.menu {
+    position: absolute;
+    background: black;
+    color: white;
+    text-align: center;
+    height: 100%;
+    width: 200px;
+    transform: translateX(-100%);
+    transition: .3s;
+}
+
+.menu.openMenu {
+    transform: translateX(0);
 }
 
 /* ------------- Body part ----------- */
@@ -46,7 +79,7 @@ button:hover.Menu {
 .flex-container>* {
     flex: 1;
     min-height: 50vh;
-    margin: 0 5px;  
+    margin: 0 5px;
 }
 
 .flex-wrapper :nth-child(2),
@@ -59,6 +92,6 @@ button:hover.Menu {
     flex: 1;
 }
 
-.flex-wrapper>textarea{
+.flex-wrapper>textarea {
     flex: 1;
 }
