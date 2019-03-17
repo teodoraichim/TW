@@ -151,7 +151,7 @@ body{
 
         
     }
-    .right-upper .quote,.quote-name{
+    .right-upper .quote,.right .quote-name{
         display:none;
     }
     .right-upper,.right .head
