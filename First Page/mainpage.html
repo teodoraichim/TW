@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>STGV Power</title>
-    <link rel="stylesheet" href="mainstyle.css">
+    <link rel="stylesheet" href="mainstyles.css">
 </head>
-<body>
-<header>
-  <button class="Menu" type="button">Menu</button>
-  <p>Project</p>
-  <p>Help</p>
-</header>
 
-<div class="addingTitle">
-  <div>
-  <label class="sqlTitle" for="sqlTitle">Title</label>
-  <input type="text" id="sqlTitle" name="sqlTitle">
-  </div>
-  <div>
-  <label class="sqlDescription" for="sqlDescription">Description</label>
-  <input type="text" id="sqlDescription" name="sqlDescription">
-  </div>
-</div>
-  
+<body>
+    <header>
+        <button class="Menu" type="button">Menu</button>
+        <p>Project</p>
+        <p>Help</p>
+    </header>
+
+    <form class="flex-container">
+        <div class="flex-wrapper">
+            <input type="text" placeholder="Project name*">
+            <textarea placeholder="Project description"></textarea>
+            <textarea placeholder="Code"></textarea>
+        </div>
+        <textarea placeholder="Output" rows="7"></textarea>
+    </form>
+
 </body>
+
 </html>
