@@ -2,11 +2,10 @@
 
 header {
     display: block;
-    /* padding: 0.5em; */
+    padding: 0.5em;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* text-align: center; */
     background: black;
     font-size: 16px;
     font-family: sans-serif;
@@ -36,8 +35,7 @@ button:hover.Menu {
 
 .flex-container {
     display: flex;
-    border: 1px solid black;
-    padding: 10px 5px;
+    padding: 5px 5px;
 }
 
 .flex-wrapper {
