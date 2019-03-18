@@ -1,5 +1,5 @@
  @import url('https:://fonts.googleapis.com/css?family=Tangerine');
-html, body{
+html, body,.all{
     text-align: center;
     margin:auto;
     background-color: #ff9d00;
@@ -9,28 +9,10 @@ html, body{
     overflow: hidden;
     
     
+    
 }
 
-@keyframes slide-login{
-    0% {
-        transform: translateX(100%);
-        
-      }
-      100% {
-        
-        
-      }
-}
-@keyframes slide-login1{
-    0% {
-        transform: translateX(0%);
-        
-      }
-      100% {
-        
-      }
-      
-}
+
 .beggining{
     height: 100%;
     width: 100%;
@@ -145,6 +127,13 @@ animation-fill-mode: forwards;
     text-shadow: 0px 0px 300px #000;
     font-size: 400%;
 }
+.main-but{
+    
+    bottom: 0;
+    width: 100%;
+    
+    
+}
 button {
     border:solid #ffffcc 2px;
     border-radius:9px;
@@ -181,6 +170,54 @@ button span{
     font-size: 180%;
     position: relative;
 }
+.profile {
+    max-width:100%;
+    max-height: 100%;
+    display: block;
+    
+}
+.file-upload{
+    display:none;
+}
+
+.pic{
+    border-radius: 1000px !important;
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    border: 8px solid rgba(255, 255, 255, 0.7);
+    position: absolute;
+    top: 72px;
+    left:40%;
+    right:40%;
+    
+    
+}
+img {
+    max-width: 100%;
+    height: 100%;
+}
+.pic-icon{
+    width:1%;
+    height: auto;
+    position: absolute;
+   top: 24%;
+   left:40%;
+    right:40%;
+   color: #666666;
+   transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.piv-icon:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  }
+  .upload-button {
+    font-size: 1.2em;
+  }
+  
+  .upload-button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+  }
 @keyframes arrow-right{
     0%{left:0px}
     100%{left:30px}
@@ -251,7 +288,7 @@ p{
     border: none;
 }
 .register-left{
-    display:block;
+    display:inline-block;
     position:absolute;
     left:0;
     height:100%;
@@ -314,7 +351,7 @@ input[type=number]{
     position: relative;
     
     
-    display: in-block;
+    display: inline-block;
     border-radius: 3px;
     border-style: solid;
     background: rgba(44, 44, 44, 0.164);
@@ -334,7 +371,7 @@ form select {
     position: relative;
     
     
-    display: in-block;
+    display: inline-block;
     border-radius: 3px;
     border-style: solid;
     background: rgba(44, 44, 44, 0.164);
@@ -411,11 +448,70 @@ input[type=number]::-webkit-outer-spin-button {
     background-image:none;
     background-color:rgb(83, 1, 1);
 }
+.mobile{
+    display:none;
+}
 @media screen and (max-width:666px){
+    body,html{
+      
+        overflow: hidden;
+    }
+    .mobile{
+        display:flex;
+        bottom:5px;
+        width: 100%;
+        height:10%;
+        align-content: flex-end;
+        flex-direction: column-reverse;
+    }
     .main-but{
+        position:absolute;
         display:flex;
         flex-direction: column;
+        height: 21%;
+        justify-content: space-between;
+        padding-top: 5%;
+        padding-bottom: 5%; 
+        
+        
     }
+    .inactive{
+    display:none;
+    }
+    
+    .register,.login{
+        text-align: center;
+        position: relative;
+        font-size: 70%;
+        width: 70%;
+        left:15%;
+        right:15%;
+        
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+    .mobile .login{
+        width:20%;
+        position:absolute;
+        right:5px;
+        left:auto;
+        height:8%;
+        font-size:70;
+        
+    }
+    .mobile .register{
+        width:20%;
+        position:absolute;
+        left:5px;
+        right:auto;
+        height:8%;
+        
+    }
+    .left.head.register{
+        display:block;
+    }
+    
+    
     .content h1{
         font-size:200%;
     }
@@ -431,14 +527,18 @@ input[type=number]::-webkit-outer-spin-button {
         display: none
 
     } 
-    .right,register-lleft
+    .right,.register-left
     {
+        position:absolute;
         width:100%;
-        color:#F94F2F;
-        background:rgba(128, 3, 177, 0);
+        height: 100%;
+        
+        
         text-align:center;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size: 30px;
+        
+        
 
         
     }
@@ -456,7 +556,8 @@ input[type=number]::-webkit-outer-spin-button {
 
     .login-box
     {
-        top:1px;
+        
+        bottom: 50px;
     }
     .login-box .login-btn
     {

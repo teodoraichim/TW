@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="style/intro.css" >
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     
-        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>twProject</title>
 </head>
 <body>
+    <div class="all">
     <section class="beggining">
         <div class="inside">
             <div class="content">
@@ -21,9 +22,9 @@
          </div>
         </div>
     </section>
-    <div class="login-page">
+    <div class="login-page inactive">
             <div class="left">
-                <h1 class="head">Log into your account</h1>
+                <h2 class="head">Log into your account</h2>
                 <button class="register" type="button" id="login-back"><b> Back to first page <span>&#8250;&#8250;</span></b></button>
             </div>
             <div class="right" id="loin">
@@ -41,9 +42,12 @@
                 
                 <p class="forgot-psw" id="p-psw" >Forgot your password?Click <u>here</u></p>
                 </div>
+                <div class="mobile">
+                        <button class="register" type="button" id="login-back2"><b><span>&#8250;&#8250;</span></b></button>
+                        </div>
             </div>
         </div>
-            <div class="forget-page right">
+            <div class="forget-page right inactive">
                     <div class="right-upper">
                             
                             <h2 class="quote">Reset your password</h2>
@@ -55,24 +59,38 @@
                             <input class="login-btn" type="submit" value="Reset">
                         </form>
                     </div>
+                    <div class="mobile">
+                            <button class="register" type="button" id="login-back3"><b><span>&#8250;&#8250;</span></b></button>
+                            </div>
         </div>
-        <div class="register-page">
+        <div class="register-page inactive">
                 <div class="register-right">
-                        <h1 class="head">Create you account.</h1>
+                        <h2 class="head">Create you account.</h2>
                         <button class="login" type="button" id="register-back"><b> <span>&#8249;&#8249;</span> Back to first page </b></button>
                     </div>
+                    
                     <div class="register-left">
-                       
+                        <div class="profil-pic">
+                       <div class="pic">
+                                    <img class="profile" alt="profile pic" src="img/empty-profile.png">
+                                </div>
+                                <div class="pic-icon">
+                                        <i class="fa fa-camera upload-button"></i> 
+                                        <input class="file-upload" type="file" accept="image/*"/>
+                                </div>
+                            </div>
                         <div class="login-box">
                             <form>
+                                
+                                
                                 <input class="input-box" type="text" name="name" placeholder="Username or email address">
                                 <input class="input-box" type="email" name="email" placeholder="Email adress">
                                 <input class="input-box" type="password" placeholder="Password">
                                 <input class="input-box" type="password" placeholder=" Confirm password">
                                 <div class="date">
-                                <input  type="number" max="31" min="1" maxlength="2" placeholder="Day">
+                                <input  type="number" max="31" min="1" placeholder="Day">
                                 <select >
-                                    <option value selected="Month">Month</option>
+                                    <option value="Month" selected>Month</option>
                                     <option value="January">January</option>
                                     <option value="February">February</option>
                                     <option value="March">March</option>
@@ -86,20 +104,30 @@
                                     <option value="November">November</option>
                                     <option value="December">December</option>
                                 </select>
-                                <input  type="number" max="2000" maxlength="4" min="1900" placeholder="Year">
+                                <input  type="number" max="2000"  min="1900" placeholder="Year">
                                 
                                 </div>
                                 <input type="checkbox" name="agree" value=""> Agree with <a href="">terms and conditions</a><br>
                                 <input class="login-btn" type="submit" value="Create account">
+    
                             </form>
                             
                         
                         
                         </div>
+                        <div class="mobile">
+                            <button class="login" type="button" id="register-back2"><b> <span>&#8249;&#8249;</span> </b></button>
+                            </div>
                     </div>
                 
                 </div>
+            </div>
         <script >
+
+            
+
+    
+
             
         let loginButton = document.getElementById('but-login');
         
@@ -107,12 +135,21 @@
         loginButton.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
             let loginPage = document.querySelector('.login-page');
-
+            let forgotPage = document.querySelector('.forget-page');
+            let loginPage2 = document.querySelector('#loin');
+            
+            loginPage.classList.remove('inactive');
+            loginPage2.classList.remove('inactive');
             start.classList.remove('animate-loginback2');
             loginPage.classList.remove('animate-loginback');
             start.classList.add('animate-login2');
             loginPage.classList.add('animate-login');
             start.classList.remove('animate-registerback2');
+            start.classList.add('inactive');
+            forgotPage.classList.add('inactive');
+            
+
+            
             
         });
 
@@ -121,11 +158,16 @@
         loginButton2.addEventListener('click', () => {
             let start = document.querySelector('#loin');
             let passPage = document.querySelector('.forget-page');
-
+            let loginPage = document.querySelector('#loin');
+            passPage.classList.remove('inactive');
             start.classList.remove('animate-passback2');
             passPage.classList.remove('animate-passback');
             start.classList.add('animate-pass2');
             passPage.classList.add('animate-pass');
+            start.classList.add('inactive');
+            loginPage.classList.add('inactive');
+            
+            
             
         });
 
@@ -137,7 +179,7 @@
             let loginPage = document.querySelector('.login-page');
             let passPage = document.querySelector('.forget-page');
             let loginPage2 = document.querySelector('#loin');
-
+            start.classList.remove('inactive');
             passPage.classList.remove('animate-pass');
             passPage.classList.add('animate-passback');
             loginPage2.classList.remove('animate-pass2');
@@ -147,18 +189,72 @@
             start.classList.add('animate-loginback2');
             loginPage.classList.add('animate-loginback');
             
+            passPage.classList.add('inactive');
+            loginPage.classList.add('inactive');
+            loginPage2.classList.add('inactive');
+            
         });
+        let loginButton4 = document.getElementById('login-back2');
+
+
+        loginButton4.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let loginPage = document.querySelector('.login-page');
+            let passPage = document.querySelector('.forget-page');
+            let loginPage2 = document.querySelector('#loin');
+                start.classList.remove('inactive');
+            passPage.classList.remove('animate-pass');
+            passPage.classList.add('animate-passback');
+            loginPage2.classList.remove('animate-pass2');
+            loginPage2.classList.add('animate-passback2');
+            start.classList.remove('animate-login2');
+            loginPage.classList.remove('animate-login');
+            start.classList.add('animate-loginback2');
+            loginPage.classList.add('animate-loginback');
+            
+            passPage.classList.add('inactive');
+            loginPage.classList.add('inactive');
+            //loginPage2.classList.add('inactive');
+            
+        });
+
+        let loginButton5 = document.getElementById('login-back3');
+
+
+loginButton5.addEventListener('click', () => {
+    let start = document.querySelector('.beggining');
+    let loginPage = document.querySelector('.login-page');
+    let passPage = document.querySelector('.forget-page');
+    let loginPage2 = document.querySelector('#loin');
+    start.classList.remove('inactive');
+    passPage.classList.remove('animate-pass');
+    passPage.classList.add('animate-passback');
+    loginPage2.classList.remove('animate-pass2');
+    loginPage2.classList.add('animate-passback2');
+    start.classList.remove('animate-login2');
+    loginPage.classList.remove('animate-login');
+    start.classList.add('animate-loginback2');
+    loginPage.classList.add('animate-loginback');
+    
+            passPage.classList.add('inactive');
+            loginPage.classList.add('inactive');
+            loginPage2.classList.add('inactive');
+    
+});
+        
         let registerButton = document.getElementById('but-register')
 
         registerButton.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
             let registerPage = document.querySelector('.register-page');
-
+            registerPage.classList.remove('inactive');
             start.classList.remove('animate-loginback2');
             start.classList.remove('animate-registerback2');
             registerPage.classList.remove('animate-registerback');
             start.classList.add('animate-register2');
             registerPage.classList.add('animate-register');
+            start.classList.add('inactive');
+            
             
         });
 
@@ -166,11 +262,27 @@
         registerButton2.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
             let registerPage = document.querySelector('.register-page');
-
+            start.classList.remove('inactive');
             start.classList.remove('animate-register2');
             registerPage.classList.remove('animate-register');
             start.classList.add('animate-registerback2');
             registerPage.classList.add('animate-registerback');
+            
+            registerPage.classList.add('inactive');
+            
+        });
+        let registerButton3 = document.getElementById('register-back2');
+        registerButton3.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let registerPage = document.querySelector('.register-page');
+            start.classList.remove('inactive');
+            
+            start.classList.remove('animate-register2');
+            registerPage.classList.remove('animate-register');
+            start.classList.add('animate-registerback2');
+            registerPage.classList.add('animate-registerback');
+            
+            registerPage.classList.add('inactive');
             
         });
 
