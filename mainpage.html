@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>STGV Power</title>
+    <link rel="stylesheet" href="style/mainstyles.css">
+</head>
+
+<body style="margin: 0px 0px 0px 0px">
+    <header>
+        <span>
+            <button id="buttonMenu" type="button">Menu</button>
+            <button id="runMenu" type="button">Run</button>
+            <button id="saveMenu" type="button">Save</button>
+        </span>
+        <h1>Project</h1>
+        <h3>Help</h3>
+    </header>
+
+    <aside class="menu">
+        <h2>Menu</h2>
+        <p>Testing</p>
+    </aside>
+
+    <form class="flex-container">
+        <div class="flex-wrapper">
+            <input type="text" placeholder="Project name*">
+            <textarea placeholder="Project description"></textarea>
+        </div>
+        <textarea placeholder="Coding" rows="7"></textarea>
+    </form>
+
+    <script>
+        let menuButton = document.getElementById('buttonMenu');
+        let menu = document.querySelector('.menu');
+
+        menuButton.addEventListener('click', () => {
+            menu.classList.add('openMenu');
+        });
+
+        document.addEventListener('mouseup', function (event) {
+            var menubox = document.getElementsByClassName('menu');
+            if (event.target != menubox)
+                menu.classList.remove('openMenu');
+        });
+    </script>
+
+</body>
+
+</html>
