@@ -2,52 +2,40 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>STGV Power</title>
-    <link rel="stylesheet" href="style/mainstyles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>Redesign Main Page</title>
 </head>
 
-<body style="margin: 0px 0px 0px 0px">
-    <header>
-        <span>
-            <button id="buttonMenu" type="button">Menu</button>
-            <button id="runMenu" type="button">Run</button>
-            <button id="saveMenu" type="button">Save</button>
-        </span>
-        <h1>Project</h1>
-        <h3>Help</h3>
-    </header>
+<body>
+  <header>
+    <div id="leftPart">
+      <button type="button" id="menuButton">&#9776;</button>
+      <button type="button" id="newButton">+</button>
+      <button type="button" id="saveButton">💾</button>
+    </div>
+    <div id="centerPart">
+      <button type="button" name="fullCode">!</button>
+      <button type="button" name="splitView">!!</button>
+      <button type="button" name="fullView">!!!</button>
+    </div>
+  </header>
 
-    <aside class="menu">
-        <h2>Menu</h2>
-        <p>Testing</p>
-    </aside>
-
+  <aside class="menuPart"></aside>
+  <div class="codingSection">
+    <div class="titleButton">
+      <span>code.html</span>
+      <span>test.css</span>
+    </div>
     <form class="flex-container">
-        <div class="flex-wrapper">
-            <input type="text" placeholder="Project name*">
-            <textarea placeholder="Project description"></textarea>
-        </div>
-        <textarea placeholder="Coding" rows="7"></textarea>
+      <div class="flex-wrapper">
+        <textarea placeholder="code"></textarea>
+      </div>
+      <textarea placeholder="output"></textarea>
     </form>
-
-    <script>
-        let menuButton = document.getElementById('buttonMenu');
-        let menu = document.querySelector('.menu');
-
-        menuButton.addEventListener('click', () => {
-            menu.classList.add('openMenu');
-        });
-
-        document.addEventListener('mouseup', function (event) {
-            var menubox = document.getElementsByClassName('menu');
-            if (event.target != menubox)
-                menu.classList.remove('openMenu');
-        });
-    </script>
-
+  </div>
 </body>
 
 </html>
