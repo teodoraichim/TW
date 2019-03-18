@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="style/intro.css" >
+    
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>twProject</title>
+</head>
+<body>
+    <section class="beggining">
+        <div class="inside">
+            <div class="content">
+                <h1>Just the beggining</h1>
+                <div class="main-but">
+                <button class="register" id="but-register" type="button"><b> Not a member yet? <span>&#8250;&#8250;</span></b></button>
+                <button class="login" id="but-login" type="button"><b><span>&#8249;&#8249;</span>Go to your account.</b></button>
+           </div>
+         </div>
+        </div>
+    </section>
+    <div class="login-page">
+            <div class="left">
+                <h1 class="head">Log into your account</h1>
+                <button class="register" type="button" id="login-back"><b> Back to first page <span>&#8250;&#8250;</span></b></button>
+            </div>
+            <div class="right" id="loin">
+                <div class="right-upper">
+                       
+                        <h2 class="quote">"Best database administration platform out there"</h2>
+                        <h2 class="quote-name">-The New York Times</h2>
+                </div>
+                <div class="login-box">
+                    <form>
+                        <input class="input-box" type="text" name="name" placeholder="Username or email address">
+                        <input class="input-box" type="password" placeholder="Password">
+                        <input class="login-btn" type="submit" value="Login">
+                    </form>
+                
+                <p class="forgot-psw" id="p-psw" >Forgot your password?Click <u>here</u></p>
+                </div>
+            </div>
+        </div>
+            <div class="forget-page right">
+                    <div class="right-upper">
+                            
+                            <h2 class="quote">Reset your password</h2>
+                            
+                    </div>
+                    <div class="login-box">
+                        <form>
+                            <input class="input-box" type="text" name="name" placeholder="Email address">
+                            <input class="login-btn" type="submit" value="Reset">
+                        </form>
+                    </div>
+        </div>
+        <div class="register-page">
+                <div class="register-right">
+                        <h1 class="head">Create you account.</h1>
+                        <button class="login" type="button" id="register-back"><b> <span>&#8249;&#8249;</span> Back to first page </b></button>
+                    </div>
+                    <div class="register-left">
+                       
+                        <div class="login-box">
+                            <form>
+                                <input class="input-box" type="text" name="name" placeholder="Username or email address">
+                                <input class="input-box" type="email" name="email" placeholder="Email adress">
+                                <input class="input-box" type="password" placeholder="Password">
+                                <input class="input-box" type="password" placeholder=" Confirm password">
+                                <div class="date">
+                                <input  type="number" max="31" min="1" maxlength="2" placeholder="Day">
+                                <select >
+                                    <option value selected="Month">Month</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                                <input  type="number" max="2000" maxlength="4" min="1900" placeholder="Year">
+                                
+                                </div>
+                                <input type="checkbox" name="agree" value=""> Agree with <a href="">terms and conditions</a><br>
+                                <input class="login-btn" type="submit" value="Create account">
+                            </form>
+                            
+                        
+                        
+                        </div>
+                    </div>
+                
+                </div>
+        <script >
+            
+        let loginButton = document.getElementById('but-login');
+        
+        
+        loginButton.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let loginPage = document.querySelector('.login-page');
+
+            start.classList.remove('animate-loginback2');
+            loginPage.classList.remove('animate-loginback');
+            start.classList.add('animate-login2');
+            loginPage.classList.add('animate-login');
+            start.classList.remove('animate-registerback2');
+            
+        });
+
+        let loginButton2 =  document.getElementById('p-psw');
+
+        loginButton2.addEventListener('click', () => {
+            let start = document.querySelector('#loin');
+            let passPage = document.querySelector('.forget-page');
+
+            start.classList.remove('animate-passback2');
+            passPage.classList.remove('animate-passback');
+            start.classList.add('animate-pass2');
+            passPage.classList.add('animate-pass');
+            
+        });
+
+        let loginButton3 = document.getElementById('login-back');
+
+
+        loginButton3.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let loginPage = document.querySelector('.login-page');
+            let passPage = document.querySelector('.forget-page');
+            let loginPage2 = document.querySelector('#loin');
+
+            passPage.classList.remove('animate-pass');
+            passPage.classList.add('animate-passback');
+            loginPage2.classList.remove('animate-pass2');
+            loginPage2.classList.add('animate-passback2');
+            start.classList.remove('animate-login2');
+            loginPage.classList.remove('animate-login');
+            start.classList.add('animate-loginback2');
+            loginPage.classList.add('animate-loginback');
+            
+        });
+        let registerButton = document.getElementById('but-register')
+
+        registerButton.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let registerPage = document.querySelector('.register-page');
+
+            start.classList.remove('animate-loginback2');
+            start.classList.remove('animate-registerback2');
+            registerPage.classList.remove('animate-registerback');
+            start.classList.add('animate-register2');
+            registerPage.classList.add('animate-register');
+            
+        });
+
+        let registerButton2 = document.getElementById('register-back');
+        registerButton2.addEventListener('click', () => {
+            let start = document.querySelector('.beggining');
+            let registerPage = document.querySelector('.register-page');
+
+            start.classList.remove('animate-register2');
+            registerPage.classList.remove('animate-register');
+            start.classList.add('animate-registerback2');
+            registerPage.classList.add('animate-registerback');
+            
+        });
+
+
+        
+        </script> 
+        
+
+        
+        
+</body>
+
+</html>
