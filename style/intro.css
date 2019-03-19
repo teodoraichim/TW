@@ -578,7 +578,7 @@
          line-height: 150%;
      }
 
-    .register-right {
+    .register-right, .left {
          display: none
      }
 
