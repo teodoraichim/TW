@@ -110,13 +110,13 @@
                             <input type="number" max="2000" min="1900" placeholder="Year">
 
                         </div>
-                        <input type="checkbox" class ="agree" name="agree" value=""> Agree with <a href="">terms and conditions</a><br>
+                        <div class="agree">
+                            <input type="checkbox" class="agree" name="agree" value=""> Agree with <a href="">terms and
+                                conditions</a><br>
+                        </div>
                         <input class="login-btn" type="submit" value="Create account">
 
                     </form>
-
-
-
                 </div>
                 <div class="mobile">
                     <button class="login" type="button" id="register-back2"><b> <span>&#8249;&#8249;</span> </b></button>
@@ -127,7 +127,6 @@
     </div>
     <script>
         let loginButton = document.getElementById('but-login');
-
 
         loginButton.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
@@ -144,10 +143,6 @@
             start.classList.remove('animate-registerback2');
             start.classList.add('inactive');
             forgotPage.classList.add('inactive');
-
-
-
-
         });
 
         let loginButton2 = document.getElementById('p-psw');
@@ -163,13 +158,9 @@
             passPage.classList.add('animate-pass');
             start.classList.add('inactive');
             loginPage.classList.add('inactive');
-
-
-
         });
 
         let loginButton3 = document.getElementById('login-back');
-
 
         loginButton3.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
@@ -185,14 +176,12 @@
             loginPage.classList.remove('animate-login');
             start.classList.add('animate-loginback2');
             loginPage.classList.add('animate-loginback');
-
             passPage.classList.add('inactive');
             loginPage.classList.add('inactive');
             loginPage2.classList.add('inactive');
 
         });
         let loginButton4 = document.getElementById('login-back2');
-
 
         loginButton4.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
@@ -212,11 +201,9 @@
             passPage.classList.add('inactive');
             loginPage.classList.add('inactive');
             //loginPage2.classList.add('inactive');
-
         });
 
         let loginButton5 = document.getElementById('login-back3');
-
 
         loginButton5.addEventListener('click', () => {
             let start = document.querySelector('.beggining');
@@ -232,7 +219,6 @@
             loginPage.classList.remove('animate-login');
             start.classList.add('animate-loginback2');
             loginPage.classList.add('animate-loginback');
-
             passPage.classList.add('inactive');
             loginPage.classList.add('inactive');
             loginPage2.classList.add('inactive');
@@ -251,7 +237,6 @@
             start.classList.add('animate-register2');
             registerPage.classList.add('animate-register');
             start.classList.add('inactive');
-
 
         });
 
@@ -283,9 +268,6 @@
 
         });
     </script>
-
-
-
 
 </body>
 
