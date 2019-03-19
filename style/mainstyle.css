@@ -1,55 +1,89 @@
-header{
-  display: block;
-  padding: 0.5em;
+/* ---- Header ---- */
+header {
   display: flex;
   justify-content: space-between;
   background: black;
-  font-size: 16px;
-  font-family: sans-serif; 
   color: white;
+  padding: 0.75em;
 }
 
-header p{
-  font-size: 20px;
+body {
+  background-color: #111410;
 }
 
-button.Menu{
-  outline: none;
-  background: none;
-  outline: none;
-  border: 1px solid white;
-  padding: 1em;
+#leftPart button {
+  border: 1px solid transparent;
   color: white;
-  transition: 0.3s;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.5em;
+  transition: 0.3s all ease-in;
 }
 
-button:hover.Menu{
-  background: gray;
+#leftPart button:hover,
+#centerPart button:hover {
+  border-bottom: 1px solid white;
 }
 
-div.addingTitle{
-  background: lightgrey;
-  padding: 1em;
+#leftPart .divider {
+  display: inline-flex;
+  padding-left: 0.5em;
 }
 
-label.sqlTitle,
-#sqlTitle,
-label.sqlDescription,
-#sqlDescription{
-  display: block;
+#centerPart button {
+  border: 1px solid transparent;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.5em;
+  transition: 0.3s all ease-in;
 }
 
-label.sqlTitle,
-label.sqlDescription{
-  color: black;
-  font-weight: bold;
+/* --- Body --- */
+
+body {
+  margin: 0px 0px 0px 0px;
 }
 
-#sqlTitle,
-#sqlDescription{
-  border-radius: 5px;
-  outline: none;
-  border: 1px solid black;
-  margin: 0;
-  padding: 1em;
+div.titleButton {
+  background-color: black;
+  color: white;
+  padding: 0.5em;
+}
+
+div.titleButton span {
+  border: 1px solid transparent;
+  padding: 0.5em;
+  transition: 0.3s all ease-in;
+  cursor: pointer;
+}
+
+div.titleButton span:hover {
+  border-bottom: 1px solid rgb(255, 0, 0);
+}
+
+footer{
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+textarea{
+  width: 90%;
+  height: 50vh;
+  background: transparent;
+  color:white;
+  border: none;
+  margin-left: 20px;
+  margin-top: 20px;
+  resize: none;
+}
+/* --- Media screen --- */
+
+@media screen and (max-width: 414px) {
+
+  #newButton,
+  #saveButton {
+    display: none;
+  }
 }
