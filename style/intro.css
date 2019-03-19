@@ -1,627 +1,634 @@
- @import url('https:://fonts.googleapis.com/css?family=Tangerine');
-
- html,
- body,
- .all {
-     text-align: center;
-     margin: auto;
-     background-color: #ff9d00;
-     background-image: url("file:///C:/Users/T/Desktop/Orange-Gradient-Wallpaper-17.svg");
-     background-attachment: fixed;
-     background-size: cover;
-     overflow: hidden;
- }
-
- .beggining {
-     height: 100%;
-     width: 100%;
-     margin: auto;
-     display: table;
-     top: 0;
-     background-size: cover;
-     position: absolute;
- }
-
- .login-page {
-     width: 100%;
-     height: 100%;
-     top: 0px;
-     position: absolute;
-     transform: translate(100%);
-
- }
-
- .register-page {
-     width: 100%;
-     height: 100%;
-     position: absolute;
-     transform: translateX(-100%);
-
- }
-
- .forget-page {
-     width: 100%;
-     height: 100%;
-
-     position: absolute;
-     transform: translateY(100%);
-
- }
-
- .animate-pass {
-     transform: translateY(0);
-     transition: 1s;
-     -webkit-animation-fill-mode: forwards;
-     /* Safari 4.0 - 8.0 */
-     animation-fill-mode: forwards;
- }
-
- .animate-passback {
-     transform: translateY(100%);
-
- }
-
- .animate-pass2 {
-     transform: translateY(-100%);
-     transition: 1s;
-     -webkit-animation-fill-mode: forwards;
-     /* Safari 4.0 - 8.0 */
-     animation-fill-mode: forwards;
- }
-
- .animate-passback2 {
-     transform: translateY(0);
-
- }
-
- .animate-login {
-     transform: translateX(0);
-     transition: 1s;
- }
-
- .animate-loginback {
-     transform: translateX(100%);
-     transition: 1s;
- }
-
- .animate-login2 {
-     transform: translateX(-100%);
-     transition: 1s;
- }
-
- .animate-loginback2 {
-     transform: translateX(0);
-     transition: 1s;
- }
-
- .animate-register {
-     transform: translateX(0);
-     transition: 1s;
- }
-
- .animate-registerback {
-     transform: translateX(-100%);
-     transition: 1s;
- }
-
- .animate-register2 {
-     transform: translateX(100%);
-     transition: 1s;
- }
-
- .animate-registerback2 {
-     transform: translateX(0);
-     transition: 1s;
- }
-
- .beggining .inside {
-     display: table-cell;
-     vertical-align: middle;
-     width: 100%;
-     max-width: none;
- }
-
- .content {
-     max-width: 500px;
-     margin: 0 auto;
-     text-align: center;
- }
-
- .content h1 {
-     padding-top: 30%;
-     padding-bottom: 30%;
-     font-family: 'Tangerine', sans-serif;
-     color: #ffffcc;
-     text-shadow: 0px 0px 300px #000;
-     font-size: 400%;
- }
-
- .main-but {
-     bottom: 0;
-     width: 100%;
- }
-
- button {
-     border: solid #ffffcc 2px;
-     border-radius: 9px;
-     font-family: "montserrat";
-     color: #ffffcc;
-     font-size: 140%;
-     padding: 15px 35px;
-     text-decoration: none;
-     text-transform: uppercase;
-     background: rgba(76, 175, 80, 0.1);
-     display: flex;
-     flex-direction: row;
- }
-
- .register {
-     position: absolute;
-     bottom: 10px;
-     left: 10px;
-     font-size: 140%;
-
- }
-
- .login {
-     position: absolute;
-     bottom: 10px;
-     right: 10px;
-
- }
-
- .login span {
-     animation: arrow-left 0.8s infinite;
- }
-
- .register span {
-     animation: arrow-right 0.8s infinite;
- }
-
- button span {
-     font-size: 180%;
-     position: relative;
- }
-
- .profile {
-     max-width: 100%;
-     max-height: 100%;
-     display: block;
-
- }
-
- .file-upload {
-     display: none;
- }
-
- /* .pic {
-     border-radius: 1000px !important;
-     overflow: hidden;
-     width: 100px;
-     height: 100px;
-     border: 8px solid rgba(255, 255, 255, 0.7);
-     position: relative;
-
- } */
-
- img {
-     max-width: 100%;
-     height: 100%;
- }
-
- img.profile {
-     border: 8px solid rgba(255, 255, 255, 0.7);
-     border-radius: 1000px;
-     height: 100px;
-     width: 100px;
-     position: relative;
-     left: 30%;
- }
-
- .pic-icon {
-     width: 1%;
-     height: auto;
-     position: absolute;
-     top: 24%;
-     left: 40%;
-     right: 40%;
-     color: #666666;
-     transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
- }
-
- .piv-icon:hover {
-     transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
- }
-
- .upload-button {
-     font-size: 1.2em;
- }
-
- .upload-button:hover {
-     transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
-     color: #999;
- }
-
- @keyframes arrow-right {
-     0% {
-         left: 0px
-     }
-
-     100% {
-         left: 30px
-     }
-
- }
-
- @keyframes arrow-left {
-     0% {
-         right: 0px
-     }
-
-     100% {
-         right: 30px
-     }
-
- }
-
- p {
-     font-size: 140%;
-     line-height: 200%;
-     text-align: justify;
-     margin: 3%;
-     font-family: Arial, Helvetica, sans-serif;
- }
-
- .left {
-     position: absolute;
-     left: 0;
-     top: 0;
-     width: 55%;
-     height: 100%;
-     text-align: center;
-     color: #F94F2F;
- }
-
- .register-right {
-     position: absolute;
-     right: 0;
-     top: 0;
-     width: 55%;
-     height: 100%;
-     text-align: center;
-     color: #F94F2F;
- }
-
- .left .head,
- .register-right .head {
-     /*animation: 0.5s ease-out 0s 1 slideInFromLeft; */
-     position: relative;
-     left: 2px;
-     top: 0;
-     color: white;
-     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-     font-size: 400%;
-     padding-top: 30%;
-     padding-bottom: 30%;
-
- }
-
- .register-right .head {
-     right: 2px;
- }
-
- .right {
-     display: block;
-     position: absolute;
-     right: 0;
-     height: 100%;
-     width: 45%;
-     background-color: rgba(1000, 1000, 1000, 0.4);
-     opacity: 5%;
-     padding: 0 0 0 0;
-     border: none;
- }
-
- .register-left {
-     display: inline-block;
-     position: absolute;
-     left: 0;
-     height: 100%;
-     width: 45%;
-     background-color: rgba(1000, 1000, 1000, 0.4);
-     opacity: 5%;
-     padding: 0 0 0 0;
-     border: none;
-
- }
-
- .right-upper {
-     top: 200px;
-     position: relative;
- }
-
- .right .quote,
- .register-left .quote {
-     position: relative;
-     display: block;
-     color: white;
-     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-     font-size: 30px;
-     font-style: italic;
- }
-
- .right .quote-name,
- .register-left .quote-name {
-     color: white;
-     display: block;
-     position: absolute;
-     right: 88px;
-     font-size: 15px;
-     font-family: "Arial Black", Gadget, sans-serif;
- }
-
- .login-box {
-     position: relative;
-     top: 25vh;
-     text-align: center;
-     padding: 1em 0 1em 0;
-     display: inline-block;
-     width: 300px;
-
- }
-
- .login-box label {
-     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-     color: rgba(0, 0, 0, 0.431);
- }
-
- .date {
-     left: 50%;
-     transform: translate(-50%, 0);
-     position: relative;
-     width: 90%;
-     display: flex;
-     flex-direction: row;
-     justify-content: space-between;
-
- }
-
- input[type=number] {
-
-     position: relative;
-     display: inline-block;
-     border-radius: 3px;
-     border-style: solid;
-     background: rgba(44, 44, 44, 0.164);
-     padding: 1em 0 1em 10px;
-     margin-bottom: 10px;
-     border-style: none;
-     width: 50px;
-     font-size: 14px;
-     font-family: Arial, Helvetica, sans-serif;
-     font-weight: 500;
-     color: white;
-
- }
-
- form select {
-     position: relative;
-     display: inline-block;
-     border-radius: 3px;
-     border-style: solid;
-     background: rgba(44, 44, 44, 0.164);
-     padding: 1em 0 1em 10px;
-     outline: 0;
-     margin-bottom: 10px;
-     border-style: none;
-     width: 80px;
-     font-size: 14px;
-     font-family: Arial, Helvetica, sans-serif;
-     font-weight: 500;
-     color: white;
-     -webkit-appearance: none;
-     -moz-appearance: none;
-     text-indent: 1px;
-     text-overflow: '';
- }
-
- /* input[type=number]::-webkit-inner-spin-button,
- input[type=number]::-webkit-outer-spin-button,
- .testing::-webkit-inner-spin-button,
- .testing::-webkit-outer-spin-button {
-     -webkit-appearance: none;
-     margin: 0;
- } */
-
- .login-box .input-box {
-     position: relative;
-     left: 50%;
-     transform: translate(-50%, 0);
-     display: block;
-     border-radius: 3px;
-     border-style: solid;
-     background: rgba(44, 44, 44, 0.2);
-     padding: 1em 0 1em 10px;
-     margin-bottom: 10px;
-     border-style: none;
-     width: 90%;
-     font-size: 14px;
-     font-family: Arial, Helvetica, sans-serif;
-     font-weight: 500;
-     color: white;
- }
-
- ::placeholder {
-     color: white;
-     opacity: 0.6;
- }
-
- .login-box .login-btn {
-     -webkit-appearance: none;
-     top: 20px;
-     position: relative;
-     border-style: none;
-     color: white;
-     font-family: "Verdana";
-     font-weight: bold;
-     width: 60%;
-     font-size: 20px;
-     padding-top: 1em;
-     padding-bottom: 1em;
-     border-radius: 5px;
-     background-color: #ff9d00;
- }
-
- .login-box .forgot-psw {
-     text-decoration: none;
-     font-size: 15px;
-     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-     color: white;
-     top: 30px;
-     text-align: center;
-     position: relative;
- }
-
- .login-box .login-btn:hover {
-     color: #F94F2F;
-     background-image: none;
-     background-color: rgb(83, 1, 1);
- }
-
- .mobile {
-     display: none;
- }
-
- div.agree{
-     color: black;
- }
-
- @media screen and (max-width:666px) {
-
-     body,
-     html {
-
-         overflow: hidden;
-     }
-
-     .mobile {
-         display: flex;
-         bottom: 5px;
-         width: 100%;
-         height: 10%;
-         align-content: flex-end;
-         flex-direction: column-reverse;
-     }
-
-     .main-but {
-         position: absolute;
-         display: flex;
-         flex-direction: column;
-         height: 21%;
-         justify-content: space-between;
-         padding-top: 5%;
-         padding-bottom: 5%;
-     }
-
-     .inactive {
-         display: none;
-     }
-
-     .register,
-     .login {
-         text-align: center;
-         position: relative;
-         font-size: 70%;
-         width: 70%;
-         left: 15%;
-         right: 15%;
-
-         padding-left: 10%;
-         padding-right: 10%;
-     }
-
-     .mobile .login {
-         width: 20%;
-         position: absolute;
-         right: 5px;
-         left: auto;
-         height: 8%;
-         font-size: 70;
-
-     }
-
-     .mobile .register {
-         width: 20%;
-         position: absolute;
-         left: 5px;
-         right: auto;
-         height: 8%;
-
-     }
-
-     .left.head.register {
-         display: block;
-     }
-
-
-     .content h1 {
-         font-size: 200%;
-     }
-
-     .btn {
-         font-size: 100%;
-         padding: 7px 13px;
-     }
-
-     p {
-         font-size: 100%;
-         line-height: 150%;
-     }
-
-    .register-right, .left {
-         display: none
-     }
-
-     .right,
-     .register-left {
-         position: absolute;
-         width: 100%;
-         height: 100%;
-         text-align: center;
-         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-         font-size: 30px;
-
-     }
-
-     .right-upper .quote,
-     .right .quote-name,
-     .register-left .quote,
-     .register-left .quote-name {
-         display: none;
-     }
-
-     .right-upper,
-     .right .head,
-     .register-left .head {
-         display: inline-block;
-         position: relative;
-         top: 0px;
-         padding-top: 1em;
-
-     }
-
-     .login-box {
-         top: 1.5em;
-         /* background: red; */
-     }
-
-     .login-box .login-btn {
-         background-color: rgb(59, 2, 2);
-         background-image: none;
-     }
-    
-     div.agree{
-        font-size: 18px;
-     }
-     }
-     }
+@import url('https:://fonts.googleapis.com/css?family=Tangerine');
+
+html,
+body,
+.all {
+  text-align: center;
+  margin: auto;
+  /* background-color: #ff9d00;
+  background-image: url("file:///C:/Users/T/Desktop/Orange-Gradient-Wallpaper-17.svg");
+  background-attachment: fixed; */
+  background: url(background.svg) no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.beggining {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  display: table;
+  top: 0;
+  background-size: cover;
+  position: absolute;
+}
+
+.login-page {
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  position: absolute;
+  transform: translate(100%);
+
+}
+
+.register-page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateX(-100%);
+
+}
+
+.forget-page {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  transform: translateY(100%);
+
+}
+
+.animate-pass {
+  transform: translateY(0);
+  transition: 1s;
+  -webkit-animation-fill-mode: forwards;
+  /* Safari 4.0 - 8.0 */
+  animation-fill-mode: forwards;
+}
+
+.animate-passback {
+  transform: translateY(100%);
+
+}
+
+.animate-pass2 {
+  transform: translateY(-100%);
+  transition: 1s;
+  -webkit-animation-fill-mode: forwards;
+  /* Safari 4.0 - 8.0 */
+  animation-fill-mode: forwards;
+}
+
+.animate-passback2 {
+  transform: translateY(0);
+
+}
+
+.animate-login {
+  transform: translateX(0);
+  transition: 1s;
+}
+
+.animate-loginback {
+  transform: translateX(100%);
+  transition: 1s;
+}
+
+.animate-login2 {
+  transform: translateX(-100%);
+  transition: 1s;
+}
+
+.animate-loginback2 {
+  transform: translateX(0);
+  transition: 1s;
+}
+
+.animate-register {
+  transform: translateX(0);
+  transition: 1s;
+}
+
+.animate-registerback {
+  transform: translateX(-100%);
+  transition: 1s;
+}
+
+.animate-register2 {
+  transform: translateX(100%);
+  transition: 1s;
+}
+
+.animate-registerback2 {
+  transform: translateX(0);
+  transition: 1s;
+}
+
+.beggining .inside {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  max-width: none;
+}
+
+.content {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.content h1 {
+  padding-top: 30%;
+  padding-bottom: 30%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #ffffcc;
+  text-shadow: 0px 0px 300px #000;
+  font-size: 400%;
+}
+
+.main-but {
+  bottom: 0;
+  width: 100%;
+}
+
+button {
+  border: solid #ffffcc 2px;
+  border-radius: 9px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #ffffcc;
+  font-size: 140%;
+  padding: 15px 35px;
+  text-decoration: none;
+  /* text-transform: uppercase; */
+  background: rgba(76, 175, 80, 0.1);
+  display: flex;
+  flex-direction: row;
+}
+
+.register {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 140%;
+
+}
+
+.login {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+}
+
+.login span {
+  animation: arrow-left 0.8s infinite;
+}
+
+.register span {
+  animation: arrow-right 0.8s infinite;
+}
+
+button span {
+  font-size: 180%;
+  position: relative;
+}
+
+.profile {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+
+}
+
+.file-upload {
+  display: none;
+}
+
+/* .pic {
+    border-radius: 1000px !important;
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    border: 8px solid rgba(255, 255, 255, 0.7);
+    position: relative;
+
+} */
+
+img {
+  max-width: 100%;
+  height: 100%;
+}
+
+img.profile {
+  border: 8px solid rgba(255, 255, 255, 0.7);
+  border-radius: 1000px;
+  height: 100px;
+  width: 100px;
+  position: relative;
+  left: 30%;
+}
+
+.pic-icon {
+  width: 1%;
+  height: auto;
+  position: absolute;
+  top: 24%;
+  left: 40%;
+  right: 40%;
+  color: #666666;
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.piv-icon:hover {
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.upload-button {
+  font-size: 1.2em;
+}
+
+.upload-button:hover {
+  transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+  color: #999;
+}
+
+@keyframes arrow-right {
+  0% {
+    left: 0px
+  }
+
+  100% {
+    left: 30px
+  }
+
+}
+
+@keyframes arrow-left {
+  0% {
+    right: 0px
+  }
+
+  100% {
+    right: 30px
+  }
+
+}
+
+p {
+  font-size: 140%;
+  line-height: 200%;
+  text-align: justify;
+  margin: 3%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  text-align: center;
+  color: #F94F2F;
+}
+
+.register-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  text-align: center;
+  color: #F94F2F;
+}
+
+.left .head,
+.register-right .head {
+  /*animation: 0.5s ease-out 0s 1 slideInFromLeft; */
+  position: relative;
+  left: 2px;
+  top: 0;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 400%;
+  padding-top: 30%;
+  padding-bottom: 30%;
+
+}
+
+.register-right .head {
+  right: 2px;
+}
+
+.right {
+  display: block;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 45%;
+  background-color: rgba(1000, 1000, 1000, 0.4);
+  opacity: 5%;
+  padding: 0 0 0 0;
+  border: none;
+}
+
+.register-left {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 45%;
+  background-color: rgba(1000, 1000, 1000, 0.4);
+  opacity: 5%;
+  padding: 0 0 0 0;
+  border: none;
+
+}
+
+.right-upper {
+  top: 200px;
+  position: relative;
+}
+
+.right .quote,
+.register-left .quote {
+  position: relative;
+  display: block;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 30px;
+  font-style: italic;
+}
+
+.right .quote-name,
+.register-left .quote-name {
+  color: white;
+  display: block;
+  position: absolute;
+  right: 88px;
+  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.login-box {
+  position: relative;
+  top: 25vh;
+  text-align: center;
+  padding: 1em 0 1em 0;
+  display: inline-block;
+  width: 300px;
+
+}
+
+.login-box label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: rgba(0, 0, 0, 0.431);
+}
+
+.date {
+  left: 50%;
+  transform: translate(-50%, 0);
+  position: relative;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+input[type=number] {
+
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  border-style: solid;
+  background: rgba(44, 44, 44, 0.164);
+  padding: 1em 0 1em 10px;
+  margin-bottom: 10px;
+  border-style: none;
+  width: 50px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  color: white;
+  -moz-appearance: textfield;
+}
+
+form select {
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  border-style: solid;
+  background: rgba(44, 44, 44, 0.164);
+  padding: 1em 0 1em 10px;
+  outline: 0;
+  margin-bottom: 10px;
+  border-style: none;
+  width: 80px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button,
+.testing::-webkit-inner-spin-button,
+.testing::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  margin: 0;
+}
+
+
+.login-box .input-box {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: block;
+  border-radius: 3px;
+  border-style: solid;
+  background: rgba(44, 44, 44, 0.2);
+  padding: 1em 0 1em 10px;
+  margin-bottom: 10px;
+  border-style: none;
+  width: 90%;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  color: white;
+}
+
+::placeholder {
+  color: white;
+  opacity: 0.6;
+}
+
+.login-box .login-btn {
+  -webkit-appearance: none;
+  top: 20px;
+  position: relative;
+  border-style: none;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  width: 60%;
+  font-size: 20px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-radius: 5px;
+  background-color: #951b5f;
+}
+
+.login-box .forgot-psw {
+  text-decoration: none;
+  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: white;
+  top: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.login-box .login-btn:hover {
+  color: white;
+  background-image: none;
+  background-color: #ef4c62;
+}
+
+.mobile {
+  display: none;
+}
+
+div.agree {
+  color: black;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+@media screen and (max-width:666px) {
+
+  body,
+  html {
+
+    overflow: hidden;
+  }
+
+  .mobile {
+    display: flex;
+    bottom: 5px;
+    width: 100%;
+    height: 10%;
+    align-content: flex-end;
+    flex-direction: column-reverse;
+  }
+
+  .main-but {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 21%;
+    justify-content: space-between;
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+
+  .inactive {
+    display: none;
+  }
+
+  .register,
+  .login {
+    text-align: center;
+    position: relative;
+    font-size: 80%;
+    width: 70%;
+    left: 15%;
+    right: 15%;
+    justify-content: center;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .mobile .login {
+    width: 20%;
+    position: absolute;
+    right: 5px;
+    left: auto;
+    height: 8%;
+    font-size: 70;
+
+  }
+
+  .mobile .register {
+    width: 20%;
+    position: absolute;
+    left: 5px;
+    right: auto;
+    /* height: 8%; */
+
+  }
+
+  .left.head.register {
+    display: block;
+  }
+
+
+  .content h1 {
+    font-size: 200%;
+  }
+
+  .btn {
+    font-size: 100%;
+    padding: 7px 13px;
+  }
+
+  p {
+    font-size: 100%;
+    line-height: 150%;
+  }
+
+  .register-right,
+  .left {
+    display: none
+  }
+
+  .right,
+  .register-left {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 30px;
+
+  }
+
+  .right-upper .quote,
+  .right .quote-name,
+  .register-left .quote,
+  .register-left .quote-name {
+    display: none;
+  }
+
+  .right-upper,
+  .right .head,
+  .register-left .head {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    padding-top: 1em;
+
+  }
+
+  .login-box {
+    top: 1.5em;
+    /* background: red; */
+  }
+
+  .login-box .login-btn {
+    background-color: #951b5f;
+    background-image: none;
+  }
+
+  div.agree {
+    font-size: 18px;
+  }
+}
+}
