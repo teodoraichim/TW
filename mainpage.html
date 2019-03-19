@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>STGV Power</title>
-    <link rel="stylesheet" href="style/mainstyle.css">
-</head>
-<body>
-<header>
-  <button class="Menu" type="button">Menu</button>
-  <p>Project</p>
-  <p>Help</p>
-</header>
 
-<div class="addingTitle">
-  <div>
-  <label class="sqlTitle" for="sqlTitle">Title</label>
-  <input type="text" id="sqlTitle" name="sqlTitle">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>Redesign Main Page</title>
+</head>
+
+<body>
+  <header>
+    <div id="leftPart">
+      <button type="button" id="menuButton">&#9776;</button>
+      <button type="button" id="newButton">+</button>
+      <button type="button" id="saveButton">💾</button>
+    </div>
+    <div id="centerPart">
+      <button type="button" name="fullCode">!</button>
+      <button type="button" name="splitView">!!</button>
+      <button type="button" name="fullView">!!!</button>
+    </div>
+  </header>
+
+  <aside class="menuPart"></aside>
+  <div class="codingSection">
+    <div class="titleButton">
+      <span>code.html</span>
+      <span>test.css</span>
+    </div>
+    <textarea class="autoExpand"></textarea>
   </div>
-  <div>
-  <label class="sqlDescription" for="sqlDescription">Description</label>
-  <input type="text" id="sqlDescription" name="sqlDescription">
-  </div>
-</div>
-  
 </body>
+
 </html>
