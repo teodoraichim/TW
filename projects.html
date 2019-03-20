@@ -18,6 +18,16 @@
     </aside>
     <div class="content">
     <h2>Your projects</h2>
+    <div class="popup" id="pop">
+        <h2>Create project</h2>
+        <form>
+            
+        <input type="text" placeholder="Enter project name" name="project" required>
+        <button type="submit" class="btn" id="submit">Create</button>
+        <button type="button" class="btn stop" id="close">Close</button>
+
+        </form>
+    </div>
     <div class="gallery" id="gal">
     <div class="card add-card"><button id="add">+</button></div>
     <div class=" card image"><h2>Project 1</h2></div>
@@ -32,15 +42,37 @@
 <script>
 
     let but = document.getElementById('add');
+    
     but.addEventListener("click",function(){
+        
+                document.getElementById("pop").style.display = "block";
 
-    var para = document.createElement('div');
-    document.getElementById("gal").appendChild(para);
-    para.classList.add('card');
-    para.classList.add('image');
-  
-  
+        })
+        let but1 = document.getElementById("submit");
 
+        but1.addEventListener("click",function(){
+
+            var text = document.querySelector('[name="project"]').value;
+            var para = document.createElement('div');
+
+            document.getElementById("gal").appendChild(para);
+            para.classList.add('card');
+            para.classList.add('image');
+            
+
+            var para2 =  document.createElement('h2');
+            
+            document.querySelector('.image').appendChild(para2);
+            para.innerHTML=text;
+            
+            return false;
+
+        })
+        let but2 = document.getElementById('close');
+
+        but2.addEventListener("click",function(){
+
+            document.getElementById("pop").style.display = "none";
         })
 
     
