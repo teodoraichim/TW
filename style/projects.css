@@ -41,18 +41,42 @@ img {
 .gallery {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left:20px;
 }
-.gallery .image {
+button{
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border:0px;
+    width:35%;
+    height: 50%;
+    font-size: 400%;
+}
+.card{
+    max-width: 90%;
     width: 90%;
-    background: silver;
     border-radius: 3px;
     height: 200px;
     margin: 0 0 2em 0;
 }
+.image {
+    
+    background-image: url("../img/card-background.jpg");
+    
+}
+
+.add-card{
+
+    
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+    
+}
 
 @media screen and (min-width: 500px) and (max-width: 800px) {
-    .gallery .image {
+    .gallery .card {
         width: 47%;
         margin-right: 2%;
     }
@@ -62,12 +86,12 @@ img {
 }
 
 @media screen and (min-width: 800px) {
-    .gallery .image {
+    .gallery .card {
         width: 23%;
         margin-right: 2%;
     }
 
-    .gallery .image:nth-of-type(4n) {
+    .gallery .card:nth-of-type(4n) {
         margin-right: 0;
     }
 }
