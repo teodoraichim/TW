@@ -8,7 +8,7 @@ body,
   /* background-color: #ff9d00;
   background-image: url("file:///C:/Users/T/Desktop/Orange-Gradient-Wallpaper-17.svg");
   background-attachment: fixed; */
-  background: url(img/background.svg) no-repeat;
+  background: url('../img/background.svg') no-repeat;
   background-size: cover;
   overflow: hidden;
   height: 100%;
