@@ -111,3 +111,22 @@ button:hover {
   background-color: #555555;
   color: white;
 }
+
+@media screen and (max-width: 600px)
+{
+  button{
+    font-size: 10px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  button:hover{
+    display: none;
+  }
+
+  input{
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+  }
+}
