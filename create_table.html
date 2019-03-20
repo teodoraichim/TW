@@ -1,79 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create a new table</title>
-    <link rel="stylesheet" type="text/css" href="style/create_table.css" >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Create a new table</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 
 </head>
+
 <body>
-      <header class="menu-bar">
-            <div class="pic">
-                    <img class="profile" alt="profile pic" src="img/empty-profile.png">
-                </div>
-            <button class="menu-button">&#9776;</button>
-    </header>
+  <div class="sidenav">
     <form class="table-type">
-        <p>Table name:</p>
-        <input class="table-name" type="text">
-        <p>Add:</p>
-        <input type="number" min='1' max='10' value='1'>
-        <input id="add-button" type="submit" value="Add columns">
+      <p>Table name:</p>
+      <input class="table-name" type="text">
+      <br>
+      <p>Add:</p>
+      <input type="number" min='1' max='10' value='1'>
+      <br>
     </form>
-    <div id="column-container">
-        <form id="column-type">
-            <input required type="text" placeholder="Name Column" >
-            <select class="select-type">
-                    <option disabled="disabled" selected="selected">Select Type</option>
-                <optgroup label="NUMERIC">
-                    <option value="BINARY">BINARY</option>
-                    <option value="INTEGER">INTEGER</option>
-                    <option value="DECIMAL">DECIMAL</option>
-                    <option value="SMALLINT">SMALLINT</option>
-                    <option value="FLOAT">FLOAT</option>
-                    <option value="DOUBLE">DOUBLE PRECISION</option>
-                </optgroup>
+    <form id="column-type">
+      <input required type="text" placeholder="Name Column">
+      <br>
+      <div class="select">
+        <select class="select-type">
+          <option disabled="disabled" selected="selected">Select Type</option>
+          <optgroup label="NUMERIC">
+            <option value="BINARY">BINARY</option>
+            <option value="INTEGER">INTEGER</option>
+            <option value="DECIMAL">DECIMAL</option>
+            <option value="SMALLINT">SMALLINT</option>
+            <option value="FLOAT">FLOAT</option>
+            <option value="DOUBLE">DOUBLE PRECISION</option>
+          </optgroup>
 
-                <optgroup label="DATE">
-                    <option value="DATE">DATE</option>
-                    <option value="TIME">TIME</option>
-                    <option value="DATETIME">DATETIME</option>
-                    <option value="TIMESTAMP">TIMESTAMP</option>
-                    <option value="YEAR">YEAR</option>
-                </optgroup>
+          <optgroup label="DATE">
+            <option value="DATE">DATE</option>
+            <option value="TIME">TIME</option>
+            <option value="DATETIME">DATETIME</option>
+            <option value="TIMESTAMP">TIMESTAMP</option>
+            <option value="YEAR">YEAR</option>
+          </optgroup>
 
-                <optgroup label="STRING">
-                    <option value="CHAR">CHAR</option>
-                    <option value="VARCHAR">VARCHAR</option>
-                    <option value="BINARY">BINARY</option>
-                    <option value="VARBINARY">VARBINARY</option>
-                    <option value="BLOB">BLOB</option>
-                    <option value="TEXT">TEXT</option>
-                    <option value="ENUM">ENUM</option>
-                    <option value="SET">SET</option>
-                </optgroup>
-            </select>
-            <input class="length" required type="text" placeholder="Length">
-            <p>null</p><input class="checkbox-null" type="checkbox">
-            <select class="select-index">
-                    <option selected="selected" disabled="disabled">Select index type</option>
-                    <option value="PRIMARY">PRIMARY KEY</option>
-                <option value="UNIQUE">UNIQUE</option>
-                <option value="NONE">---</option>
-            </select>
-        </form>
-    </div>
-    <button>Create</button>
-    <script>
-    let but=document.getElementById('add-button');
-    but.addEventListener("click",function()
-    {
-        var para=document.createElement("form");
-        document.getElementById("column-container").appendChild(para);
-        para.classList.add("column-type ");
+          <optgroup label="STRING">
+            <option value="CHAR">CHAR</option>
+            <option value="VARCHAR">VARCHAR</option>
+            <option value="BINARY">BINARY</option>
+            <option value="VARBINARY">VARBINARY</option>
+            <option value="BLOB">BLOB</option>
+            <option value="TEXT">TEXT</option>
+            <option value="ENUM">ENUM</option>
+            <option value="SET">SET</option>
+          </optgroup>
+        </select>
+      </div>
+      <br>
+      <br>
+      <input class="length" required type="text" placeholder="Length">
+      <br>
+      <input class="checkbox-null" type="checkbox">null
+      <br>
+      <br>
+      <select class="select-index">
+        <option selected="selected" disabled="disabled">Select index type</option>
+        <option value="PRIMARY">PRIMARY KEY</option>
+        <option value="UNIQUE">UNIQUE</option>
+        <option value="NONE">---</option>
+      </select>
+    </form>
+    <br>
+    <button type="submit" class="submitReq">Create</button>
+    <button type="submit" class="submitReq">Add columns</button>
+  </div>
+  <script>
+    let but = document.getElementById('add-button');
+    but.addEventListener("click", function () {
+      var para = document.createElement("form");
+      document.getElementById("column-container").appendChild(para);
+      para.classList.add("column-type ");
     });
-    </script>
+  </script>
 </body>
+
 </html>
