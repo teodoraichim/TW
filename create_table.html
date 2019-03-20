@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Create a new table</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="style/create_table.css">
 
 </head>
 
@@ -16,16 +16,22 @@
       <img class="profile" alt="profile pic" src="img/empty-profile.png">
     </div>
     <button class="menu-button">&#9776;</button>
+    
   </header>
   <div>
+    <h2>Create table</h2>
     <span>
       <form class="table-type">
-        <p>Table name:</p>
+        <div><p>Table name:</p>
         <input class="table-name" type="text">
-        <p>Add:</p>
-        <input type="number" min='1' max='10' value='1'> column(s)
-        <button type="submit">Go for it</button>
+        </div class="but-container">
+        <div>
+        <button type="button" id="minus">-</button> 
+        <p class="cost">column(s)</p>
+        <button type="button" id="plus">+</button>
+      </div>
       </form>
+      <br><br>
     </span>
   </div>
   <div style="overflow-x:auto;">
@@ -71,16 +77,12 @@
         <td><input class="length" required type="text" placeholder="Length"></td>
         <td><input class="checkbox-null" type="checkbox"></td>
       </tr>
-    </table>
+    </table><br><br>
+    <div class="submit-but">
+    <button type="submit" class="create">Create</button>
   </div>
-  <script>
-    let but = document.getElementById('add-button');
-    but.addEventListener("click", function () {
-      var para = document.createElement("form");
-      document.getElementById("column-container").appendChild(para);
-      para.classList.add("column-type ");
-    });
-  </script>
+  </div>
+  
 </body>
 
 </html>
