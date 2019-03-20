@@ -78,7 +78,14 @@ td, th{
     color:black;
     padding:3em;
 }
-
+.table-menu 
+{
+    transform: translateX(-100%);
+}
+.table-menu-show
+{
+    transform: translateX(0);
+}
 tr:nth-child(even) {
     background-color: #BDEDFF;
   }
