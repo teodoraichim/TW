@@ -4,10 +4,15 @@ body{
 }
 .menu-bar
 {
-    display:flex;
+    display: flex;
+    position:fixed;
+    right: 0;
+    top:0;
+    left:0;
     background-color: black;
     justify-content: space-between;
     padding: 0.45em;
+    overflow: hidden;
 }
 .pic{
     border-radius: 1000px !important;
@@ -16,13 +21,13 @@ body{
     height: 30px;
     border: 8px solid rgba(255, 255, 255, 0.7);
     position: relative;
-   left:0;
+    left:0;
   
 }
 .menu-button
 {
     position:relative;
-    right: 0;
+    right:0;
     background-color: black;
     color:white;
     border:none;
@@ -65,18 +70,20 @@ body{
     border-radius: 10%;
 }
 .actual-table{
-    margin-left:32em;
-    margin-top:15em;
+    width:70%; 
+    margin-left:15%; 
+    margin-right:15%;
+    margin-top:20%;
+    position: absolute;
+    align-items:center;
     border-collapse: collapse;
     box-shadow:0.2em 0.2em orchid;
-    
+    background-color: #BDEDFF;
 }
 td, th{
-    /* border:2px solid #4CAF50; */
     text-align:center;
     border:2px solid orangered; 
     color:black;
-    padding:3em;
 }
 .table-menu 
 {
@@ -86,17 +93,59 @@ td, th{
 {
     transform: translateX(0);
 }
-tr:nth-child(even) {
-    background-color: #BDEDFF;
-  }
 body{
     background-color:#ffc1cc;
 }
-@media screen and (max-height: 800px) {
-    .table-menu {
-        padding-top: 15px;
+    @media screen 
+    and (max-width: 760px), (min-device-width: 768px) 
+    and (max-device-width: 1024px)  {
+
+		table, thead, tbody, th, td, tr {
+            display: block;
+            
+		}
+
+		thead tr {
+			position: absolute;
+			top: -9999px;
+            left: -9999px;
+            text-align: center;
+		}
+
+    tr {
+      margin: 0 0 1rem 0;
+      text-align: center;
+    }     
+    tr:nth-child(odd) {
+      background: #ccc;
     }
-    .table-menu .tables-title,.table,.add-table {
-        font-size: 18px;
+    
+		td {
+            			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+            padding-left: 50%;
+            text-align: center;
+		}
+
+		td:before {
+			position: absolute;
+			top: 0;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+        @media screen 
+    and (max-width: 450px){
+        .table-menu-show, .table-menu{
+            width: 100%;
+        }
     }
-  }
+		
+		td:nth-of-type(1):before { content: "Ceva"; }
+		td:nth-of-type(2):before { content: "Altceva"; }
+		td:nth-of-type(3):before { content: "Mai mult ceva"; }
+		td:nth-of-type(4):before { content: "Inca Ceva"; }
+		td:nth-of-type(5):before { content: "Nu e ceva"; }
+    }
