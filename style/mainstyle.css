@@ -39,6 +39,14 @@ body {
   transition: 0.3s all ease-in;
 }
 
+@media screen and (max-width: 414px) {
+
+  #newButton,
+  #saveButton {
+    display: none;
+  }
+}
+
 /* --- Body --- */
 
 body {
@@ -62,28 +70,113 @@ div.titleButton span:hover {
   border-bottom: 1px solid rgb(255, 0, 0);
 }
 
-footer{
-  background: black;
-  color: white;
-  text-align: center;
+.flex-container {
+  display: flex;
+  padding: 5px 5px;
 }
 
-textarea{
-  width: 90%;
-  height: 50vh;
-  background: transparent;
-  color:white;
-  border: none;
-  margin-left: 20px;
-  margin-top: 20px;
-  resize: none;
+.flex-wrapper {
+  display: flex;
+  flex-direction: column;
 }
-/* --- Media screen --- */
 
-@media screen and (max-width: 414px) {
+.flex-container>* {
+  flex: 1;
+  min-height: 50vh;
+  margin: 0 5px;
+}
 
-  #newButton,
-  #saveButton {
-    display: none;
+.flex-wrapper :nth-child(2),
+.flex-wrapper :nth-child(3) {
+  margin-top: 5px;
+  
+}
+
+.flex-wrapper :nth-child(3),
+.flex-container>textarea {
+  flex: 1;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 23px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(149, 27, 95);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(149, 27, 95);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(15px);
+  -ms-transform: translateX(15px);
+  transform: translateX(15px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.mobile{
+  display:none;
+}
+
+
+.flex-wrapper>textarea {
+  flex: 1;
+}
+@media screen and (max-width:800px){
+  
+  .output{
+    
+    left:0;
+  min-width:100%;
+}
+  .mobile{
+    display:inline-block;
   }
+  .inactive{
+  display:none;
+}
+
+  
 }
