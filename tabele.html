@@ -17,50 +17,55 @@
         <button class="menu-button" onclick='display()'>&#9776;</button>
     </header>
     <div class="table-menu" id="t-menu">
-        <h1 class="tables-title">Tables menu</h1> 
-        <div class="add-table"><img  class="add-pic" alt="add button" src="https://png.pngtree.com/svg/20170503/95db4c959d.svg">Add Table</div>
+        <h1 class="tables-title">Tables menu</h1>
+        <div class="add-table"><img class="add-pic" alt="add button"
+                src="https://png.pngtree.com/svg/20170503/95db4c959d.svg">Add Table</div>
         <a href="#" class="table">Table1</a>
         <a href="#" class="table">Table2</a>
         <a href="#" class="table">Table3</a>
     </div>
     <div class="table-inside">
-        <table class="actual-table">
-            <tr>
-                <th>Ceva</th>
-                <th>Altceva</th>
-                <th>Mai Mult Ceva</th>
-                <th>Inca Ceva</th>
-                <th>Nu Te Asteptai La Asa Ceva</th>
-            </tr>
-            <tr>
-                <td>Informatie</td>
-                <td>Alta Informatie</td>
-                <td>Mai Multa Informatie</td>
-                <td>Informatie Bonus</td>
-                <td>Informatie Speciala</td>
-            </tr>
-            <tr>
-                <td>Informatie</td>
-                <td>Alta Informatie</td>
-                <td>Mai Multa Informatie</td>
-                <td>Informatie Bonus</td>
-                <td>Informatie Speciala</td>
-            </tr>
-            <tr>
-                <td>Informatie</td>
-                <td>Alta Informatie</td>
-                <td>Mai Multa Informatie</td>
-                <td>Informatie Bonus</td>
-                <td>Informatie Speciala</td>
-            </tr>
+        <table class="actual-table" >
+            <thead>
+                <tr>
+                    <th>Ceva</th>
+                    <th>Altceva</th>
+                    <th>Mai Mult Ceva</th>
+                    <th>Inca Ceva</th>
+                    <th>Nu e ceva</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Informatie</td>
+                    <td>Alta Informatie</td>
+                    <td>Mai Multa Informatie</td>
+                    <td>Informatie Bonus</td>
+                    <td>Informatie Speciala</td>
+                </tr>
+                <tr>
+                    <td>Informatie</td>
+                    <td>Alta Informatie</td>
+                    <td>Mai Multa Informatie</td>
+                    <td>Informatie Bonus</td>
+                    <td>Informatie Speciala</td>
+                </tr>
+                <tr>
+                    <td>Informatie</td>
+                    <td>Alta Informatie</td>
+                    <td>Mai Multa Informatie</td>
+                    <td>Informatie Bonus</td>
+                    <td>Informatie Speciala</td>
+                </tr>
+            </tbody>
         </table>
     </div>
-<script>
-    function display(){
-        var element=document.getElementById("t-menu");
-        element.classList.toggle("table-menu-show");
-    }
-</script>
+    <script>
+            function display(){
+                var element=document.getElementById("t-menu");
+                element.classList.toggle("table-menu-show");
+            }
+        </script>
 </body>
 
 </html>
