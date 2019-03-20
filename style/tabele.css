@@ -44,11 +44,11 @@ body{
     left:0;
     overflow-x: hidden; 
     padding-top: 3.8em;
-    background-color: grey;
+    background-color: black;
 }
 .table-menu .table,.add-table, .tables-title{
     padding: 6px 8px 6px 16px;
-    color:green;
+    color:white;
     display:block;
     text-decoration: none;
     font-size:25px;
