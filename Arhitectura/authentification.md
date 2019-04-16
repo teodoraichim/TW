@@ -9,22 +9,26 @@ Therefore, the classical session approach,where a session is stored on the serve
 Therefore ,we decided to use JSON Web tokens as it stores the user's information on the client.
 The authentification server at a user's request will create a Token(JSON web Token)containing a header a payload and a signature.Using the signature,which contains a secret that the user management microservice generates ,the token is hashed.This token will be used for authentification across all microservices.
 For that to happen ,all the microservices must have a JWT validation method(they must also share the secret).
+
 <b>Header</b>:
 {
 &nbsp;&nbsp;&nbsp;"typ": "JWT",  
 &nbsp;&nbsp;&nbsp;"alg": "HS256"
 }
+
 <b>Payload</b>:
 {
 &nbsp;&nbsp;&nbsp;"user_id":
 &nbsp;&nbsp;&nbsp;"username":
 &nbsp;&nbsp;&nbsp;"exp":
 }
+
 <b>Signature</b>:
 HMACSHA256(  
   &nbsp;&nbsp;&nbsp;base64UrlEncode(header) + "." +  
  &nbsp;&nbsp;&nbsp; base64UrlEncode(payload),  
  &nbsp;&nbsp;&nbsp; secret  
 )
+
 How <b>JWT</b> works:
 ![JWT diagram](https://cdn-images-1.medium.com/max/1600/0*4e6oPp1HYrmDm2CH.png)
