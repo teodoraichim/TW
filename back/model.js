@@ -1,40 +1,358 @@
-module.exports.getProjectList=function(user_id)
-{
-    return new Promise(function(resolve,reject)
-    {
-        var mysql=require('mysql');
+//GET from table
+//returns a list of projects for which the user is collaborator
+module.exports.getProjectList = function (user_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
 
-        var con=mysql.createConnection({host:'localhost',user:'root',password:'root',database:'project_management'});
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
         var result_json;
-        con.connect(function(err) {
+        con.connect(function (err) {
             if (err) return reject(err);
             console.log("Connected!");
         });
-        var json={};
-        con.query('select projects.project_name,projects.creator from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=?',[user_id], function (err, rows, fields) {
+        var json = {};
+        con.query('select projects.project_name,projects.creator from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=?', [user_id], function (err, rows, fields) {
             if (err) return reject(err);
-            json['projects']=rows;
+            json['projects'] = rows;
             con.end();
             resolve(JSON.stringify(json));
-            
+
         });
 
     });
-    
-}
-module.exports.getProject=function(user_id,project_id)
-{
 
 }
-module.exports.postQuery=function(user_id,database_id,query)
-{
+//returns true if user_id is a colaborator of project_id;false otherwise
+module.exports.isColab = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        console.log('user_id:'+user_id+";project_id:"+project_id);
+        con.query('select count(*) as c from colabs where project_id=? and user_id=?', [project_id, user_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            console.log(rows[0].c);
+            if (rows[0].c == '0') resolve(false);
+            else resolve(true);
+
+        });
+
+    });
+}
+//returns information about a certain project
+function getProjectInfo(user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        var json = {};
+        con.query('select project.project_id,projects.project_name,projects.creator,project.database_id from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=? and colabs.project_id=?', [user_id, project_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            json['info'] = rows;
+            con.end();
+            // JSON.stringify(json)
+            resolve(rows);
+
+        });
+
+    });
+}
+//returns the list of collaborators of a project_id
+function getCollabs(project_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        var json = {};
+
+        con.query('select colabs.user_id from colabs where project_id=?', [project_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            json['colabs'] = rows;
+            con.end();
+            console.log(json['colabs']);
+            resolve(rows);
+
+        });
+
+    });
+}
+//returns full information about a certain project
+module.exports.getProject = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        var json = {};
+        getCollabs(project_id).then(function (resp) {
+            json['colabs'] = resp;
+            getProjectInfo(user_id, project_id).then(function (resp2) {
+                json['info'] = resp2; resolve(JSON.stringify(json));
+            }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+    });
+}
+//returns table schema 
+module.exports.getTableSchema = function (user_id, project_id, database_id, table_name) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        var json = {};
+        con.query("describe ?", [table_name], function (err, rows, fields) {
+            if (err) return reject(err);
+            json['result'] = rows;
+            con.end();
+            resolve(JSON.stringify(json));
+
+        });
+
+    });
+}
+//returns all the entries from a table
+module.exports.getTableValues = function (user_id, database_id, table_name) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+        model.exports.isColab(user_id, project_id).then(function (bool) {
+            if (bool) {
+                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+                var result_json;
+                con.connect(function (err) {
+                    if (err) return reject(err);
+                    console.log("Connected!");
+                });
+                var json = {};
+                con.query('select * from table ?', [table_name], function (err, rows, fields) {
+                    if (err) return reject(err);
+                    json['rows'] = rows;
+                    con.end();
+                    resolve(JSON.stringify(json));
+
+                });
+            }
+            else
+                reject('no authorization');
+        });
+
+    });
+}
+//return number of projects
+function getNumProjects() {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        con.query('select count(*) as c from projects', function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            console.log(rows[0].c);
+            resolve(rows[0].c);
+        });
+
+    });
+}
+//POST
+//add a new entry into project table
+function addIntoProjects(proj_id, proj_name, user_id, database_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        con.query('insert into projects (project_id,project_name,creator,database_id) VALUES(?,?,?,?)', [proj_id, proj_name, user_id, database_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            resolve('Added successfuly!');
+
+        });
+
+    });
+}
+//add a collaboration
+module.exports.addIntoColabs = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+
+        con.query('insert into colabs(user_id,project_id) VALUES(?,?)', [user_id, project_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            resolve('Added successfuly!');
+
+        });
+
+    });
+}
+function createDatabase(database_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root' });
+        con.connect(function (err) {
+            if (err) throw err;
+            console.log("Connected!");
+        });
+        var query='CREATE DATABASE db'+con.escape(database_id);
+            con.query(query, function (err, result) {
+                if (err) {
+                    reject(err); throw err;
+                }
+                con.end();
+                resolve("Database created!");
+            });
+        });
 
 }
-module.exports.getTableSchema=function(user_id,database_id,table_name)
-{
+//fully add a project into the database
+module.exports.addProject = function (user_id, proj_name) {
+    return new Promise(function (resolve, reject) {
+        getNumProjects().then(function (numRows) {
+            addIntoProjects(numRows + 1, proj_name, user_id, numRows + 1).then(function (resp1) {
+                createDatabase(numRows + 1).then(function (resp) {
+                    module.exports.addIntoColabs(user_id, numRows + 1).then(function (resp2) {
+                        resolve(true);
+                    }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+                }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+
+            }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+    });
+}
+//execute a query and return the response
+module.exports.postQuery = function (user_id, database_id, query) {
+    return new Promise(function (resolve, reject) {
+        module.exports.isColab(user_id, database_id).then(function (bool) {
+            if (bool) {
+                var mysql = require('mysql');
+
+                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+                con.connect(function (err) {
+                    if (err) return reject(err);
+                    console.log("Connected!");
+                });
+                var json = {};
+                con.query(query, function (err, rows, fields) {
+                    if (err) return reject(err);
+                    json['result'] = rows;
+                    con.end();
+                    resolve(JSON.stringify(json));
+
+                });
+            }
+            else reject('no authorization');
+        });
+    });
+}
+//DELETE
+//delete entry from projects table
+function deleteFromProjects(proj_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        con.query('delete from projects where project_id=?', [proj_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            resolve('Deleted successfuly!');
+
+        });
+
+    });
+}
+//delete a collaboration
+module.exports.deleteFromColabs = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        module.exports.isColab(user_id, project_id).then(function (bool) {
+            if (bool) {
+                var mysql = require('mysql');
+                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+                con.connect(function (err) {
+                    if (err) return reject(err);
+                    console.log("Connected!");
+                });
+
+                con.query('delete from colabs where project_id=?', [project_id], function (err, rows, fields) {
+                    if (err) return reject(err);
+                    con.end();
+                    resolve('Deleted successfuly!');
+
+                });
+            }
+            else reject('no authorization');
+        });
+
+    });
+}
+//delete database
+function deleteDatabase(database_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root' });
+        con.connect(function (err) {
+            if (err) throw err;
+            console.log("Connected!");
+            var query='DROP DATABASE db'+con.escape(parseInt(database_id));
+            con.query(query, function (err, result) {
+                if (err) {
+                    reject(err); throw err;
+                }
+
+                resolve("Database created!");
+            });
+        })
+    });
 
 }
-module.exports.getTableValus=function(user_id,database_id,table_name)
-{
+//fully delete a project from the server
+module.exports.deleteProject = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        module.exports.isColab(user_id, project_id).then(function (bool) {
+            if (bool) {
+                module.exports.deleteFromColabs(user_id,project_id).then(function (resp1) {
+                    deleteDatabase(project_id).then(function (resp) {
+                        deleteFromProjects(project_id).then(function (resp2) {
+                            resolve(true);
+                        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+                    }).catch((err) => setImmediate(() => { reject(err); throw err; }));
 
+                }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+            }
+            else reject('no authorization');
+
+        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+    });
 }

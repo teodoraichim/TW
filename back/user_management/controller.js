@@ -4,7 +4,7 @@ const jwt=require('jsonwebtoken');
 
 // PAYLOAD
 var payload = {
-    user_id: 3
+    user_id: 1
 
    };
    // PRIVATE and PUBLIC key
