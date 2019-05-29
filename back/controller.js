@@ -151,6 +151,22 @@ function onRequest(request, response) {
         }
         else send401Response(response);
     }
+    else if (request.method == 'get' && request.url.indexOf('/iscolab') == 0) {
+        //get query data
+        var queryData = url.parse(request.url, true).query;
+        var proj_name = queryData.project_id;
+        var user_id = queryData.user_id;
+        // var creator=queryData.creator;
+        if (proj_name != null && legit != null) {
+            model.isColab(user_id,proj_name).then(function (bool) {
+                if (bool) {
+                    send200Response(response);
+                }
+                else send401Response(response);
+            }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
+        }
+        else send401Response(response);
+    }
     //execute query
     else if (request.method == 'POST' && request.url.indexOf('/projects/query') == 0) {
         var queryData = url.parse(request.url, true).query;
