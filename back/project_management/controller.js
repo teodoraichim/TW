@@ -22,6 +22,12 @@ function send401Response(response) {
 
     response.end();
 }
+function send403Response(response)
+{
+    response.writeHead(403,{ "Content-Type": "text/plain" });
+    response.write("Error 404:Page not found");
+    response.end();
+}
 function getToken(request, response) {
 
     //    let token=request.headers['x-access-token'] || request.headers['Authorization'];
@@ -40,7 +46,7 @@ function validateToken(token, response) {
     var publicKEY = fs.readFileSync('/home/silviu/web_dev/Project/back/user_management/public.key', 'utf8');
     var i = 'UPNP';          // Issuer 
     var s = 'some@user.com';        // Subject 
-    var a = 'http://localhost:8000'; // Audience
+    var a = 'http://localhost'; // Audience
     var verifyOptions = {
         issuer: i,
         subject: s,
@@ -61,11 +67,35 @@ function validateToken(token, response) {
 }
 function onRequest(request, response) {
     //Getting the list of projects for an user (project_name,project id)
+    /*
+    GET /projects
+    json webtoken in authorization header
+    
+    returneaza json .ex:
+    {
+    "projects": [
+        {
+            "project_name": "Sparkling water",
+            "creator": "One"
+        },
+        {
+            "project_name": "To your left",
+            "creator": "woP"
+        },
+        {
+            "project_name": "hello friends",
+            "creator": "1"
+        }
+    ]
+    }
+    */ 
     if (request.method == 'GET' && request.url == '/projects') {
 
         console.log("Getting the project lists");
         //check the webtoken
-        token = getToken(request, response);
+
+        let token = getToken(request, response);
+        let legit;
         if (token)
             legit = validateToken(token, response);
             else send401Response(response);
@@ -78,6 +108,31 @@ function onRequest(request, response) {
         }
     }
     //getting the description of a project(project name,creator,collaborators,database_name)
+        //GET /projects/proj_id (ex: /projects/1)
+    //json webtoken in authorization header
+    /*return json:
+    {
+    "colabs": [
+        {
+            "user_id": 1
+        },
+        {
+            "user_id": 2
+        },
+        {
+            "user_id": 3
+        }
+    ],
+    "info": [
+        {
+            "project_id": 1,
+            "project_name": "Sparkling water",
+            "creator": "One",
+            "database_id": 1
+        }
+    ]
+    }   
+    */
     else if (request.method == 'GET' && request.url.indexOf('/projects') == 0) {
         var pathData = url.parse(request.url, true).pathname;
         //get query data
@@ -101,15 +156,18 @@ function onRequest(request, response) {
                         response.write(json);
                         response.end();
                     }).catch((err) => setImmediate(() => { throw err; }));
-                else send401Response(response);
+                else send403Response(response);
             }).catch((err) => setImmediate(() => { throw err; }));
 
         }
         else {
-            send404Response(response);
+            send403Response(response);
         }
     }
     //adding a new project
+    //POST /projects?project_name=
+    //json webtoken in authorization header
+    //returneaza 200 ok sau 401 la eroare
     else if (request.method == 'POST' && request.url.indexOf('/projects?project_name=') == 0) {
         //get query data
         var queryData = url.parse(request.url, true).query;
@@ -128,6 +186,9 @@ function onRequest(request, response) {
         else send401Response(response);
     }
     //add a collab
+    //POST /projects/colabs?project_id=&user_id=
+    //json webtoken in authorization header
+    //returns 200 ok 401 on error
     else if (request.method == 'POST' && request.url.indexOf('/projects/colabs') == 0) {
         //get query data
         var queryData = url.parse(request.url, true).query;
@@ -151,13 +212,16 @@ function onRequest(request, response) {
         }
         else send401Response(response);
     }
-    else if (request.method == 'get' && request.url.indexOf('/iscolab') == 0) {
+    //GET /isColab?project_id=&user_id=
+
+    //returneaza 200 ok 401 la eroare
+    else if (request.method == 'GET' && request.url.indexOf('/isColab') == 0) {
         //get query data
         var queryData = url.parse(request.url, true).query;
         var proj_name = queryData.project_id;
         var user_id = queryData.user_id;
         // var creator=queryData.creator;
-        if (proj_name != null && legit != null) {
+        if (proj_name != null) {
             model.isColab(user_id,proj_name).then(function (bool) {
                 if (bool) {
                     send200Response(response);
@@ -168,6 +232,10 @@ function onRequest(request, response) {
         else send401Response(response);
     }
     //execute query
+    //POST /projects/query?project_id=&query=
+        //json webtoken in authorization header
+
+    //return 200  ok 401 on error
     else if (request.method == 'POST' && request.url.indexOf('/projects/query') == 0) {
         var queryData = url.parse(request.url, true).query;
         var project_id=queryData.project_id;
@@ -187,6 +255,9 @@ function onRequest(request, response) {
         }
     }
     //delete project
+    //delete /projects?project_id=
+        //json webtoken in authorization header
+
     else if (request.method == 'DELETE' && request.url.indexOf('/projects') == 0) {
         //get query data
         var queryData = url.parse(request.url, true).query;

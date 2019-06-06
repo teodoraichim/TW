@@ -38,7 +38,7 @@ module.exports.isColab = function (user_id, project_id) {
             if (err) return reject(err);
             con.end();
             console.log(rows[0].c);
-            if (rows[0].c == '0') resolve(false);
+            if (rows[0].c == 0) resolve(false);
             else resolve(true);
 
         });
@@ -57,7 +57,7 @@ function getProjectInfo(user_id, project_id) {
             console.log("Connected!");
         });
         var json = {};
-        con.query('select project.project_id,projects.project_name,projects.creator,project.database_id from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=? and colabs.project_id=?', [user_id, project_id], function (err, rows, fields) {
+        con.query('select projects.project_id,projects.project_name,projects.creator,projects.database_id from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=? and colabs.project_id=?', [user_id, project_id], function (err, rows, fields) {
             if (err) return reject(err);
             json['info'] = rows;
             con.end();

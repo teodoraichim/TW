@@ -1,26 +1,94 @@
 const server = require('http').createServer();
 const io = require('socket.io')(server);
+const jwt = require('jsonwebtoken');
+const projMng = require('/home/silviu/web_dev/Project/back/update/projMngCommunication.js');
+const fs = require('fs');
+//clients object
+/*
+  Format:
+  {
+    'project_id':
+    [{client:[Object](representing the socket used by that client),user_id:(user_id corresponding to the client)}]
+  }
+  ex:
+  { '1': 
+   [ { client: [Object], user_id: 2 },
+     { client: [Object], user_id: 1 } ] }
+
+*/
 let clients = {};
+
+//returns the jwt object if the jwt is valid;an undefined obj otherwise
+function validateToken(token) {
+
+  var publicKEY = fs.readFileSync('/home/silviu/web_dev/Project/back/user_management/public.key', 'utf8');
+  var i = 'UPNP';          // Issuer 
+  var s = 'some@user.com';        // Subject 
+  var a = 'http://localhost'; // Audience
+  var verifyOptions = {
+    issuer: i,
+    subject: s,
+    audience: a,
+    expiresIn: "12h",
+    algorithm: ["RS256"]
+  };
+  try {
+    var legit = jwt.verify(token, publicKEY, verifyOptions);
+  }
+  catch (err) {
+    console.log(err);
+  }
+  console.log("\nJWT verification result: " + JSON.stringify(legit));
+  return legit;
+
+}
+
 io.on('connection', client => {
+  /*
+    Adding a client:
+    first verify the jwt and extract the user id
+    then add it to the clients object
+  */
+  client.on("addClient", function (user_token, project_id) {
+    user_json = validateToken(user_token);
+    if (user_json) {
+      user_id = user_json.user_id;
+      projMng.isColab(user_id, project_id).then(function (bool) {
+        if (bool) {
+          console.log("User:" + user_id);
+          console.log("Project:" + project_id);
+          //add client to the clients object
+          if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
+          else clients[project_id] = [{ "client": client, "user_id": user_id }];
+          console.log(clients);
 
-  client.on("addClient", function (user_id, project_id) {
-    console.log("User:" + user_id);
-    console.log("Project:" + project_id);
-
-    if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
-    else clients[project_id] = [{"client": client, "user_id": user_id }];
-    console.log(clients);
+        }
+      }).catch((err) => setImmediate(() => { throw err; }));
+    }
   });
-  client.on("addUpdate", function (user_id, project_id, message) {
-    console.log("User:" + user_id);
-    console.log("Project:" + project_id);
-    console.log("Message:" + message);
-    for (var i=0;i<clients[project_id].length;i++)
-    {  console.log(clients[project_id][i].user_id);
-      
-      if (clients[project_id][i].client !== client) {
-        console.log("Sending to client with user id " + clients[project_id][i].user_id);
-        clients[project_id][i].client.emit("update", user_id, message);
+  //receive update from a client and send it to all the connected colabs
+  client.on("addUpdate", function (user_token, project_id, message) {
+    user_json = validateToken(user_token);
+    if (user_json) {
+      user_id = user_json.user_id;
+      console.log("User:" + user_id);
+      console.log("Project:" + project_id);
+      console.log("Message:" + message);
+      let connected = false;
+      for (var i = 0; i < clients[project_id].length; i++) {
+        if (clients[project_id][i].client === client) {
+          connected = true;
+        }
+      }
+
+      if (connected) {//sending update to all connected colabs
+        for (var i = 0; i < clients[project_id].length; i++) {
+          console.log(clients[project_id][i].user_id);
+          if (clients[project_id][i].client !== client) {
+            console.log("Sending to client with user id " + clients[project_id][i].user_id);
+            clients[project_id][i].client.emit("update", user_id, message);
+          }
+        }
       }
     }
   });

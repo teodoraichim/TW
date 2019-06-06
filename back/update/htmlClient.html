@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>Welcome to update center</p>
+    <p>Enter your user JWT</p>
+    <input id="userJWT"></input>
+    <p>Enter your project id</p>
+    <input id="projectID"></input>
+    <button id="connect">Connect</button>
+    <p>Enter an update for all the clients to receive:</p>
+    <input id="updateInput"></input>
+    <button id="submit">Submit</button>
+    
+    <div id="updates">
+        
+    </div>
+    <script src="./socket.io/socket.io.js"></script>
+    <script>
+// for testing the websocket connection on the client's side
+
+    const socket = io('http://localhost:3000');
+      document.getElementById("connect").addEventListener('click',function(e){
+          //addClient userJWT projectID
+          //adds a new client connection.In the project this will have to be done at page load
+        socket.emit("addClient",document.getElementById("userJWT").value,document.getElementById("projectID").value);
+      }); 
+      document.getElementById("submit").addEventListener('click',function(e){
+          //addUpdate userJWT,projectID,update
+          /*
+          executes the query on the database using the project management microservice,
+          sends updates to all the connected collaborators
+          */
+          socket.emit("addUpdate",document.getElementById("userJWT").value,document.getElementById("projectID").value,document.getElementById("updateInput").value);
+        });
+      socket.on('connect', function(){});
+      socket.on('event', function(data){});
+      socket.on("update",(user,receivedUpdate)=>{
+          /*
+          This describes how receiving an update should be handled
+          as for the above function's parameters :
+            user stores the user id of the one who sent the query(the update)
+            receivedUpdate  stores the actual update(string)
+          */
+        receivedUpdatePar=document.createElement("p");
+        receivedUpdatePar.id="update";
+        receivedUpdatePar.innerHTML=receivedUpdate;
+        document.getElementById("updates").appendChild(receivedUpdatePar);
+      });
+      socket.on('disconnect', function(){});
+    </script>
+</body>
+</html>
