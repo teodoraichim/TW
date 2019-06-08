@@ -65,6 +65,16 @@ returneaza  200  ok
  
 erori:500,401,403
 
+## delete colab
+
+DELETE  /projects/colabs?project_id=&user_id=
+
+jwt  in  authorization  header
+returneaza  200  ok
+ 
+erori:500,401,403
+
+
 ## is colab(check)
 
 GET  /isColab?project_id=&user_id=
@@ -80,20 +90,42 @@ eroare:500,401,403
 
 POST  /projects/query?project_id=&query=
 
+jwt in authorization
 returneaza 200 ok
 return json:
-{"result":
-"string-result"
+{"result":"string-result"
 }
 eroare:401,500
 
+## Generate code
+POST  /generateCode/PHP?project_id=&query=?  or  /generateCode/Java?project_id=&query=?
+
+jwt in authorization 
+returneaza 200 ok
+return json:
+{"result":"php or java code"
+}
 ## delete project
 
 DELETE /projects?project_id=
-
+jwt in authorization 
 returneaza 200 ok 
 
 erori:401,500
 
 # Update
+
+This module establishes a websocket client-server connection using socket.io
+The html client shows how to establish the connection and communicate with the server.
+the actions are:
+* addClient(jwt,project_id):
+	* extracts the user_id from the jwt
+	* adds the client to the list of connected clients for the project_id project 
+* addUpdate(jwt,project_id,message)
+	* sends the update to all the connected clients
+* invalid
+	* error for when the jwt is invalid or the user is not a valid collaborator or the client didn't login before sending an update 
+* error
+	* if the project_management microservice cannot send respond if an user is a collaborator 
+
 

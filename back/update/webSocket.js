@@ -63,7 +63,8 @@ io.on('connection', client => {
           console.log(clients);
 
         }
-      }).catch((err) => setImmediate(() => { throw err; }));
+        else client.emit("invalid");
+      }).catch((err) => setImmediate(() => { console.log(err);client.emit("error","Could not fulfill the request"); }));
     }
   });
   //receive update from a client and send it to all the connected colabs
@@ -91,6 +92,7 @@ io.on('connection', client => {
         }
       }
     }
+    else client.emit("invalid");
   });
 
   client.on('disconnect', () => {

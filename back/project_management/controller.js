@@ -1,11 +1,17 @@
 const http = require('http');
 // const querystring= require('querystring');
 const url = require('url');
-const model = require('/home/silviu/web_dev/Project/back/model.js');
+const model = require('./model.js');
+const convert = require('./Convertor.js');
+
 //for working with the file system
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-
+function send500Response(response) {
+    response.writeHead(500, { "Content-Type": "text/plain" });
+    response.write("Error 500:Internal server error");
+    response.end();
+}
 function send404Response(response) {
     response.writeHead(404, { "Content-Type": "text/plain" });
     response.write("Error 404:Page not found");
@@ -22,10 +28,9 @@ function send401Response(response) {
 
     response.end();
 }
-function send403Response(response)
-{
-    response.writeHead(403,{ "Content-Type": "text/plain" });
-    response.write("Error 404:Page not found");
+function send403Response(response) {
+    response.writeHead(403, { "Content-Type": "text/plain" });
+    response.write("Error 403:Send valid query params");
     response.end();
 }
 function getToken(request, response) {
@@ -37,7 +42,7 @@ function getToken(request, response) {
         var token = r[1];
     }
     catch (err) {
-        send401Response(response);
+        
     }
     return token;
 }
@@ -58,7 +63,7 @@ function validateToken(token, response) {
         var legit = jwt.verify(token, publicKEY, verifyOptions);
     }
     catch (err) {
-        send401Response(response);
+        
 
     }
     console.log("\nJWT verification result: " + JSON.stringify(legit));
@@ -88,7 +93,7 @@ function onRequest(request, response) {
         }
     ]
     }
-    */ 
+    */
     if (request.method == 'GET' && request.url == '/projects') {
 
         console.log("Getting the project lists");
@@ -96,20 +101,23 @@ function onRequest(request, response) {
 
         let token = getToken(request, response);
         let legit;
-        if (token)
+        if (token) {
             legit = validateToken(token, response);
+            if (legit) {
+                model.getProjectList(legit.user_id).then(function (json) {
+                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.write(json);
+                    response.end();
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
             else send401Response(response);
-        if (legit) {
-            model.getProjectList(legit.user_id).then(function (json) {
-                response.writeHead(200, { "Content-Type": "application/json" });
-                response.write(json);
-                response.end();
-            }).catch((err) => setImmediate(() => { throw err; }));
         }
+        else send401Response(response);
+
     }
-    //getting the description of a project(project name,creator,collaborators,database_name)
-        //GET /projects/proj_id (ex: /projects/1)
-    //json webtoken in authorization header
+    // getting the description of a project(project name,creator,collaborators,database_name)
+    //     GET /projects/proj_id (ex: /projects/1)
+    // json webtoken in authorization header
     /*return json:
     {
     "colabs": [
@@ -145,48 +153,66 @@ function onRequest(request, response) {
         var r = pathData.match(re);
         var project_id = r[1];
         token = getToken(request, response);
-        if (token)
+        if (token) {
             legit = validateToken(token, response);
-            else send401Response(response);
-        if (project_id != null && legit != null) {
-            model.isColab(legit.user_id, project_id).then(function (bool) {
-                if (bool)
-                    model.getProject(legit.user_id, project_id).then(function (json) {
-                        response.writeHead(200, { "Content-Type": "application/json" });
-                        response.write(json);
-                        response.end();
-                    }).catch((err) => setImmediate(() => { throw err; }));
-                else send403Response(response);
-            }).catch((err) => setImmediate(() => { throw err; }));
+            if (project_id != null && legit != null) {
+                model.isColab(legit.user_id, project_id).then(function (bool) {
+                    if (bool)
+                        model.getProject(legit.user_id, project_id).then(function (json) {
+                            response.writeHead(200, { "Content-Type": "application/json" });
+                            response.write(json);
+                            response.end();
+                        }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+                    else send401Response(response);
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
+            }
+            else {
+                send403Response(response);
+            }
         }
-        else {
-            send403Response(response);
-        }
+        else send401Response(response);
+
     }
     //adding a new project
-    //POST /projects?project_name=
-    //json webtoken in authorization header
-    //returneaza 200 ok sau 401 la eroare
+    // POST /projects?project_name=?username=?&password=?
+    // json webtoken in authorization header
+    // returneaza 200 ok 
+    /*
+    {
+        "project_id":id
+    }
+    */
+    // sau 401 la eroare
     else if (request.method == 'POST' && request.url.indexOf('/projects?project_name=') == 0) {
         //get query data
         var queryData = url.parse(request.url, true).query;
         var proj_name = queryData.project_name;
+
+        var dbUsername = queryData.username;
+        var dbPassword = queryData.password;
+
         // var creator=queryData.creator;
 
         token = getToken(request, response);
-        if (token)
+        if (token) {
             legit = validateToken(token, response);
-            else send401Response(response);
-        if (proj_name != null && legit != null) {
-            model.addProject(legit.user_id, proj_name).then(function (json) {
-                send200Response(response);
-            }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
+            if (proj_name != null && legit != null) {
+                model.addProject(legit.user_id, proj_name, dbUsername, dbPassword).then(function (project_id) {
+                    let json = {};
+                    json['project_id']=project_id;
+                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.write(JSON.stringify(json));
+                    response.end();
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send403Response(response);
         }
         else send401Response(response);
+
     }
     //add a collab
-    //POST /projects/colabs?project_id=&user_id=
+    // POST /projects/colabs?project_id=&user_id=
     //json webtoken in authorization header
     //returns 200 ok 401 on error
     else if (request.method == 'POST' && request.url.indexOf('/projects/colabs') == 0) {
@@ -197,22 +223,52 @@ function onRequest(request, response) {
         // var creator=queryData.creator;
 
         token = getToken(request, response);
-        if (token)
+        if (token) {
             legit = validateToken(token, response);
-        else send401Response(response);
-        if (proj_name != null && legit != null) {
-            model.isColab(legit.user_id,proj_name).then(function (bool) {
-                if (bool) {
-                    model.addIntoColabs(user_id, proj_name).then(function (json) {
-                        send200Response(response);
-                    }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
-                }
-                else send401Response(response);
-            }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
+            if (proj_name != null && legit != null) {
+                model.isColab(legit.user_id, proj_name).then(function (bool) {
+                    if (bool) {
+                        model.addIntoColabs(user_id, proj_name).then(function (json) {
+                            send200Response(response);
+                        }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+                    }
+                    else send401Response(response);
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send403Response(response);
         }
         else send401Response(response);
+
     }
-    //GET /isColab?project_id=&user_id=
+    //delete colab
+    //DELETE /projects/colabs?project_id=&user_id
+    //erori 401,403
+    else if (request.method == 'DELETE' && request.url.indexOf('/projects/colabs') == 0) {
+        //get query data
+        var queryData = url.parse(request.url, true).query;
+        var proj_name = queryData.project_id;
+        var user_id = queryData.user_id;
+        // var creator=queryData.creator;
+
+        token = getToken(request, response);
+        if (token) {
+            legit = validateToken(token, response);
+            if (proj_name != null && legit != null) {
+                model.isColab(legit.user_id, proj_name).then(function (bool) {
+                    if (bool) {
+                        model.deleteAColab(user_id, proj_name).then(function (json) {
+                            send200Response(response);
+                        }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+                    }
+                    else send401Response(response);
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send403Response(response);
+        }
+        else send401Response(response);
+
+    }
+    // GET /isColab?project_id=&user_id=
 
     //returneaza 200 ok 401 la eroare
     else if (request.method == 'GET' && request.url.indexOf('/isColab') == 0) {
@@ -222,41 +278,57 @@ function onRequest(request, response) {
         var user_id = queryData.user_id;
         // var creator=queryData.creator;
         if (proj_name != null) {
-            model.isColab(user_id,proj_name).then(function (bool) {
+            model.isColab(user_id, proj_name).then(function (bool) {
                 if (bool) {
-                    send200Response(response);
+                    let json = { "isColab": true };
+                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.write(json);
+                    response.end();
                 }
-                else send401Response(response);
-            }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
+                else {
+                    let json = { "isColab": false };
+                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.write(json);
+                    response.end();
+                }
+            }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
         }
-        else send401Response(response);
+        else send403Response(response);
     }
     //execute query
-    //POST /projects/query?project_id=&query=
-        //json webtoken in authorization header
+    // POST /projects/query?project_id=&query=
+    //json webtoken in authorization header
 
     //return 200  ok 401 on error
     else if (request.method == 'POST' && request.url.indexOf('/projects/query') == 0) {
         var queryData = url.parse(request.url, true).query;
-        var project_id=queryData.project_id;
-        var queryReq=queryData.query;
-        
+        var project_id = queryData.project_id;
+        var queryReq = queryData.query;
+
         //check the webtoken
         token = getToken(request, response);
-        if (token!=null)
+        if (token != null) {
             legit = validateToken(token, response);
-        else send401Response(response);
-        if (legit!=null) {
-            model.postQuery(legit.user_id,project_id,queryReq).then(function (json) {
-                response.writeHead(200, { "Content-Type": "application/json" });
-                response.write(json);
-                response.end();
-            }).catch((err) => setImmediate(() => { throw err; }));
+            if (legit != null) {
+                model.getDBCredentials(project_id).then(function (credentials) {
+
+                    model.postQuery(legit.user_id, project_id, queryReq, credentials.username, credentials.password).then(function (json) {
+                        response.writeHead(200, { "Content-Type": "application/json" });
+                        response.write(json);
+                        response.end();
+                    }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+
+
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send401Response(response);
         }
+        else send401Response(response);
+
     }
     //delete project
     //delete /projects?project_id=
-        //json webtoken in authorization header
+    //json webtoken in authorization header
 
     else if (request.method == 'DELETE' && request.url.indexOf('/projects') == 0) {
         //get query data
@@ -265,15 +337,67 @@ function onRequest(request, response) {
         // var creator=queryData.creator;
 
         token = getToken(request, response);
-        if (token)
+        if (token) {
             legit = validateToken(token, response);
-        console.log(proj_name);
-        if (proj_name != null && legit != null) {
-            model.deleteProject(legit.user_id, proj_name).then(function (json) {
-                send200Response(response);
-            }).catch((err) => setImmediate(() => { send401Response(response); throw err; }));
+            console.log(proj_name);
+            if (proj_name != null && legit != null) {
+                model.deleteProject(legit.user_id, proj_name).then(function (json) {
+                    send200Response(response);
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send401Response(response);
         }
         else send401Response(response);
+
+    }
+    //generate code
+    // POST /generateCode/PHP?project_id=&query=? or /generateCode/Java?project_id=&query=?
+    //returns 200 ok json
+    //jwt 
+    /*
+    {
+        'result':(phpcode)
+    }
+    */
+    else if (request.method == 'POST' && request.url.indexOf('/generateCode') == 0) {
+        var queryData = url.parse(request.url, true).query;
+        var project_id = queryData.project_id;
+        var queryReq = queryData.query;
+
+        //check the webtoken
+        token = getToken(request, response);
+        if (token != null) {
+            legit = validateToken(token, response);
+            if (legit != null) {
+                model.getDBCredentials(project_id).then(function (credentials) {
+                    if (request.url.indexOf('/generateCode/Java') == 0) {
+                        var json = {};
+                        let javaCode= convert.fromQueryToJava(credentials.id, queryReq, credentials.username, credentials.password);
+                        // console.log(phpCode);
+                        json['result'] = javaCode;
+                        response.writeHead(200, { "Content-Type": "application/json" });
+                        // console.log(json);
+                        response.write(JSON.stringify(json));
+                        response.end();
+                    }
+                    else if (request.url.indexOf('/generateCode/Php') == 0) {
+                        var json = {};
+                        let phpCode = convert.fromQueryToPhp('localhost', queryReq, credentials.username, credentials.password, credentials.id);
+                        // console.log(phpCode);
+                        json['result'] = phpCode;
+                        response.writeHead(200, { "Content-Type": "application/json" });
+                        // console.log(json);
+                        response.write(JSON.stringify(json));
+                        response.end();
+
+                    }
+
+                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            }
+            else send401Response(response);
+        }
+        else send401Response(response);
+
     }
     else {
         send404Response(response);

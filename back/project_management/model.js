@@ -22,6 +22,28 @@ module.exports.getProjectList = function (user_id) {
     });
 
 }
+module.exports.getProjectId = function (project_name) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+        var result_json;
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        console.log('user_id:' + user_id + ";project_id:" + project_id);
+        con.query('select project_id from  projects where project_name=?', [project_name], function (err, rows, fields) {
+            if (err) return reject(err);
+            con.end();
+            console.log(rows[0].project_id);
+            if (rows[0].c == 0) resolve(false);
+            else resolve(true);
+
+        });
+
+    });
+}
 //returns true if user_id is a colaborator of project_id;false otherwise
 module.exports.isColab = function (user_id, project_id) {
     return new Promise(function (resolve, reject) {
@@ -33,7 +55,7 @@ module.exports.isColab = function (user_id, project_id) {
             if (err) return reject(err);
             console.log("Connected!");
         });
-        console.log('user_id:'+user_id+";project_id:"+project_id);
+        console.log('user_id:' + user_id + ";project_id:" + project_id);
         con.query('select count(*) as c from colabs where project_id=? and user_id=?', [project_id, user_id], function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
@@ -100,8 +122,8 @@ module.exports.getProject = function (user_id, project_id) {
             json['colabs'] = resp;
             getProjectInfo(user_id, project_id).then(function (resp2) {
                 json['info'] = resp2; resolve(JSON.stringify(json));
-            }).catch((err) => setImmediate(() => { reject(err); throw err; }));
-        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+            }).catch((err) => setImmediate(() => { reject(err);  }));
+        }).catch((err) => setImmediate(() => { reject(err);  }));
     });
 }
 //returns table schema 
@@ -109,7 +131,7 @@ module.exports.getTableSchema = function (user_id, project_id, database_id, tabl
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db' + database_id });
         var result_json;
         con.connect(function (err) {
             if (err) return reject(err);
@@ -132,7 +154,7 @@ module.exports.getTableValues = function (user_id, database_id, table_name) {
         var mysql = require('mysql');
         model.exports.isColab(user_id, project_id).then(function (bool) {
             if (bool) {
-                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db' + database_id });
                 var result_json;
                 con.connect(function (err) {
                     if (err) return reject(err);
@@ -175,7 +197,7 @@ function getNumProjects() {
 }
 //POST
 //add a new entry into project table
-function addIntoProjects(proj_id, proj_name, user_id, database_id) {
+function addIntoProjects(proj_id, proj_name, user_id, database_id, dbUsername, dbPassword) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
         var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
@@ -183,7 +205,7 @@ function addIntoProjects(proj_id, proj_name, user_id, database_id) {
             if (err) return reject(err);
             console.log("Connected!");
         });
-        con.query('insert into projects (project_id,project_name,creator,database_id) VALUES(?,?,?,?)', [proj_id, proj_name, user_id, database_id], function (err, rows, fields) {
+        con.query('insert into projects (project_id,project_name,creator,database_id,username,password) VALUES(?,?,?,?,?,?)', [proj_id, proj_name, user_id, database_id, dbUsername, dbPassword], function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
             resolve('Added successfuly!');
@@ -213,49 +235,72 @@ module.exports.addIntoColabs = function (user_id, project_id) {
 
     });
 }
-function createDatabase(database_id) {
+
+function createDatabase(database_id, dbUsername, dbPassword) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root' });
+        var con = mysql.createConnection({ host: 'localhost', user: dbUsername, password: dbPassword });
         con.connect(function (err) {
-            if (err) throw err;
+            if (err) 
             console.log("Connected!");
         });
-        var query='CREATE DATABASE db'+con.escape(database_id);
-            con.query(query, function (err, result) {
-                if (err) {
-                    reject(err); throw err;
-                }
-                con.end();
-                resolve("Database created!");
-            });
+        var query = 'CREATE DATABASE db' + con.escape(database_id);
+        con.query(query, function (err, result) {
+            if (err) {
+                reject(err); 
+            }
+            con.end();
+            resolve("Database created!");
         });
+    });
 
 }
 //fully add a project into the database
-module.exports.addProject = function (user_id, proj_name) {
+module.exports.addProject = function (user_id, proj_name, dbUsername, dbPassword) {
     return new Promise(function (resolve, reject) {
         getNumProjects().then(function (numRows) {
-            addIntoProjects(numRows + 1, proj_name, user_id, numRows + 1).then(function (resp1) {
-                createDatabase(numRows + 1).then(function (resp) {
+            createDatabase(numRows + 1, dbUsername, dbPassword).then(function (resp) {
+                addIntoProjects(numRows + 1, proj_name, user_id, numRows + 1, dbUsername, dbPassword).then(function (resp1) {
                     module.exports.addIntoColabs(user_id, numRows + 1).then(function (resp2) {
-                        resolve(true);
-                    }).catch((err) => setImmediate(() => { reject(err); throw err; }));
-                }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+                        resolve(numRows+1);
+                    }).catch((err) => setImmediate(() => { reject(err);  }));
+                }).catch((err) => setImmediate(() => { reject(err);  }));
 
-            }).catch((err) => setImmediate(() => { reject(err); throw err; }));
-        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+            }).catch((err) => setImmediate(() => { reject(err);  }));
+        }).catch((err) => setImmediate(() => { reject(err);  }));
+    });
+}
+module.exports.getDBCredentials = function (project_id) {
+    return new Promise(function (resolve, reject) {
+        var mysql = require('mysql');
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+
+        con.connect(function (err) {
+            if (err) return reject(err);
+            console.log("Connected!");
+        });
+        var json = {};
+        con.query("select username,password,database_id from projects where project_id=?", [project_id], function (err, rows, fields) {
+            if (err) return reject(err);
+            json['username'] = rows[0].username;
+            json['password'] = rows[0].password;
+            json['id']=rows[0].database_id;
+            con.end();
+            resolve(JSON.stringify(json));
+
+        });
+
     });
 }
 //execute a query and return the response
-module.exports.postQuery = function (user_id, database_id, query) {
+module.exports.postQuery = function (user_id, database_id, query, dbUsername, dbPassword) {
     return new Promise(function (resolve, reject) {
         module.exports.isColab(user_id, database_id).then(function (bool) {
             if (bool) {
                 var mysql = require('mysql');
 
-                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'db'+database_id });
+                var con = mysql.createConnection({ host: 'localhost', user: dbUsername, password: dbPassword, database: 'db' + database_id });
                 con.connect(function (err) {
                     if (err) return reject(err);
                     console.log("Connected!");
@@ -293,6 +338,30 @@ function deleteFromProjects(proj_id) {
     });
 }
 //delete a collaboration
+module.exports.deleteAColab = function (user_id, project_id) {
+    return new Promise(function (resolve, reject) {
+        module.exports.isColab(user_id, project_id).then(function (bool) {
+            if (bool) {
+                var mysql = require('mysql');
+                var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'project_management' });
+                con.connect(function (err) {
+                    if (err) return reject(err);
+                    console.log("Connected!");
+                });
+
+                con.query('delete from colabs where project_id=? and user_id=?', [project_id, user_id], function (err, rows, fields) {
+                    if (err) return reject(err);
+                    con.end();
+                    resolve('Deleted successfuly!');
+
+                });
+            }
+            else reject('no authorization');
+        });
+
+    });
+}
+//delete all collabs for a project
 module.exports.deleteFromColabs = function (user_id, project_id) {
     return new Promise(function (resolve, reject) {
         module.exports.isColab(user_id, project_id).then(function (bool) {
@@ -323,12 +392,12 @@ function deleteDatabase(database_id) {
 
         var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root' });
         con.connect(function (err) {
-            if (err) throw err;
+            if (err) 
             console.log("Connected!");
-            var query='DROP DATABASE db'+con.escape(parseInt(database_id));
+            var query = 'DROP DATABASE db' + con.escape(parseInt(database_id));
             con.query(query, function (err, result) {
                 if (err) {
-                    reject(err); throw err;
+                    reject(err); 
                 }
 
                 resolve("Database created!");
@@ -342,17 +411,17 @@ module.exports.deleteProject = function (user_id, project_id) {
     return new Promise(function (resolve, reject) {
         module.exports.isColab(user_id, project_id).then(function (bool) {
             if (bool) {
-                module.exports.deleteFromColabs(user_id,project_id).then(function (resp1) {
+                module.exports.deleteFromColabs(user_id, project_id).then(function (resp1) {
                     deleteDatabase(project_id).then(function (resp) {
                         deleteFromProjects(project_id).then(function (resp2) {
                             resolve(true);
-                        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
-                    }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+                        }).catch((err) => setImmediate(() => { reject(err);  }));
+                    }).catch((err) => setImmediate(() => { reject(err);  }));
 
-                }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+                }).catch((err) => setImmediate(() => { reject(err);  }));
             }
             else reject('no authorization');
 
-        }).catch((err) => setImmediate(() => { reject(err); throw err; }));
+        }).catch((err) => setImmediate(() => { reject(err);  }));
     });
 }
