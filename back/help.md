@@ -49,7 +49,8 @@ erori:500,401,403
 
 ## add project
 
-POST  /projects?project_name=
+POST  /projects?project_name=?username=?&password=?
+
 
 jwt  in  authorization  header
 returneaza  200  ok
