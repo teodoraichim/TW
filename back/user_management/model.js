@@ -8,7 +8,7 @@ module.exports.register = function (user_name, password,email,date) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'dba', password: 'sql', database: 'movies' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
         
         con.connect(function (err) {
             if (err) return reject(err);
@@ -46,7 +46,7 @@ module.exports.registerValidate = function(userId,code){
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -70,7 +70,7 @@ module.exports.login = function (user_name, password) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -93,7 +93,7 @@ module.exports.changePassword = function (user_name, password) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -114,7 +114,7 @@ module.exports.getId = function (user) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -135,7 +135,7 @@ module.exports.checkUsername = function (user_name) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -156,7 +156,7 @@ module.exports.checkMail = function (mail) {
     return new Promise(function (resolve, reject) {
         var mysql = require('mysql');
 
-        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+        var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
        
         con.connect(function (err) {
             if (err) return reject(err);
@@ -207,7 +207,7 @@ module.exports.sendMail = function (mail,code) {
         return new Promise(function (resolve, reject) {
             var mysql = require('mysql');
     
-            var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'user_management' });
+            var con = mysql.createConnection({ host: 'localhost', user: 'root', password: 'root', database: 'manageUsers' });
            
             con.connect(function (err) {
                 if (err) return reject(err);
