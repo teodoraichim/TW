@@ -35,6 +35,9 @@
 
         }).then((resp) => {
             if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
         }).then(jsonResp => {
             if (jsonResp) {
                 console.log(jsonResp);
@@ -61,6 +64,10 @@
             }
         }).then((resp) => {
             if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+            else if (resp.status = 403) { console.log("403"); }
+
         }).then(jsonResp => {
             if (jsonResp) {
                 console.log(jsonResp);
