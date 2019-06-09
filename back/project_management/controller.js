@@ -3,33 +3,35 @@ const http = require('http');
 const url = require('url');
 const model = require('./model.js');
 const convert = require('./Convertor.js');
-
+const jsonType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*","Content-Type": "application/json" };
+const textType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*", "Content-Type": "text/plain" };
+const noType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*"};
 //for working with the file system
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 function send500Response(response) {
-    response.writeHead(500, { "Content-Type": "text/plain" });
+    response.writeHead(500, textType);
     response.write("Error 500:Internal server error");
     response.end();
 }
 function send404Response(response) {
-    response.writeHead(404, { "Content-Type": "text/plain" });
+    response.writeHead(404, textType);
     response.write("Error 404:Page not found");
     response.end();
 }
 function send200Response(response) {
-    response.writeHead(200, { "Content-Type": "text/plain" });
+    response.writeHead(200, textType);
     response.write("Done");
     response.end();
 }
 function send401Response(response) {
-    response.writeHead(401, { "Content-Type": "text/plain", "WWW-Authenticate": "Please Login or send a valid  JWT token" });
+    response.writeHead(401, textType);
     response.write("Error 401:Unauthorized");
 
     response.end();
 }
 function send403Response(response) {
-    response.writeHead(403, { "Content-Type": "text/plain" });
+    response.writeHead(403, textType);
     response.write("Error 403:Send valid query params");
     response.end();
 }
@@ -42,7 +44,7 @@ function getToken(request, response) {
         var token = r[1];
     }
     catch (err) {
-        
+        console.log(err);
     }
     return token;
 }
@@ -64,7 +66,7 @@ function validateToken(token, response) {
     }
     catch (err) {
         
-
+        console.log(err);
     }
     console.log("\nJWT verification result: " + JSON.stringify(legit));
     return legit;
@@ -105,7 +107,7 @@ function onRequest(request, response) {
             legit = validateToken(token, response);
             if (legit) {
                 model.getProjectList(legit.user_id).then(function (json) {
-                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.writeHead(200, jsonType);
                     response.write(json);
                     response.end();
                 }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -159,7 +161,7 @@ function onRequest(request, response) {
                 model.isColab(legit.user_id, project_id).then(function (bool) {
                     if (bool)
                         model.getProject(legit.user_id, project_id).then(function (json) {
-                            response.writeHead(200, { "Content-Type": "application/json" });
+                            response.writeHead(200, jsonType);
                             response.write(json);
                             response.end();
                         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -201,7 +203,7 @@ function onRequest(request, response) {
                 model.addProject(legit.user_id, proj_name, dbUsername, dbPassword).then(function (project_id) {
                     let json = {};
                     json['project_id']=project_id;
-                    response.writeHead(200, { "Content-Type": "application/json" });
+                    response.writeHead(200, jsonType);
                     response.write(JSON.stringify(json));
                     response.end();
                 }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -281,14 +283,14 @@ function onRequest(request, response) {
             model.isColab(user_id, proj_name).then(function (bool) {
                 if (bool) {
                     let json = { "isColab": true };
-                    response.writeHead(200, { "Content-Type": "application/json" });
-                    response.write(json);
+                    response.writeHead(200, jsonType);
+                    response.write(JSON.stringify(json));
                     response.end();
                 }
                 else {
                     let json = { "isColab": false };
-                    response.writeHead(200, { "Content-Type": "application/json" });
-                    response.write(json);
+                    response.writeHead(200,jsonType );
+                    response.write(JSON.stringify(json));
                     response.end();
                 }
             }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -313,7 +315,7 @@ function onRequest(request, response) {
                 model.getDBCredentials(project_id).then(function (credentials) {
 
                     model.postQuery(legit.user_id, project_id, queryReq, credentials.username, credentials.password).then(function (json) {
-                        response.writeHead(200, { "Content-Type": "application/json" });
+                        response.writeHead(200,jsonType);
                         response.write(json);
                         response.end();
                     }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -371,21 +373,23 @@ function onRequest(request, response) {
             if (legit != null) {
                 model.getDBCredentials(project_id).then(function (credentials) {
                     if (request.url.indexOf('/generateCode/Java') == 0) {
+                        console.log("JavaGen");
                         var json = {};
-                        let javaCode= convert.fromQueryToJava(credentials.id, queryReq, credentials.username, credentials.password);
-                        // console.log(phpCode);
+                        let javaCode= convert.fromQueryToJava('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
+                        console.log(javaCode);
                         json['result'] = javaCode;
-                        response.writeHead(200, { "Content-Type": "application/json" });
+                        response.writeHead(200, jsonType);
                         // console.log(json);
                         response.write(JSON.stringify(json));
                         response.end();
                     }
                     else if (request.url.indexOf('/generateCode/Php') == 0) {
+                        console.log("JavaGen");
                         var json = {};
-                        let phpCode = convert.fromQueryToPhp('localhost', queryReq, credentials.username, credentials.password, credentials.id);
-                        // console.log(phpCode);
+                        let phpCode = convert.fromQueryToPhp('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
+                        console.log(phpCode);
                         json['result'] = phpCode;
-                        response.writeHead(200, { "Content-Type": "application/json" });
+                        response.writeHead(200, jsonType);
                         // console.log(json);
                         response.write(JSON.stringify(json));
                         response.end();
@@ -399,7 +403,14 @@ function onRequest(request, response) {
         else send401Response(response);
 
     }
+    else if(request.method=='OPTIONS')
+    {
+        console.log("Options "+request.url)
+        response.writeHead(200,noType);
+        response.end();
+    }
     else {
+        console.log(request.method+" "+request.url);
         send404Response(response);
     }
 }

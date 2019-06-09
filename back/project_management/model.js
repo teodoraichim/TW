@@ -79,7 +79,7 @@ function getProjectInfo(user_id, project_id) {
             console.log("Connected!");
         });
         var json = {};
-        con.query('select projects.project_id,projects.project_name,projects.creator,projects.database_id from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=? and colabs.project_id=?', [user_id, project_id], function (err, rows, fields) {
+        con.query('select projects.project_id,projects.project_name,projects.creator,projects.database_id,projects.username,projects.password from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=? and colabs.project_id=?', [user_id, project_id], function (err, rows, fields) {
             if (err) return reject(err);
             json['info'] = rows;
             con.end();
@@ -283,11 +283,13 @@ module.exports.getDBCredentials = function (project_id) {
         var json = {};
         con.query("select username,password,database_id from projects where project_id=?", [project_id], function (err, rows, fields) {
             if (err) return reject(err);
+            console.log(rows[0].username);
             json['username'] = rows[0].username;
             json['password'] = rows[0].password;
-            json['id']=rows[0].database_id;
+            json['id']="db"+rows[0].database_id;
+            console.log(json);
             con.end();
-            resolve(JSON.stringify(json));
+            resolve(json);
 
         });
 

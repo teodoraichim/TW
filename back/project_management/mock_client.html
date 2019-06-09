@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="project_list">Get Project List</button>
+    <button id="project_description">Get Project Description</button>
+    <button id="addProject">Add new project</button>
+    <button id="deleteProject">Delete project</button>
+
+    <button id="addColab">Add Colab</button>
+    <button id="deleteColab">Delete Colab</button>
+    <button id="isColab">Check if collab</button>
+
+    <button id="executeQuery">Execute Query</button>
+    <button id="convertPHP">Convert to PHP</button>
+    <button id="convertJava">Convert to Java</button>
+
+</body>
+<script>
+    function getProjectListFetch(jwt) {
+        let bearer = 'Bearer ' + jwt;
+        fetch("http://localhost:8000/projects", {
+            method: 'GET',
+            headers: {
+                authorization: bearer,
+
+            }
+
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+        }).then(jsonResp => {
+            if (jsonResp) {
+                console.log(jsonResp);
+                jsonResp["projects"].forEach(element => {
+                    console.log(element.project_name);
+                    console.log(element.creator);
+                });
+            }
+
+
+        })
+    }
+    function getProjectDescriptionFetch(jwt, projectID) {
+        let query = "http:localhost:8000/projects/" + projectID;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'GET',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+        }).then(jsonResp => {
+            if (jsonResp) {
+                console.log(jsonResp);
+                jsonResp["colabs"].forEach(element => {
+                    console.log(element.user_id);
+
+                });
+            }
+
+        })
+    }
+    function postAddProjectFetch(jwt, projectName, username, password) {
+        let query = "http:localhost:8000/projects?project_name=" + projectName + "&username=" + username + "&password=" + password;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { console.log("Ok"); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+            else if (resp.status = 403) { console.log("403"); }
+
+        });
+    }
+    function deleteProjectFetch(jwt, projectID) {
+        let query = "http:localhost:8000/projects?project_id=" + projectID;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'DELETE',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { console.log("Ok"); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+        });
+    }
+    function postAddColabFetch(jwt, projectID, userID) {
+        let query = "http:localhost:8000/projects/colabs?project_id=" + projectID + "&user_id=" + userID;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { console.log("Ok"); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+            else if (resp.status = 403) { console.log("403"); }
+
+        });
+
+    }
+    function deleteColabFetch(jwt, projectID, userID) {
+        let query = "http:localhost:8000/projects/colabs?project_id=" + projectID + "&user_id=" + userID;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'DELETE',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { console.log("Ok"); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+            else if (resp.status = 403) { console.log("403"); }
+
+        });
+
+    }
+    function getIsColabFetch(jwt, projectID, userID) {
+        let query = "http:localhost:8000/isColab?project_id=" + projectID + "&user_id=" + userID;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'GET',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+            else if (resp.status = 403) { console.log("403"); }
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                console.log(jsonResp["isColab"]);
+        });
+
+
+    }
+    function postExecuteQueryFetch(jwt, projectID, querysql) {
+        let query = "http:localhost:8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                console.log(jsonResp["result"]);
+        });
+
+    }
+    function postGeneratePhpCode(jwt, projectID, querysql) {
+        let query = "http:localhost:8000/generateCode/Php?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                console.log(jsonResp["result"]);
+        });
+
+    }
+    function postGenerateJavaCode(jwt, projectID, querysql) {
+        let query = "http:localhost:8000/generateCode/Java?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                console.log(jsonResp["result"]);
+        });
+
+    }
+    function cors(jwt) {
+        let bearer = "Bearer " + jwt;
+        fetch("http://localhost:8000/", {
+            method: 'GET',
+            withCredentials: true,
+            mode: "cors",
+            credentials: 'include',
+            // mode:"no-cors",
+            // headers: {
+            //     'Authorization': bearer,
+            //     'Content-Type': 'application/json'
+            // }
+        })
+    }
+    //  cors();
+    jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAwOTcxODEsImV4cCI6MTU2MDE0MDM4MSwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.Zdz0J2JPp6_xRaZP2K4ZbFfhEuQtgBRcMrUYbqvRzpUI_jf7hTZ-PIOtWZ9kIt_yptbmCByd0-ZtLNeiJgt2Eg";
+    querysql = "create table test(test INT,test2 int);";
+    document.getElementById("project_list").addEventListener("click", (e) => {
+        getProjectListFetch(jwt);
+    });
+    document.getElementById("project_description").addEventListener("click", (e) => {
+        getProjectDescriptionFetch(jwt, 8);
+    });
+    document.getElementById("addProject").addEventListener("click", (e) => {
+        postAddProjectFetch(jwt, "test", "test", "test");
+    });
+    document.getElementById("deleteProject").addEventListener("click", (e) => {
+        deleteProjectFetch(jwt, 8);
+    });
+
+    document.getElementById("addColab").addEventListener("click", (e) => {
+
+        postAddColabFetch(jwt, 8, 4)
+    });
+
+    document.getElementById("deleteColab").addEventListener("click", (e) => {
+
+        deleteColabFetch(jwt, 8, 4);
+    });
+    document.getElementById("isColab").addEventListener("click", (e) => {
+
+        getIsColabFetch(jwt, 8, 4);
+    });
+    document.getElementById("executeQuery").addEventListener("click", (e) => {
+
+        postExecuteQueryFetch(jwt, 8, querysql);
+    });
+    document.getElementById("convertPHP").addEventListener("click", (e) => {
+
+        postGeneratePhpCode(jwt, 8, querysql);
+    });
+    document.getElementById("convertJava").addEventListener("click", (e) => {
+
+        postGenerateJavaCode(jwt, 8, querysql);
+    });
+
+
+
+</script>
+
+</html>

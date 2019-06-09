@@ -1,11 +1,11 @@
 
 //Face conversia query-ului MySQL intr-o functie java folosind Connector/J 
 //Are nevoie de tipul de host(localhost) userul si parola bazei de date si numele bazei de date la care se face conexiunea
-module.exports.fromQueryToJava = function(host,query,port,username,password,path_database)
+module.exports.fromQueryToJava = function(host,username,password,path_database,query)//(host,user,pass,database,query)
     {
         let query_spaced =query.split(" ");
-        let url = "String url =\"jdbc:mysql://" + host + ":" + port + "/" + path_database+"\"; \n";
-        let result = urls + "String username =" + username +";\n" ;
+        let url = "String url =\"jdbc:mysql://" + host  + "/" + path_database+"\"; \n";
+        let result = url + "String username =" + username +";\n" ;
         result+=  "String password =" + password + ";\n";
         result += "try {  \n" + "Connection conn =DriverManager.getConnection(url,username,password); \n"
         result += "Statement stmt = conn.createStatement(); \n" + "String sql = \"" + query +"\"; \n";
