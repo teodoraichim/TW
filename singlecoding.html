@@ -55,6 +55,10 @@
         <p class="run">
                 ▶️ Run
         </p>
+        <p id="output">Output
+        </p>
+        <p id="coding">Coding
+        </p>
         <div class="dropdown2">
                 <p class="textdropdown2">
                         🔔 Notification
@@ -66,7 +70,8 @@
             </div>
         </div>
         <div class="bottom">
-        <textarea class="scroll"></textarea>
+        <textarea class="scroll" id="codingtext"></textarea>
+        <textarea class="scroll" id="outputtext"></textarea>
         </div>
     </div>
 
@@ -82,6 +87,29 @@
                 else
                     content.hidden = false;
             }, false);
+
+        let coding = document.getElementById("coding");
+        coding.hidden = true;
+        let output = document.getElementById("output");
+        let codetext = document.getElementById("codingtext");
+        let outputtext = document.getElementById("outputtext");
+        output.addEventListener("click", function(){
+            codetext.hidden = true;
+            console.log("1");
+            output.hidden = true;
+            console.log("1");
+            coding.hidden = false;
+            console.log("1");
+            outputtext.hidden = false;
+            console.log("1");
+        });
+
+        coding.addEventListener("click", function(){
+            outputtext.hidden = true;
+            coding.hidden = true;
+            output.hidden = false;
+            codetext.hidden = false;
+        });
     </script>
 
 </body>
