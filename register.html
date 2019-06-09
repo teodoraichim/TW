@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style/intro.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>twProject</title>
+</head>
+
+<body>
+    <div class="all">
+        
+        <div class="register-page">
+            <div class="register-right">
+                <h2 class="head">Create you account.</h2>
+                <button class="login" type="button" id="register-back" onclick="location.href='./intro.html'"><b>Back to first
+                        page </b></button>
+            </div>
+
+            <div class="register-left">
+                <div class="login-box">
+                    
+                    <form>
+                        
+                        <br>
+                        <input class="input-box" id="username" type="text" name="name-register" placeholder="Username" required>
+                        <input class="input-box" id="email"type="email" name="email-register" placeholder="Email adress" required>
+                        <input class="input-box" id="password"type="password" placeholder="Password" required>
+                        <input class="input-box" id="cpassword" type="password" placeholder=" Confirm password" required>
+                        
+                        <div class="agree">
+                            <input type="checkbox" class="agree" name="agree" value="" required > Agree with <a href="">terms and
+                                conditions</a><br>
+                        </div>
+                        <input class="login-btn" id="register" type="submit" value="Create account" >
+                        
+
+                    </form>
+                    
+                </div>
+                <div class="mobile">
+                    <button class="login" type="button" id="register-back2" onclick="location.href='./intro.html'"><b>Back</b></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        let regBtn = document.getElementById('register');
+        let box = document.getElementsByClassName('login-box');
+
+        regBtn.addEventListener('click',onClick);
+
+        function onClick(){
+             
+            let name=document.getElementById('username').value;
+            let pass=document.getElementById('password').value;
+            let cpass=document.getElementById('cpassword').value;
+            let email=document.getElementById('email').value;
+            if(pass == cpass){
+            let data ={
+                username : name,
+                password : pass,
+                email : email
+            }
+             let url = '/login';
+             fetch(url,{
+                 method: 'POST',
+                 body: JSON.stringify(data),
+                 headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Origin": "*"
+                 }
+             })
+             .then((resp)=>{
+                return resp.json();
+            }).then(jsonResp=>{
+                if(jsonResp[message] != 'logged in succesfully') {
+                    let p=document.createElement(p);
+                    p.value = jsonResp[message];
+                    box.appendChild(p);
+                }
+                else location.href='./register-validate.html';
+                
+            }).catch(onError);
+            function onError(err)
+            {
+                
+                console.log('error');
+            }
+        }
+        else {
+            let p=document.createElement(p);
+                    p.value = 'passwords are not the same';
+                    box.appendChild(p);
+        }
+        }
+        
+    </script>
+
+</body>
+
+</html>

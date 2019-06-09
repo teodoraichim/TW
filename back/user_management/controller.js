@@ -2,10 +2,12 @@
 const http = require('http');
 // const querystring= require('querystring');
 const url = require('url');
-const model = require('/home/silviu/web_dev/Project/back/model.js');
+const model = require('./model.js');
 //for working with the file system
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const parse = require('querystring');
+var nodemailer = require('nodemailer');
 
 function send404Response(response) {
    response.writeHead(404, { "Content-Type": "text/plain" });
@@ -44,28 +46,114 @@ var payload = {
    console.log("Token - " + token);
 }
 
-function onRequest(request, response) {
+function onRequest(request, resp) {
 
-   if(request.url == '/login'){
+   if( request.method == 'POST' && request.url == '/login'){
 
-      // check for basic auth header
-    if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) 
-      return res.status(401).json({ message: 'Missing Authorization Header' });
+      let buf = '';
+      
+      request.on('data', chunk =>{
+         buf+=chunk;
+      })
+      request.on('end', ()=>{
+         parse(buf);
+      })
 
-   const credentials64=req.headers.authorization.split(' ')[1];
-   const credentials=Buffer.from(credentials64,'base64').toString('ascii');
-   const username=credentials.split(':')[1];
-   const password=credentials.split(':')[2];
-   model.login(username,password).then(function(resp){
+      JSON.stringify(buf);
+
+      
+    
+   model.login(buf[username],buf[password]).then(function(resp){
       if(resp=='user inexistent'|| resp=='incorect password') return res.status(401).json({ message: resp });
       
-      let id=model.getId(username);
+      let id=model.getId(buf[username]);
       createToken(id);
    });
+   
+   return res.json({massage : resp});
   
 
    }
-   
+
+   if(request.method == 'POST' && request.url == '/register'){
+
+      let buf = '';
+      
+      request.on('data', chunk =>{
+         buf+=chunk;
+      })
+      request.on('end', ()=>{
+         parse(buf);
+      })
+
+      JSON.stringify(buf);
+
+      if(model.checkMail(buf[email])==true) return resp('This email is already used');
+      if(model.checkUsername(buf[username])==true) return resp('Username already taken');
+
+      model.register(buf[username],buf[password],buf[email]);
+
+      return resp('Added succesfully');
+
+      
+
+
+   }
+   if(request.method == 'POST' && request.url == '/register-validate'){
+
+      let buf = '';
+      
+      request.on('data', chunk =>{
+         buf+=chunk;
+      })
+      request.on('end', ()=>{
+         parse(buf);
+      })
+
+      JSON.stringify(buf);
+
+      
+
+
+   }
+   if(request.method == 'POST' && request.url == '/changPassword'){
+
+      let buf = '';
+      
+      request.on('data', chunk =>{
+         buf+=chunk;
+      })
+      request.on('end', ()=>{
+         parse(buf);
+      })
+
+      JSON.stringify(body);
+      let code = crypto.randomBytes(20).toString('hex');
+      let id = modul.getId(body[email]);
+
+      model.addCode(buf[email],code);
+      module.sendMail(buf[mail],code);
+      
+   }
+   if(request.method == 'POST' && request.url == '/changPasswordValidate'){
+
+      let buf = '';
+      
+      request.on('data', chunk =>{
+         buf+=chunk;
+      })
+      request.on('end', ()=>{
+         parse(buf);
+      })
+
+      JSON.stringify(buf);
+
+      if(modul.verifyCode(buf[code])) model.changePassword(buf[username],buf[password]);
+
+      
+      
+   }
+
 }
 
 http.createServer(onRequest).listen(8000);
