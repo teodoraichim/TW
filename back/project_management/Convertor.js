@@ -1,12 +1,12 @@
 
 //Face conversia query-ului MySQL intr-o functie java folosind Connector/J 
-//Are nevoie de port-ul localhostului si de numele bazei de date la care se face conexiunea
-module.export.fromQueryToJava = function(query,port,path_database)
+//Are nevoie de tipul de host(localhost) userul si parola bazei de date si numele bazei de date la care se face conexiunea
+module.exports.fromQueryToJava = function(host,query,port,username,password,path_database)
     {
         let query_spaced =query.split(" ");
-        let url = "String url =\"jdbc:mysql://localhost:" + port + "/" + path_database+"\";";
-        let result = url + "\n Scanner info = new Scanner(System.in); \n" +"System.out.println(\"Enter your database username\")\;    \n" + "String username =info.next();  \n" ;
-        result+="System.out.println(\"Enter your database password\");  \n" + "String password =info.next();  \n";
+        let url = "String url =\"jdbc:mysql://" + host + ":" + port + "/" + path_database+"\"; \n";
+        let result = urls + "String username =" + username +";\n" ;
+        result+=  "String password =" + password + ";\n";
         result += "try {  \n" + "Connection conn =DriverManager.getConnection(url,username,password); \n"
         result += "Statement stmt = conn.createStatement(); \n" + "String sql = \"" + query +"\"; \n";
         switch(query_spaced[0]){
@@ -45,7 +45,7 @@ module.export.fromQueryToJava = function(query,port,path_database)
 
 //Face conversia query-ului MySQL intr-o functie java folosind SQLi
 //Are nevoie de tipul de host(localhost) userul si parola bazei de date si numele bazei de date la care se face conexiunea
-module.export.fromQueryToPhp = function(host,query,user,pass,database)
+module.exports.fromQueryToPhp = function(host,user,pass,database,query)
 {
     
     let query_spaced =query.split(" ");
