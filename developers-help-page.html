@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="help-page.css"/>
+    <title>Developers Help page</title>
+</head>
+<body>
+    <h1 class="title">Developers Help page</h1>
+    <h5 class="description">Why was this application created:</h5>
+    <article class="info">This application was created for developers in order  to help them with an easier method to manage projects and their databases working even on their mobile devices or working with other people.</article>
+
+    <h5 class="description">For who was this application created:</h5>
+    <article class="info">This application was mainly created for developers but it can be used by anyone in order to store their projects data.</article>
+   
+    <h5 class="description">What is our application doing:</h5>
+    <article class="info">You can create new projects or edit(delete) the old ones you already have.</article>
+    <article class="info">You can add partners to your projects by using our "Collaborate" function (or you can even delete your partners).</article>
+    <article class="info">You can execute any SQL query or you can even convert a SQL query into a Java or Php source-code.</article>
+
+    <h5 class="description">How it it doing these:</h5>
+    <article class="info">Our application is built using microservices web as it states in this flow diagram: </article>
+    <img src="Arhitectura/Flow.png" alt="Flow Diagram"> 
+    <article class="info">This diagram shows exactly how every microservice has his own job and in order to show how he does that we used some UML Diagrams:</article>
+    <img src="Arhitectura/User UML.png" alt="Account UML"> 
+    <article class="info">This Diagram is the Account Management microservice. A new user enters our web page so we treat him as an  "User" but after log in he becomes an "LoggedUser".</article>
+    <article class="info">As an "LoggedUser" he has many more options in the menu bar and can start working on his projects.</article>
+    <img src="Arhitectura/Project UML.png" alt =" Project UML">
+    <article class="info">This Diagram is the Project Management microservice. A user can create a new project or modify an already created one.</article>
+    <article class="info">He can create tabels or modify them.We have an option to add a partner and one to delete him,where we need the partner's username.</article>
+    <img src="Arhitectura/Update UML.png" alt =" Update UML">
+    <article class="info">This Diagram is the Update Management microservice. A user can enter a SQL Query and get the selected data or he can get source-code for a selected language.<br><br></article>
+    <article class="info">Next in line we have the databases diagram where we separate every microservice's databases: </article>
+    <img src="Arhitectura/dbdiagram.jpg" alt ="Databases Diagram">
+    <article class="info">Every microservice has his own database where it stores data in order to be efficient.<br><br></article>
+    <article class="info">In order to better understand how our application is working we made a MVC Diagram: </article>
+    <img src="Arhitectura/MVCDiag.png" alt ="MVC Diagram">
+    <article class="info">It clearly explains how every microservice has his own job to do and what is his job.</article>
+    <article class="info">The controller shows the client everything that he can do on our website.</article>
+
+
+
+    
+    
+    
+
+    <!-- <h5 class="description">How to create a new project and modify the existing ones:</h5>
+    <article class="info">You can create a new project by selecting "Project" in the main page menu and enter the new project name. </article>
+    <article class="info">You can add a new table to your project by selecting "Table" and "New table" in the same menu.</article>
+    <article class="info">You can see all your tables of your project by selecting "Table" and "View tables" in the main page menu.</article>
+
+    <h5 class="description">How to add/delete partners to your project:</h5>
+    <article class="info">You can add a new partner to your project by selecting "Add Partner" in the projects menu and enter his username. </article>
+    <article class="info">You can delete a partner from your project by selecting "Delete Partner" in the projects menu and enter his username. </article>
+
+    <h5 class="description">How to execute a SQL query:</h5>
+    <article class="info"> First you need to select "Query" in the main page menu and enter your SQL query (Exemple : "select name from database") writing everything in lowercase. </article>
+    <article class="info"> After this click the "Run" button and "Output" button in order to get your data . </article>
+
+    <h5 class="description">How to convert a SQL query:</h5>
+    <article class="info"> In order to convert your SQL query into a source-code you need to select your language by hovering "Convert" and clicking on one of the options. </article>
+    <article class="info"> After this you write your SQL query and click "Run" and "Output". </article>
+    <article class="info"> Now you just copy your code into the IDE and run it. </article>
+    <article class="info"> If you converted to Java you need to add the "Connector/J" jar to your IDE in order to work properly. </article> -->
+
+
+
+
+     
+</body>
+</html>
