@@ -26,9 +26,15 @@
 
             </div>
             <div class="login-box">
-                <form class="change-pass-email">
-                    <input class="input-box" type="text" name="name" placeholder="Email address" required>
-                    <input class="login-btn" type="submit" value="Submit">
+                <form id="accountData">
+                    <input class="input-box" id="email" type="text" name="name" placeholder="Email address" required>
+                    <button class="login-btn" id="changeBut" type="button">submit</button>
+                </form>
+                <form id="validate">
+                    <input class="input-box" id="code" type="text" name= "code-change" placeholder="validation code" required>
+                    <input class="input-box" id="password" type="password" name= "pass-change" placeholder="new Password" required>
+                    <input class="input-box" id="cpassword" type="password" name= "cpass-change" placeholder="confirm password" required>
+                    <input class="login-btn" id="validateBut" type="button" value="Submit" >
                 </form>
                
             </div>
@@ -39,6 +45,103 @@
         
     </div>
     <script>
+        let accountData=document.getElementById('accountData');
+        let validate=document.getElementById('validate');
+        validate.hidden="true";
+        let changeBut=document.getElementById('changeBut');
+        let validateBut=document.getElementById('validateBut');
+        changeBut.addEventListener('click',onClick());
+        validateBut.addEventListener('click',onClick2());
+        let email;
+
+        function onClick(){
+            email=document.getElementById('email').value;
+            let data=({
+                email : email
+            });
+
+            let url='http://localhost:8000/changePassword';
+
+            fetch(url,{
+                 method: 'POST',
+                 body: JSON.stringify(data),
+                 headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Origin": "*"
+                 }
+             })
+             .then((resp)=>{
+                return resp.json();
+            }).then(jsonResp=>{
+                if(jsonResp.message == false) {
+                    let p=document.createElement(p);
+                    p.value = 'incorect data';
+                    box.appendChild(p);
+                }
+                else {
+                    accountData.hidden="true";
+                    validate.hidden="false";
+                };
+                
+            }).catch(onError);
+            function onError(err)
+            {
+                
+                console.log('error');
+            }
+        }
+        
+
+        function onClick2(){
+
+            let code=document.getElementById('code').value;
+            let pass=document.getElementById('password').value;
+            let cpass=document.getElementById('cpassword').value;
+            let box=document.getElementById('login-box');
+
+            if(pass==cpass){
+
+                let data = ({
+                    email : email,
+                    code : code,
+                    password :pass
+                })
+
+                let url='';
+                fetch(url,{
+                 method: 'POST',
+                 body: JSON.stringify(data),
+                 headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Origin": "*"
+                 }
+             })
+             .then((resp)=>{
+                return resp.json();
+            }).then(jsonResp=>{
+                if(jsonResp.status == false) {
+                    let p=document.createElement(p);
+                    p.value = 'incorect data';
+                    box.appendChild(p);
+                }
+                else location.href='./mainpage.html';
+                
+            }).catch(onError);
+            function onError(err)
+            {
+                
+                console.log('error');
+            }
+
+            }
+            else {
+                let p=document.createElement(p);
+                    p.value = 'password are not the same';
+                    box.appendChild(p);
+
+            }
+        }
+
         
     </script>
 

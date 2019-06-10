@@ -14,34 +14,44 @@
 
 <body>
     <div class="all">
-        
+
         <div class="register-page">
             <div class="register-right">
                 <h2 class="head">Create you account.</h2>
-                <button class="login" type="button" id="register-back" onclick="location.href='./intro.html'"><b>Back to first
+                <button class="login" type="button" id="register-back" onclick="location.href='./intro.html'"><b>Back
+                        to first
                         page </b></button>
             </div>
 
             <div class="register-left">
                 <div class="login-box">
-                    
-                    <form>
-                        
-                        <br>
-                        <input class="input-box" id="username" type="text" name="name-register" placeholder="Username" required>
-                        <input class="input-box" id="email"type="email" name="email-register" placeholder="Email adress" required>
-                        <input class="input-box" id="password"type="password" placeholder="Password" required>
-                        <input class="input-box" id="cpassword" type="password" placeholder=" Confirm password" required>
-                        
+                    <br>
+                    <form method="POST" id="accountData">
+
+
+                        <input class="input-box" id="username" type="text" name="name-register" placeholder="Username"
+                            required>
+                        <input class="input-box" id="email" type="email" name="email-register" placeholder="Email adress"
+                            required>
+                        <input class="input-box" id="password" type="password" placeholder="Password" required>
+                        <input class="input-box" id="cpassword" type="password" placeholder=" Confirm password"
+                            required>
+
                         <div class="agree">
-                            <input type="checkbox" class="agree" name="agree" value="" required > Agree with <a href="">terms and
+                            <input type="checkbox" class="agree" name="agree" value="" required> Agree with <a href="">terms
+                                and
                                 conditions</a><br>
                         </div>
-                        <input class="login-btn" id="register" type="submit" value="Create account" >
-                        
+                        <input class="login-btn" id="register" type="submit" value="Create account">
+
 
                     </form>
-                    
+                    <form id="validate">
+                        <input class="input-box" type="text" name="code-register" placeholder="validation code"
+                            required>
+                        <input class="login-btn" id="validateBut" type="submit" value="Submit">
+                    </form>
+
                 </div>
                 <div class="mobile">
                     <button class="login" type="button" id="register-back2" onclick="location.href='./intro.html'"><b>Back</b></button>
@@ -54,58 +64,104 @@
 
         let regBtn = document.getElementById('register');
         let box = document.getElementsByClassName('login-box');
+        let validate = document.getElementById('validate');
+        let accountData = document.getElementById('accountData');
+        validate.hidden = "true";
+        let email;
+        regBtn.addEventListener('click', onClick());
 
-        regBtn.addEventListener('click',onClick());
+        function onClick() {
 
-        function onClick(){
-             
-            let name=document.getElementById("username").value;
-            let pass=document.getElementById('password').value;
-            let cpass=document.getElementById('cpassword').value;
-            let email=document.getElementById('email').value;
+            let name = document.getElementById("username").value;
+            let pass = document.getElementById('password').value;
+            let cpass = document.getElementById('cpassword').value;
+            email = document.getElementById('email').value;
 
             //console.log(name);
-            
-            if(pass == cpass){
-            let data ={
-                username : name,
-                password : pass,
-                email : email
+
+            if (pass == cpass) {
+                let data = {
+                    username: name,
+                    password: pass,
+                    email: email
+                }
+                console.log(data);
+                let url = 'http://localhost:8000/register';
+                fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Access-Control-Origin": "*"
+                    }
+                })
+                    .then((resp) => {
+                        return resp.json();
+                    }).then(jsonResp => {
+                        if (jsonResp.message != 'added succesfully') {
+                            let p = document.createElement('p');
+                            p.value = jsonResp.message;
+                            box.appendChild(p);
+                        }
+                        else {
+                            validate.hidden = "false";
+                            accountData.hidden = "true";
+
+                        }
+
+                    }).catch(onError);
+                function onError(err) {
+
+                    console.log('error');
+                }
             }
-            console.log(data);
-             let url = 'http://localhost:8000/register';
-             fetch(url,{
-                 method: 'POST',
-                 body: JSON.stringify(data),
-                 headers: {
+            else {
+                let p = document.createElement('p');
+                p.value = 'passwords are not the same';
+                box.appendChild(p);
+            }
+        }
+        let butVal = document.getElementById('validateBut');
+        butVal.addEventListener('click', onClick2());
+
+        function onClick2() {
+            let code = document.getElementById('code');
+            let data = ({
+                email: email,
+                code: code.value
+            })
+
+            let url = 'http://localhost:8000/register-validate';
+
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
                     'Content-Type': 'application/json',
                     "Access-Control-Origin": "*"
-                 }
-             })
-             .then((resp)=>{
+                }
+            }).then((resp) => {
                 return resp.json();
-            }).then(jsonResp=>{
-                if(jsonResp[message] != 'added succesfully') {
-                    let p=document.createElement('p');
-                    p.value = jsonResp[message];
+            }).then(jsonResp => {
+                if (jsonResp.status == false) {
+                    let p = document.createElement('p');
+                    p.value = 'incorrect code';
                     box.appendChild(p);
                 }
-                else location.href='./register-validate.html';
-                
+                else {
+                    location.href = "/mainpage";
+
+                }
+
             }).catch(onError);
-            function onError(err)
-            {
-                
+            function onError(err) {
+
                 console.log('error');
             }
+
+
         }
-        else {
-            let p=document.createElement('p');
-            p.value = 'passwords are not the same';
-            box.appendChild(p);
-        }
-        }
-        
+
     </script>
 
 </body>

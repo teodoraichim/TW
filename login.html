@@ -55,7 +55,7 @@
                 username : name,
                 password : pass 
             }
-             let url = '/login';
+             let url = 'http://localhost:8000/login';
              fetch(url,{
                  method: 'POST',
                  body: JSON.stringify(data),
@@ -67,9 +67,9 @@
              .then((resp)=>{
                 return resp.json();
             }).then(jsonResp=>{
-                if(jsonResp[message] != 'logged in succesfully') {
+                if(jsonResp[message] != 'logged in') {
                     let p=document.createElement(p);
-                    p.value = jsonResp[message];
+                    p.value = 'incorect data';
                     box.appendChild(p);
                 }
                 else location.href='./mainpage.html';

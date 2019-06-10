@@ -177,7 +177,7 @@ function onRequest(request, response) {
 
 
    }
-   else if (request.method == 'POST' && request.url == '/changPassword') {
+   else if (request.method == 'POST' && request.url == '/changePassword') {
 
       var buff = '';
       var body;
