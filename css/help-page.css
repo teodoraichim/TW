@@ -1,0 +1,48 @@
+@keyframes leftToRight{
+    0%{
+        transform:translateX(-100%);
+    }
+    100%{
+        transform:translateX(0%);
+    }
+}
+@keyframes topToBot{
+    0%{
+        transform: translateY(-11100%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+html{
+    background-color:#ff9d00; 
+}
+.title{
+    text-align:center;
+    color: #dfe6e9;
+    font-size:270%;
+    font-family: Arial, Helvetica, sans-serif;
+    animation: 0.5s ease-out 0s 1 leftToRight;
+}
+.description{
+    text-align: left;
+    padding-left: 1%;
+    color:#2d3436;
+    font-size:200%;
+    font-family: 'Times New Roman', Times, serif;
+    animation: 1s ease-out 0s 1 topToBot;
+}
+.info{
+    text-align:left;
+    padding-left: 3%;
+    font-size:140%;
+    letter-spacing: 1px;
+    line-height: 45px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color:#ffbb00; 
+}
+
+img{
+    width: 50%;
+    margin:auto;
+}
