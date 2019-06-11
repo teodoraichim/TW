@@ -24,7 +24,7 @@
             </div>
 
             <div class="register-left">
-                <div class="login-box">
+                <div class="login-box" id="box">
                     <br>
                     <form method="POST" id="accountData">
 
@@ -42,7 +42,7 @@
                                 and
                                 conditions</a><br>
                         </div>
-                        <input class="login-btn" id="register" type="submit" value="Create account">
+                        <button class="login-btn" id="register" type="button" value="Create account">Submit</button>
 
 
                     </form>
@@ -63,12 +63,12 @@
     <script>
 
         let regBtn = document.getElementById('register');
-        let box = document.getElementsByClassName('login-box');
+        let box = document.getElementById('box');
         let validate = document.getElementById('validate');
         let accountData = document.getElementById('accountData');
         validate.hidden = "true";
         let email;
-        regBtn.addEventListener('click', onClick());
+        regBtn.addEventListener('click', onClick);
 
         function onClick() {
 
@@ -77,14 +77,14 @@
             let cpass = document.getElementById('cpassword').value;
             email = document.getElementById('email').value;
 
-            //console.log(name);
+            console.log(name);
 
             if (pass == cpass) {
-                let data = {
+                let data = ({
                     username: name,
                     password: pass,
                     email: email
-                }
+                });
                 console.log(data);
                 let url = 'http://localhost:8000/register';
                 fetch(url, {
@@ -117,12 +117,14 @@
             }
             else {
                 let p = document.createElement('p');
-                p.value = 'passwords are not the same';
+                p.innerHTML = 'Passwords are not the same!';
                 box.appendChild(p);
             }
         }
+
+
         let butVal = document.getElementById('validateBut');
-        butVal.addEventListener('click', onClick2());
+        butVal.addEventListener('click', onClick2);
 
         function onClick2() {
             let code = document.getElementById('code');
