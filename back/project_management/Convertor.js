@@ -90,3 +90,27 @@ module.exports.fromQueryToPhp = function(host,user,pass,database,query)
     }
     return result;
 }
+module.exports.fromSQLtoPython = function(host,username,password,path_database,query)   
+    {
+        let query_spaced =query.split(" ");
+        let result="import mysql.connector \n\n";
+        result+="try: \n \t mydb = mysql.connector.connect( \n \t \t "
+        result+= "host = \"" + host +  "\", \n \t \t user= \"" + username + "\", \n \t \t password =\"" + password + "\", \n \t \t database= \"" + path_database + "\", \n \t \t auth_plugin =\"mysql_native_password\" \n \t) \n \t "
+        result+="mycursor = mydb.cursor() \n \n \t mycursor.execute(\"" + query + "\") \n \n"
+        result+="except mysql.connector.Error as err: \n \t print(\"Something went wrong: {}\".format(err)) \n \n"
+        switch(query_spaced[0]){
+            case "select":
+                myresult+="myresult = mycursor.fetchall() \n \nfor x in myresult: \n \tprint(x)"
+                break;
+            case 'update':
+                result+="mydb.commit() \n \nprint(mycursor.rowcount, \"record updated.\")";
+                break;
+            case 'delete':
+                result+="mydb.commit() \n \nprint(mycursor.rowcount, \"record deleted.\")";
+                break;
+            case 'insert':
+                result+="mydb.commit() \n \nprint(mycursor.rowcount, \"record inserted.\")";
+                break;
+        }
+       return result;
+}
