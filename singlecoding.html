@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/singlecoding.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
     <title>Code</title>
+    <script src="./back/update/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -45,37 +46,55 @@
         <div class="top-right">
             <div class="dropdown">
                 <p class="textdropdown">
-                        ♾️️ Convert
+                    ♾️️ Convert
                 </p>
                 <div class="contentdropdown">
                     <a href="#1">Convert to PHP</a>
                     <a href="#2">Convert to Python</a>
                 </div>
             </div>
-        <p class="run">
+            <p class="run">
                 ▶️ Run
-        </p>
-        <p id="output">Output
-        </p>
-        <p id="coding">Coding
-        </p>
-        <div class="dropdown2">
+            </p>
+            <p id="output">Output
+            </p>
+            <p id="coding">Coding
+            </p>
+            <div class="dropdown2">
                 <p class="textdropdown2">
-                        🔔 Notification
+                    🔔 Notification
                 </p>
-                <div class="contentdropdown2">
+                <div class="contentdropdown2" id="contentdropdown2">
                     <a href="#1">1</a>
                     <a href="#2">2</a>
                 </div>
             </div>
         </div>
         <div class="bottom">
-        <textarea class="scroll" id="codingtext"></textarea>
-        <textarea class="scroll" id="outputtext"></textarea>
+            <textarea class="scroll" id="codingtext"></textarea>
+            <textarea class="scroll" id="outputtext"></textarea>
         </div>
     </div>
 
     <script>
+        localStorage.setItem('JWT', '');
+        localStorage.setItem('PID', '1');
+        let jwt = localStorage.getItem('JWT');
+        let pid = localStorage.getItem('PID');
+        let content2 = document.getElementById("contentdropdown2");
+        console.log(content2);
+        const socket = io('http://192.168.1.8:3000');
+        socket.emit("addClient", jwt, pid);
+        socket.emit("addUpdate", jwt, pid);
+        socket.on('connect', function () {});
+        socket.on('event', function (data) {});
+        socket.on("update", (user, receivedUpdate) => {
+            let newp = document.createElement("P");
+            newp.innerText = "New query executed";
+            content2.appendChild(newp);
+        });
+        socket.on('disconnect', function(){});
+
         let content = document.getElementById("additional-links");
         content.hidden = true;
         let table = document.getElementById("table");
@@ -93,14 +112,14 @@
         let output = document.getElementById("output");
         let codetext = document.getElementById("codingtext");
         let outputtext = document.getElementById("outputtext");
-        output.addEventListener("click", function(){
+        output.addEventListener("click", function () {
             codetext.hidden = true;
             output.hidden = true;
             coding.hidden = false;
             outputtext.hidden = false;
         });
 
-        coding.addEventListener("click", function(){
+        coding.addEventListener("click", function () {
             outputtext.hidden = true;
             coding.hidden = true;
             output.hidden = false;
