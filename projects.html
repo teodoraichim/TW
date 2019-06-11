@@ -51,8 +51,10 @@
             <div class="addproject">
                 <form>
                     <input type="text" placeholder="Project name" name="addproject" required="">
+                    <input type="text" placeholder="Collaborator" name="collaborator">
                 </form>
                 <button class="addbutton" id="addbutton">Create</button>
+                <button class="addbutton" id="addcollaborator">Add collaborator</button>
             </div>
             <div id="projectslist">
             </div>
@@ -60,6 +62,9 @@
     </div>
 
     <script>
+        let projcount = 0;
+        let clicked = "false";
+
         let content = document.getElementById("additional-links");
         content.hidden = true;
         let table = document.getElementById("table");
@@ -78,8 +83,21 @@
         function myFunction() {
             var para = document.createElement("DIV");
             para.className += "projectview";
+            para.id = projcount++;
             para.innerHTML = "Test";
             document.getElementById("projectslist").appendChild(para);
+            let activeproject = document.getElementsByClassName("projectview");
+            // console.log(activeproject.length);
+            for (i = 0; i < activeproject.length; i++) {
+                let acproj = document.getElementById(i);
+                acproj.addEventListener("click", function () {
+                    if (clicked == "false") {
+                        acproj.style.backgroundColor = "yellow";
+                        acproj.style.color = "black";
+                        clicked = "true";
+                    }
+                });
+            }
         }
     </script>
 
