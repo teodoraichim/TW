@@ -62,6 +62,37 @@
     </div>
 
     <script>
+        
+        let jwt="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
+
+        let bearer = 'Bearer ' + jwt;
+        fetch("http://192.168.1.8:8000/projects", {
+            method: 'GET',
+            headers: {
+                authorization: bearer,
+
+            }
+
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+        }).then(jsonResp => {
+            if (jsonResp) {
+                console.log(jsonResp);
+                jsonResp["projects"].forEach(element => {
+                    console.log(element.project_name);
+                    console.log(element.creator);
+                    myFunction(element.project_name);
+
+                });
+            }
+
+
+        })
+
+
         let projcount = 0;
         let clicked = "false";
 
@@ -80,11 +111,11 @@
         let button = document.getElementById("addbutton");
         button.addEventListener('click', myFunction);
 
-        function myFunction() {
+        function myFunction(name) {
             var para = document.createElement("DIV");
             para.className += "projectview";
             para.id = projcount++;
-            para.innerHTML = "Test";
+            para.innerHTML = name;
             document.getElementById("projectslist").appendChild(para);
             let activeproject = document.getElementsByClassName("projectview");
             // console.log(activeproject.length);
