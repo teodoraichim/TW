@@ -58,8 +58,8 @@
                 <button class="addbutton" id="addbutton">Create</button>
                 <button class="addbutton" id="deletebutton">Delete</button>
                 <button class="addbutton" id="addcollaborator">Add collaborator</button>
-                <button class="addbutton" id="seecollaborators" >See collaborators</button>
-                <button class="addbutton" id="deletecollaborators" >Delete collaborators</button>
+                <button class="addbutton" id="seecollaborators">See collaborators</button>
+                <button class="addbutton" id="deletecollaborators">Delete collaborators</button>
             </div>
             <div id="projectslist">
             </div>
@@ -67,36 +67,41 @@
     </div>
 
     <script>
+
+        let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
+        function getProjectListFetch(jwt) {
+            let bearer = 'Bearer ' + jwt;
+            fetch("http://192.168.1.8:8000/projects", {
+                method: 'GET',
+                headers: {
+                    authorization: bearer,
+
+                }
+
+            }).then((resp) => {
+                if (resp.status == 200) { return resp.json(); }
+                else if (resp.status == 500) { console.log("500"); }
+                else if (resp.status = 401) { console.log("401"); }
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    console.log(jsonResp);
+                    jsonResp["projects"].forEach(element => {
+                        console.log(element.project_name);
+                        console.log(element.project_id);
+                        myFunction(element.project_name, element.project_id);
+                        //console.log(element);
+
+                    });
+                }
+
+
+            })
+        }
+        getProjectListFetch(jwt);
+
+
         
-        let jwt="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
-
-        let bearer = 'Bearer ' + jwt;
-        fetch("http://192.168.1.8:8000/projects", {
-            method: 'GET',
-            headers: {
-                authorization: bearer,
-
-            }
-
-        }).then((resp) => {
-            if (resp.status == 200) { return resp.json(); }
-            else if (resp.status == 500) { console.log("500"); }
-            else if (resp.status = 401) { console.log("401"); }
-
-        }).then(jsonResp => {
-            if (jsonResp) {
-                console.log(jsonResp);
-                jsonResp["projects"].forEach(element => {
-                    console.log(element.project_name);
-                    console.log(element.creator);
-                    myFunction(element.project_name,element.project_id);
-                    //console.log(element);
-
-                });
-            }
-
-
-        })
 
         function seeColabs() {
             alert("Test1");
@@ -118,14 +123,15 @@
             }, false);
 
         let button = document.getElementById("addbutton");
+        let deleteB = document.getElementById("deletebutton");
         button.addEventListener('click', myFunction);
 
-        function myFunction(name,id) {
+        function myFunction(name, id) {
             var para = document.createElement("DIV");
             para.className += "projectview";
             para.id = projcount++;
-            para.dataset.id=id;
-            console.log(para.dataset.id=id);
+            para.dataset.id = id;
+            //console.log(para.dataset.id=id);
             para.innerHTML = name;
             document.getElementById("projectslist").appendChild(para);
             let activeproject = document.getElementsByClassName("projectview");
@@ -137,10 +143,48 @@
                         acproj.style.backgroundColor = "yellow";
                         acproj.style.color = "black";
                         clicked = "true";
+                        let id=acproj.dataset.id;
+
+                        localStorage.setItem("selected", i);
+                        console.log(localStorage.getItem("selected"));
+                        deleteB.addEventListener("click", function () {
+                            let query = "http://192.168.1.8:8000/projects?project_id=" + id;
+                            let bearer = 'Bearer ' + jwt;
+                            fetch(query, {
+                                method: 'DELETE',
+                                // withCredentials: true,
+                                // credentials: 'include',
+                                // mode:"no-cors",
+                                headers: {
+                                    'Authorization': bearer,
+                                    // 'Content-Type': 'application/json'
+                                }
+                            }).then((resp) => {
+                                if (resp.status == 200) { console.log("Ok"); }
+                                else if (resp.status == 500) { console.log("500"); }
+                                else if (resp.status = 401) { console.log("401"); }
+
+                            });
+                            acproj.parentNode.removeChild(acproj);
+
+                        });
                     }
                 });
             }
+
+
+
         }
+
+
+
+        let id = localStorage.getItem("selected");
+    //console.log(id);
+
+
+
+
+
     </script>
 
 </body>
