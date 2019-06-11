@@ -51,11 +51,15 @@
             <div class="addproject">
                 <form>
                     <input type="text" placeholder="Project name" name="addproject" required="">
+                    <input type="text" placeholder="Username" name="addproject" required="">
+                    <input type="text" placeholder="Password" name="addproject" required="">
                     <input type="text" placeholder="Collaborator" name="collaborator">
                 </form>
                 <button class="addbutton" id="addbutton">Create</button>
+                <button class="addbutton" id="deletebutton">Delete</button>
                 <button class="addbutton" id="addcollaborator">Add collaborator</button>
-                <button class="addbutton" id="seecollaborators" onclick="seeColabs()">See collaborators</button>
+                <button class="addbutton" id="seecollaborators" >See collaborators</button>
+                <button class="addbutton" id="deletecollaborators" >Delete collaborators</button>
             </div>
             <div id="projectslist">
             </div>
