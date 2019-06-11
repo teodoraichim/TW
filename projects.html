@@ -84,7 +84,8 @@
                 jsonResp["projects"].forEach(element => {
                     console.log(element.project_name);
                     console.log(element.creator);
-                    myFunction(element.project_name);
+                    myFunction(element.project_name,element.project_id);
+                    //console.log(element);
 
                 });
             }
@@ -111,10 +112,12 @@
         let button = document.getElementById("addbutton");
         button.addEventListener('click', myFunction);
 
-        function myFunction(name) {
+        function myFunction(name,id) {
             var para = document.createElement("DIV");
             para.className += "projectview";
             para.id = projcount++;
+            para.dataset.id=id;
+            console.log(para.dataset.id=id);
             para.innerHTML = name;
             document.getElementById("projectslist").appendChild(para);
             let activeproject = document.getElementsByClassName("projectview");
