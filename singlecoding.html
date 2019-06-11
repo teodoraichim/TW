@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/singlecoding.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
     <title>Code</title>
-    <script src="./socket.io/socket.io.js"></script>
+    <script src="./back/update/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -64,7 +64,7 @@
                 <p class="textdropdown2">
                     🔔 Notification
                 </p>
-                <div class="contentdropdown2">
+                <div class="contentdropdown2" id="contentdropdown2">
                     <a href="#1">1</a>
                     <a href="#2">2</a>
                 </div>
@@ -79,18 +79,19 @@
     <script>
         let jwt = localStorage.getItem('JWT');
         let pid = localStorage.getItem('PID');
-        let content = document.getElementById("contentdropdown2");
+        let content2 = document.getElementById("contentdropdown2");
+        console.log(content2);
         const socket = io('http://192.168.1.8:3000');
-        socket.emit("addClient", document.getElementById(jwt).value, document.getElementById(pid).value);
-        socket.emit("addUpdate", document.getElementById(jwt).value, document.getElementById(pid).value, document
-            .getElementById("Test").value);
+        socket.emit("addClient", jwt, pid);
+        socket.emit("addUpdate", jwt, pid);
         socket.on('connect', function () {});
         socket.on('event', function (data) {});
         socket.on("update", (user, receivedUpdate) => {
             let newp = document.createElement("P");
             newp.innerText = "New query executed";
-            content.appendChild(newp);
+            content2.appendChild(newp);
         });
+        socket.on('disconnect', function(){});
 
         let content = document.getElementById("additional-links");
         content.hidden = true;
