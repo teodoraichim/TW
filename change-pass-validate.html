@@ -26,7 +26,7 @@
             </div>
             <div class="login-box">
                 
-                <form class="change-pass-code hide">
+                <form class="change-pass-code hide" id="validate">
                     <input class="input-box" type="text" name= "code-change" placeholder="validation code" required>
                     <input class="input-box" type="password" name= "pass-change" placeholder="new Password" required>
                     <input class="input-box" type="password" name= "cpass-change" placeholder="confirm password" required>
@@ -40,6 +40,65 @@
         
     </div>
     <script>
+
+        let validate = document.getElementById("validate");
+
+        validate.addEventListener("click",onClick2);
+
+        
+
+    
+
+
+
+    function onClick2() {
+
+            let code = document.getElementById('code').value;
+            let pass = document.getElementById('password').value;
+            let cpass = document.getElementById('cpassword').value;
+            let box = document.getElementById('login-box');
+            let email=localStorage.getItem("email");
+
+            if (pass == cpass) {
+
+                let data = ({
+                    email: email,
+                    code: code,
+                    password: pass
+                })
+
+                let url = 'http://192.168.1.8:8001/changePasswordValidate';
+             fetch(url,{
+                 method: 'POST',
+                 
+                 body: JSON.stringify(data),
+                 headers: {
+                    'Content-Type': 'application/json',
+                    
+                 }
+             })
+             .then((resp)=>{
+                 if (resp.status==200) return resp.json();
+                 else{
+                    let p=document.createElement(p);
+                    p.value = 'incorect data';
+                    box.appendChild(p);
+                 }
+            }).then(jsonResp=>{
+
+                //localStorage.setItem("jwt",jsonResp.token);
+                //console.log(localStorage.getItem("jwt"));
+                location.href='./login.html';
+                
+            }).catch(onError);
+            function onError(err)
+            {
+                
+                console.log('error');
+            }
+        }
+    }
+    
         
     </script>
 

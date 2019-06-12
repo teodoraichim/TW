@@ -76,6 +76,7 @@
             let pass = document.getElementById('password').value;
             let cpass = document.getElementById('cpassword').value;
             email = document.getElementById('email').value;
+            localStorage.setItem("email",email);
 
             console.log(name);
 
@@ -85,81 +86,36 @@
                     password: pass,
                     email: email
                 });
-                console.log(data);
-                let url = 'http://localhost:8000/register';
-                fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        "Access-Control-Origin": "*"
-                    }
-                })
-                    .then((resp) => {
-                        return resp.json();
-                    }).then(jsonResp => {
-                        if (jsonResp.message != 'added succesfully') {
-                            let p = document.createElement('p');
-                            p.value = jsonResp.message;
-                            box.appendChild(p);
-                        }
-                        else {
-                            validate.hidden = "false";
-                            accountData.hidden = "true";
-
-                        }
-
-                    }).catch(onError);
-                function onError(err) {
-
-                    console.log('error');
-                }
-            }
-            else {
-                let p = document.createElement('p');
-                p.innerHTML = 'Passwords are not the same!';
-                box.appendChild(p);
-            }
-        }
-
-
-        let butVal = document.getElementById('validateBut');
-        butVal.addEventListener('click', onClick2);
-
-        function onClick2() {
-            let code = document.getElementById('code');
-            let data = ({
-                email: email,
-                code: code.value
-            })
-
-            let url = 'http://localhost:8000/register-validate';
-
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {
+                let url = 'http://192.168.1.8:8001/register';
+             fetch(url,{
+                 method: 'POST',
+                 
+                 body: JSON.stringify(data),
+                 headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Origin": "*"
-                }
-            }).then((resp) => {
-                return resp.json();
-            }).then(jsonResp => {
-                if (jsonResp.status == false) {
-                    let p = document.createElement('p');
-                    p.value = 'incorrect code';
+                    
+                 }
+             })
+             .then((resp)=>{
+                 if (resp.status==200) return resp.json();
+                 else{
+                    let p=document.createElement(p);
+                    p.value = 'incorect data';
                     box.appendChild(p);
-                }
-                else {
-                    location.href = "/mainpage";
+                 }
+            }).then(jsonResp=>{
 
-                }
-
+                //localStorage.setItem("jwt",jsonResp.token);
+                //console.log(localStorage.getItem("jwt"));
+                location.href='./register-validate.html';
+                
             }).catch(onError);
-            function onError(err) {
-
+            function onError(err)
+            {
+                
                 console.log('error');
             }
+        }
 
 
         }
