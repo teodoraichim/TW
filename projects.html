@@ -205,7 +205,8 @@
                         });
                         addCollabB.addEventListener("click", function () {
                             let uC=document.getElementById("userColab").value;
-                            let query = "http://192.168.1.8:8000/projects/colabs?project_id=" + id + "&username=" + uC;
+                            console.log(uC);
+                            let query = "http://192.168.1.8:8000/projects/colabs?project_id=" + id + "&user_id=" + uC;
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'POST',
@@ -217,7 +218,7 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) { console.log("Ok"); }
+                                if (resp.status == 200) { console.log(uC); }
                                 else if (resp.status == 500) { console.log("500"); }
                                 else if (resp.status = 401) { console.log("401"); }
                                 else if (resp.status = 403) { console.log("403"); }

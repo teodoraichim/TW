@@ -50,7 +50,7 @@
         <div class="bottom">
             <div class="tablesubttons">
                 <br>
-                <span style="margin-top: 20px;"><input type="text" class="tablename" placeholder="Table name" required></span>
+                <span style="margin-top: 20px;"><input type="text" class="tablename" placeholder="Table name" required id="name"></span>
                 <br>
                 <span>
                     <button class="newadd" id="newcolumn">New column</button>
@@ -61,21 +61,21 @@
                 <div style="overflow-x:auto;">
                     <table id="type-table">
                         <tr class="rrow">
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>PK</th>
-                            <th>NN</th>
-                            <th>UQ</th>
-                            <th>BIN</th>
-                            <th>UN</th>
-                            <th>ZF</th>
-                            <th>AI</th>
+                            <th >Name</th>
+                            <th >Type</th>
+                            <th >PK</th>
+                            <th >NN</th>
+                            <th >UQ</th>
+                            <th >BIN</th>
+                            <th >UN</th>
+                            <th >ZF</th>
+                            <th >AI</th>
                             <th></th>
                         </tr>
                         <tr class="rrow" id="addingtr">
-                            <td><input type="text" placeholder="Name" required></td>
+                            <td><input type="text" placeholder="Name" required id="name"></td>
                             <td><select class="select-type">
-                                    <option disabled="disabled" selected="selected">Select Type</option>
+                                    <option disabled="disabled" selected="selected" id="type">Select Type</option>
                                     <optgroup label="NUMERIC">
                                         <option value="BINARY">BINARY</option>
                                         <option value="INTEGER">INTEGER</option>
@@ -104,13 +104,13 @@
                                         <option value="SET">SET</option>
                                     </optgroup>
                                 </select></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" id="pk"></td>
+                            <td><input type="checkbox" id="nn"></td>
+                            <td><input type="checkbox" id="uq"></td>
+                            <td><input type="checkbox" id="bin"></td>
+                            <td><input type="checkbox" id="un"></td>
+                            <td><input type="checkbox" id="zf"></td>
+                            <td><input type="checkbox" id="ai"></td>
                             <td><a href="#">X</a></td>
                         </tr>
                     </table>
@@ -122,14 +122,24 @@
             var i = 0;
             var nrow = document.getElementById("addingtr");
             let btrow = document.getElementById("newcolumn");
-
+            let newTab = document.getElementById("newtable");
+            let result="create table ";
             btrow.addEventListener("click", function() {
+
                 console.log("ok");
                 var clone = nrow.cloneNode(true);
                 clone.id = "addingntr" + ++i;
                 nrow.parentNode.appendChild(clone);
+                console.log(clone.id);
             });
-
+            newTab.addEventListener("click",function(){
+                let tN=document.getElementById("name").value;
+                result+= tN;
+                console.log(result);
+                array.forEach(element => {
+                    
+                });
+            });
             let content = document.getElementById("additional-links");
             content.hidden = true;
             let table = document.getElementById("table");
