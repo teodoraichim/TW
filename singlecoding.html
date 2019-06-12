@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/singlecoding.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
     <title>Code</title>
-    <script src="./back/update/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -46,55 +45,39 @@
         <div class="top-right">
             <div class="dropdown">
                 <p class="textdropdown">
-                    ♾️️ Convert
+                        ♾️️ Convert
                 </p>
                 <div class="contentdropdown">
-                    <a href="#1">Convert to PHP</a>
-                    <a href="#2">Convert to Python</a>
+                    <button class="button" id="phpConvert">Convert to PHP</button>
+                    <button class="button" id="javaConvert">Convert to Java</button>
+                    <button class="button" id="pythonConvert">Convert to Python</button>
                 </div>
             </div>
-            <p class="run">
+        <button class="run" id="run">
                 ▶️ Run
-            </p>
-            <p id="output">Output
-            </p>
-            <p id="coding">Coding
-            </p>
-            <div class="dropdown2">
+        </button>
+        <p id="output">Output
+        </p>
+        <p id="coding">Coding
+        </p>
+        <div class="dropdown2">
                 <p class="textdropdown2">
-                    🔔 Notification
+                        🔔 Notification
                 </p>
-                <div class="contentdropdown2" id="contentdropdown2">
+                <div class="contentdropdown2">
                     <a href="#1">1</a>
                     <a href="#2">2</a>
                 </div>
             </div>
         </div>
         <div class="bottom">
-            <textarea class="scroll" id="codingtext"></textarea>
-            <textarea class="scroll" id="outputtext"></textarea>
+        <textarea class="scroll" id="codingtext"></textarea>
+        <textarea class="scroll" id="outputtext"></textarea>
         </div>
     </div>
 
     <script>
-        localStorage.setItem('JWT', '');
-        localStorage.setItem('PID', '1');
-        let jwt = localStorage.getItem('JWT');
-        let pid = localStorage.getItem('PID');
-        let content2 = document.getElementById("contentdropdown2");
-        console.log(content2);
-        const socket = io('http://192.168.1.8:3000');
-        socket.emit("addClient", jwt, pid);
-        socket.emit("addUpdate", jwt, pid);
-        socket.on('connect', function () {});
-        socket.on('event', function (dat                                                                                george@george-pca) {});
-        socket.on("update", (user, receivedUpdate) => {
-            let newp = document.createElement("P");
-            newp.innerText = "New query executed";
-            content2.appendChild(newp);
-        });
-        socket.on('disconnect', function(){});
-
+        let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
         let content = document.getElementById("additional-links");
         content.hidden = true;
         let table = document.getElementById("table");
@@ -112,14 +95,99 @@
         let output = document.getElementById("output");
         let codetext = document.getElementById("codingtext");
         let outputtext = document.getElementById("outputtext");
-        output.addEventListener("click", function () {
+        let run=document.getElementById("run");
+        output.addEventListener("click", function(){
             codetext.hidden = true;
             output.hidden = true;
             coding.hidden = false;
             outputtext.hidden = false;
         });
+        run.addEventListener("click", function(){
+            let code=document.getElementById("codingtext").value;
+            console.log(code);
+            ExecuteQuery(jwt,14,code);
+        });
+        function ExecuteQuery(jwt, projectID, querysql) {
+        let query = "http://192.168.1.8:8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { console.log("OK"); return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
 
-        coding.addEventListener("click", function () {
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                document.getElementById("outputtext")=jsonResp["result"];
+        });
+        let javaC=document.getElementById("javaConvert");
+        javaC.addEventListener("click",function(){
+            let code=document.getElementById("codingtext").value;
+            GenerateJavaCode(jwt,14,code)
+        });
+        function GenerateJavaCode(jwt, projectID, querysql) {
+        let query = "http://192.168.1.8:8000/generateCode/Java?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                document.getElementById("outputtext")=jsonResp["result"];
+        });
+    let phpC=document.getElementById("phpConvert");
+    phpC.addEventListener("click",function(){
+        let code=document.getElementById("codingtext").value;
+        GeneratePhpCode(jwt,14,code);
+    });
+    function GeneratePhpCode(jwt, projectID, querysql) {
+        let query = "http://192.168.1.8:8000/generateCode/Php?project_id=" + projectID + "&query=" + querysql;
+        let bearer = 'Bearer ' + jwt;
+        fetch(query, {
+            method: 'POST',
+            // withCredentials: true,
+            // credentials: 'include',
+            // mode:"no-cors",
+            headers: {
+                'Authorization': bearer,
+                // 'Content-Type': 'application/json'
+            }
+        }).then((resp) => {
+            if (resp.status == 200) { return resp.json(); }
+            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status = 401) { console.log("401"); }
+
+
+        }).then(jsonResp => {
+            if (jsonResp)
+                console.log(jsonResp["result"]);
+        });
+
+    }
+    }
+    }
+        coding.addEventListener("click", function(){
             outputtext.hidden = true;
             coding.hidden = true;
             output.hidden = false;
