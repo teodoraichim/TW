@@ -65,7 +65,7 @@
                 <p class="textdropdown2">
                     🔔 Notification
                 </p>
-                <div class="contentdropdown2">
+                <div class="contentdropdown2"id="contentdropdown2">
                     <a href="#1">1</a>
                     <a href="#2">2</a>
                 </div>
@@ -96,7 +96,7 @@
         let output = document.getElementById("output");
         let codetext = document.getElementById("codingtext");
         let outputtext = document.getElementById("outputtext");
-        let run = document.getElementById("run");
+        var run = document.getElementById("run");
         output.addEventListener("click", function () {
             codetext.hidden = true;
             output.hidden = true;
@@ -104,32 +104,33 @@
             outputtext.hidden = false;
         });
         localStorage.setItem('JWT',
-                'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE1NjAyOTA1NDksImV4cCI6MTU2MDMzMzc0OSwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.WHAYKw3kuSwZJh-5tDOd9PU9WgmFpgNPvQTDUs3hQaoyJtUbh6KiGPRm6rV9TBxhe7q9J0mYv7_C0I9tf2bf2A'
-                );
-            localStorage.setItem('PID', '1');
-            let content2 = document.getElementById("contentdropdown2");
-            let jwt = localStorage.getItem('JWT');
-            let pid = localStorage.getItem('PID');
-            // socket.on('event', function(data){});                                                                                
-            // socket.on("update", (user, receivedUpdate) => {
-            //     let newp = document.createElement("P");
-            //     newp.innerText = "New query executed";
-            //     content2.appendChild(newp);
-            // });
-            
-            socket.emit("addClient", jwt, pid);
-            socket.on('event', function(data){});                                                                                
-            socket.on("update", (user, receivedUpdate) => {
-                let newp = document.createElement("P");
-                newp.innerText = "New query executed";
-                content2.appendChild(newp);
-            });
-            console.log(content2);
-            
-            run.addEventListener("click", function () {
+            'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyOTA1MjQsImV4cCI6MTU2MDMzMzcyNCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.cVGz_Ic81LZVrBeKxqwlM-T80mJx_3hZo82Hj4iqDkX3fF7bB232n6G3GUtdA8iW8SCfJ2lgocKlSRGjY1P2KA'
+        );
+        localStorage.setItem('PID', '1');
+        let content2 = document.getElementById("contentdropdown2");
+        let jwt = localStorage.getItem('JWT');
+        let pid = localStorage.getItem('PID');
+        // socket.on('event', function(data){});                                                                                
+        // socket.on("update", (user, receivedUpdate) => {
+        //     let newp = document.createElement("P");
+        //     newp.innerText = "New query executed";
+        //     content2.appendChild(newp);
+        // });
+
+        socket.emit("addClient", jwt, pid);
+        socket.on('event', function (data) { });
+        socket.on("update", (user, receivedUpdate) => {
+            let newp = document.createElement("P");
+            newp.innerText = "New query executed";
+            console.log("receivedUpdate:" + receivedUpdate);
+            content2.appendChild(newp);
+        });
+        // console.log(content2);
+
+        run.addEventListener("click", function () {
             let code = document.getElementById("codingtext").value;
             console.log(code);
-            ExecuteQuery(jwt, 14, code);
+            ExecuteQuery(jwt, pid, code);
             socket.emit("addUpdate", jwt, pid, "am venit");
         });
 
