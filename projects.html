@@ -50,16 +50,16 @@
         <div class="bottom">
             <div class="addproject">
                 <form>
-                        <input type="text" placeholder="Project name" name="addproject" required="" id="projectName">
-                        <input type="text" placeholder="Username" name="addproject" required="" id="userName">
-                        <input type="text" placeholder="Password" name="addproject" required="" id="passs">
+                    <input type="text" placeholder="Project name" name="addproject" required="" id="projectName">
+                    <input type="text" placeholder="Username" name="addproject" required="" id="userName">
+                    <input type="text" placeholder="Password" name="addproject" required="" id="passs">
                     <input type="text" placeholder="Collaborator" name="collaborator" id="userColab">
                 </form>
                 <button class="addbutton" id="addbutton">Create</button>
                 <button class="addbutton" id="deletebutton">Delete</button>
                 <button class="addbutton" id="addcollaborator">Add collaborator</button>
-                <button class="addbutton" id="seecollaborators" onclick="seeColabs()">See collaborators</button>
-                <button class="addbutton" id="deletecollaborators">Delete collaborators</button>
+                <button class="addbutton" id="seecollaborators">See collaborators</button>
+                
             </div>
             <div id="projectslist">
             </div>
@@ -68,7 +68,9 @@
 
     <script>
 
-        let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
+        //let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
+        let jwt =localStorage.getItem("jwt");
+        let seeCollab = document.getElementById("seecollaborators");
         function getProjectListFetch(jwt) {
             let bearer = 'Bearer ' + jwt;
             fetch("http://192.168.1.8:8000/projects", {
@@ -101,11 +103,9 @@
         getProjectListFetch(jwt);
 
 
-        
 
-        function seeColabs() {
-            alert("Test1");
-        }
+
+        
 
         let projcount = 0;
         let clicked = "false";
@@ -125,42 +125,42 @@
         let button = document.getElementById("addbutton");
         let deleteB = document.getElementById("deletebutton");
         let addCollabB = document.getElementById("addcollaborator");
-      //  button.addEventListener('click', myFunction);
+        //  button.addEventListener('click', myFunction);
         button.addEventListener('click', dataSaver);
 
-        function dataSaver(){
-            let pN=document.getElementById("projectName").value;
-            let uN=document.getElementById("userName").value;
-            let pS=document.getElementById("passs").value;
-            console.log(pN,uN,pS)
-            addProject(jwt,pN,uN,pS);
+        function dataSaver() {
+            let pN = document.getElementById("projectName").value;
+            let uN = document.getElementById("userName").value;
+            let pS = document.getElementById("passs").value;
+            console.log(pN, uN, pS)
+            addProject(jwt, pN, uN, pS);
         }
         function addProject(jwt, projectName, username, password) {
-            let pN=document.getElementById("projectName").value;
+            let pN = document.getElementById("projectName").value;
             let query = "http://192.168.1.8:8000/projects?project_name=" + projectName + "&username=" + username + "&password=" + password;
             let bearer = 'Bearer ' + jwt;
             fetch(query, {
                 method: 'POST',
-            // withCredentials: true,
-            // credentials: 'include',
-            // mode:"no-cors",
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
                 headers: {
                     'Authorization': bearer,
-                // 'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/json'
                 }
             }).then((resp) => {
                 if (resp.status == 200) { return resp.json(); }
-                else if (resp.status == 500) { console.log("500");}
+                else if (resp.status == 500) { console.log("500"); }
                 else if (resp.status = 401) { console.log("401"); }
                 else if (resp.status = 403) { console.log("403"); }
 
-            }).then((jsonResp) =>{
+            }).then((jsonResp) => {
                 if (jsonResp) {
                     console.log(jsonResp);
-                    myFunction(pN,jsonResp["projects_id"]);
+                    myFunction(pN, jsonResp["projects_id"]);
                 }
             })
-    }
+        }
         function myFunction(name, id) {
             var para = document.createElement("DIV");
             para.className += "projectview";
@@ -178,7 +178,7 @@
                         acproj.style.backgroundColor = "yellow";
                         acproj.style.color = "black";
                         clicked = "true";
-                        let id=acproj.dataset.id;
+                        let id = acproj.dataset.id;
 
                         localStorage.setItem("selected", i);
                         console.log(localStorage.getItem("selected"));
@@ -204,7 +204,7 @@
 
                         });
                         addCollabB.addEventListener("click", function () {
-                            let uC=document.getElementById("userColab").value;
+                            let uC = document.getElementById("userColab").value;
                             console.log(uC);
                             let query = "http://192.168.1.8:8000/projects/colabs?project_id=" + id + "&user_id=" + uC;
                             let bearer = 'Bearer ' + jwt;
@@ -225,12 +225,45 @@
 
                             });
                         });
+                        seeCollab.addEventListener("click", function () {
+                            let query = "http://192.168.1.8:8000/projects/" + id;
+                            let bearer = 'Bearer ' + jwt;
+                            fetch(query, {
+                                method: 'GET',
+                                // withCredentials: true,
+                                // credentials: 'include',
+                                // mode:"no-cors",
+                                headers: {
+                                    'Authorization': bearer,
+                                    // 'Content-Type': 'application/json'
+                                }
+                            }).then((resp) => {
+                                if (resp.status == 200) { return resp.json(); }
+                                else if (resp.status == 500) { console.log("500"); }
+                                else if (resp.status = 401) { console.log("401"); }
+                                else if (resp.status = 403) { console.log("403"); }
+
+                            }).then(jsonResp => {
+                                if (jsonResp) {
+                                    let col='';
+                                    console.log(jsonResp);
+                                    jsonResp["colabs"].forEach(element => {
+                                        console.log(element.user_id);
+                                        col=col+" "+element.user_id;
+
+                                    });
+                                    alert(col);
+                                }
+
+                            })
+                        })
                     }
 
                 });
-        
-        
-            }    }
+
+
+            }
+        }
 
         id = localStorage.getItem("selected");
     //console.log(id);
@@ -239,7 +272,7 @@
 
 
 
-</script>
+    </script>
 
 </body>
 
