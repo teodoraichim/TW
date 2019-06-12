@@ -11,7 +11,7 @@ module.exports.getProjectList = function (user_id) {
             console.log("Connected!");
         });
         var json = {};
-        con.query('select projects.project_name,projects.creator from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=?', [user_id], function (err, rows, fields) {
+        con.query('select projects.project_name,projects.creator,projects.project_id from projects inner join colabs on projects.project_id=colabs.project_id where colabs.user_id=?', [user_id], function (err, rows, fields) {
             if (err) return reject(err);
             json['projects'] = rows;
             con.end();
@@ -186,7 +186,7 @@ function getNumProjects() {
             if (err) return reject(err);
             console.log("Connected!");
         });
-        con.query('select count(*) as c from projects', function (err, rows, fields) {
+        con.query('select max(project_id) as c from projects', function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
             console.log(rows[0].c);
@@ -205,7 +205,7 @@ function addIntoProjects(proj_id, proj_name, user_id, database_id, dbUsername, d
             if (err) return reject(err);
             console.log("Connected!");
         });
-        con.query('insert into projects (project_id,project_name,creator,database_id,username,password) VALUES(?,?,?,?,?,?)', [proj_id, proj_name, user_id, database_id, dbUsername, dbPassword], function (err, rows, fields) {
+        con.query('insert into projects (project_name,creator,database_id,username,password) VALUES(?,?,?,?,?)', [proj_name, user_id, database_id, dbUsername, dbPassword], function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
             resolve('Added successfuly!');

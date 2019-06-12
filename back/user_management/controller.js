@@ -1,6 +1,7 @@
 
 const http = require('http');
 const parse = require('querystring');
+const bodyParse = require('body-parser');
 const url = require('url');
 const model = require('./model.js');
 
@@ -38,12 +39,12 @@ function send403Response(response) {
 }
 
 function send404Response(response) {
-   response.writeHead(404, { "Content-Type": "text/plain" });
+   response.writeHead(404, textType);
    response.write("Error 404:Page not found");
    response.end();
 }
 function send200Response(response) {
-   response.writeHead(200, { "Content-Type": "text/plain" });
+   response.writeHead(200, textType);
    response.write("Done");
    response.end();
 }
@@ -60,7 +61,7 @@ function createToken(user_id) {
    var publicKEY = fs.readFileSync('./public.key', 'utf8');
    var i = 'UPNP';          // Issuer 
    var s = 'some@user.com';        // Subject 
-   var a = 'http://localhost:8000'; // Audience
+   var a = 'http://localhost'; // Audience
    // SIGNING OPTIONS
    var signOptions = {
       issuer: i,
@@ -72,6 +73,7 @@ function createToken(user_id) {
 
    var token = jwt.sign(payload, privateKEY, signOptions);
    console.log("Token - " + token);
+   return token;
 }
 
 function onRequest(request, response) {
@@ -85,36 +87,33 @@ function onRequest(request, response) {
          buff += chunk;
       });
       request.on('end', () => {
-         body = parse.parse(buff);
+         // body = parse.parse(buff);
+         body = JSON.parse(buff);
+         console.log("U:" + body['username']);
+         console.log("P" + body['password'])
+
+         model.login(body['username'], body['password']).then(function (resp) {
+            if (resp) {
+               send403Response(response);
+            }
+            else {
+               model.getId(body['username']).then(function(user_id){
+                  let json = { "token":  createToken(user_id)};
+                  response.writeHead(200, jsonType);
+                  response.write(JSON.stringify(json));
+                  response.end();
+
+               }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+            
+            }
+
+
+         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
          //response.end('ok');
       });
 
       //JSON.stringify(buf);
-
-
-
-      model.login(body['username'], body['password']).then(function (resp) {
-         if (!resp) {
-            let json = ({ "message": 'incorrect data' });
-            response.writeHead(200, jsonType);
-            response.write(JSON.stringify(json));
-            response.end();
-         }
-
-         else {
-            let json = ({ "message": 'logged in' })
-            response.writeHead(200, jsonType);
-            response.write(JSON.stringify(json));
-            response.end();
-            let id = model.getId(body['username']);
-            createToken(id);
-         }
-
-
-      }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
-
-
 
 
    }
@@ -128,20 +127,20 @@ function onRequest(request, response) {
          buff += chunk;
       })
       request.on('end', () => {
-         body = parse.parse(buff);
+         body = JSON.parse(buff);
+
+         model.register(body['username'], body['password'], body['email']).then(function (message) {
+            let json = { "status": message };
+            console.log(json);
+            response.writeHead(200, jsonType);
+            response.write(JSON.stringify(json));
+            response.end();
+         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
       })
 
       //JSON.stringify(buf);
 
-
-
-      model.register(body['username'], body['password'], body['email'], function (message) {
-         let json = ({ "status": message });
-         response.writeHead(200, jsonType);
-         response.write(json);
-         response.end();
-      });
 
 
 
@@ -158,20 +157,31 @@ function onRequest(request, response) {
          buff += chunk;
       })
       request.on('end', () => {
-         body = parse.parse(buff);
+         body = JSON.parse(buff);
+         //JSON.stringify(buf);
+         model.validateCode(body['mail'], body['code']).then(function (bool) {
+            if (bool) {
+               model.activateAccount(body['mail']).then(function (bool) {
+                  let json = { "validate": bool };
+                  response.writeHead(200, jsonType);
+                  response.write(JSON.stringify(json));
+                  response.end();
+
+               });
+
+            }
+            let json = { "validate": bool };
+            response.writeHead(200, jsonType);
+            response.write(JSON.stringify(json));
+            response.end();
+
+
+         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+
 
       })
-      
-
-      //JSON.stringify(buf);
-      model.validateCode(body['id'], body['code'], function (bool) {
-         let json = ({ "validate": bool });
-         response.writeHead(200, jsonType);
-         response.write(json);
-         response.end();
 
 
-      }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
 
 
@@ -186,22 +196,24 @@ function onRequest(request, response) {
          buff += chunk;
       })
       request.on('end', () => {
-         body = parse.parse(buff);
+         body = JSON.parse(buff);
          
+
+         model.changePassword(body["mail"]).then(function (bool1) {
+            let json = { "status": bool1 };
+            console.log(json);
+            response.writeHead(200, jsonType);
+            response.write(JSON.stringify(json));
+            response.end();
+         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+
       })
 
       //JSON.stringify(body);
-      
 
-      model.changePassword(email, function(bool){
-         let json = ({"status" : bool});
-         response.writeHead(200, jsonType);
-         response.write(json);
-         response.end();
-      }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
    }
-   else if (request.method == 'POST' && request.url == '/changPasswordValidate') {
+   else if (request.method == 'POST' && request.url == '/changePasswordValidate') {
 
       var buff = '';
       var body;
@@ -210,48 +222,48 @@ function onRequest(request, response) {
          buff += chunk;
       })
       request.on('end', () => {
-        body = parse.parse(buf);
-         
+         body = JSON.parse(buff);
+
+         model.changePassValidate(body['mail'], body['code'], body['pass']).then(function (bool1) {
+            let json ={ "status": bool1 };
+            response.writeHead(200, jsonType);
+            response.write(JSON.stringify(json));
+            response.end();
+
+         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+
+
       })
 
       //JSON.stringify(buf);
 
-      model.cahngePassValidate(body['email'],body['code'],body['pass'],function(bool){
-         let json = ({"status" : bool});
-         response.writeHead(200, jsonType);
-         response.write(json);
-         response.end();
-         
-      }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
-
 
 
    }
-   else if(request.method=="GET" && request.url.indexOf('/getId')==0){
+   else if (request.method == "GET" && request.url.indexOf('/getId') == 0) {
 
       var queryData = url.parse(request.url, true).query;
-      let username =queryData.username;
+      let username = queryData.username;
 
-      model.getId(username, function(id){
-         let json = ({"id" : id});
+      model.getId(username).then(function (id) {
+         let json = { "id": id };
          response.writeHead(200, jsonType);
-         response.write(json);
+         response.write(JSON.stringify(json));
          response.end();
-         
+
       }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
    }
-   else if(request.method=='OPTIONS')
-    {
-        console.log("Options "+request.url)
-        response.writeHead(200,noType);
-        response.end();
-    }
-    else {
-        console.log(request.method+" "+request.url);
-        send404Response(response);
-    }
+   else if (request.method == 'OPTIONS') {
+      console.log("Options " + request.url)
+      response.writeHead(200, noType);
+      response.end();
+   }
+   else {
+      console.log(request.method + " " + request.url);
+      send404Response(response);
+   }
 
 }
 
-http.createServer(onRequest).listen(8000);
+http.createServer(onRequest).listen(8001);
 console.log("Service is running ");

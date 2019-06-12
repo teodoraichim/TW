@@ -58,6 +58,11 @@ io.on('connection', client => {
           console.log("User:" + user_id);
           console.log("Project:" + project_id);
           //add client to the clients object
+          for (var i = 0; i < clients[project_id].length; i++) {
+            console.log(clients[project_id][i].user_id);
+            if(clients[project_id][i].user_id==)
+            
+          }
           if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
           else clients[project_id] = [{ "client": client, "user_id": user_id }];
           console.log(clients);

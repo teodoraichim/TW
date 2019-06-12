@@ -50,7 +50,7 @@ function getToken(request, response) {
 }
 function validateToken(token, response) {
 
-    var publicKEY = fs.readFileSync('C:\\Users\\Pavi\\TW\\Local\\back\\user_management\\public.key', 'utf8');
+    var publicKEY = fs.readFileSync('/home/silviu/web_dev/Project/back/user_management/public.key', 'utf8');
     var i = 'UPNP';          // Issuer 
     var s = 'some@user.com';        // Subject 
     var a = 'http://localhost'; // Audience
@@ -395,18 +395,6 @@ function onRequest(request, response) {
                         response.end();
 
                     }
-                    else if (request.url.indexOf('/generateCode/Python') == 0) {
-                        console.log("PythonGen");
-                        var json = {};
-                        let javaCode= convert.fromQueryToPython('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
-                        console.log(javaCode);
-                        json['result'] = javaCode;
-                        response.writeHead(200, jsonType);
-                        // console.log(json);
-                        response.write(JSON.stringify(json));
-                        response.end();
-                    }
-                    else send404Response(response);
 
                 }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
             }
@@ -422,7 +410,7 @@ function onRequest(request, response) {
         response.end();
     }
     else {
-        console.log(request.method+" "+request.url);
+        console.log("Else"+request.method+" "+request.url);
         send404Response(response);
     }
 }
