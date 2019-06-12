@@ -87,7 +87,7 @@
         socket.emit("addClient", jwt, pid);
         socket.emit("addUpdate", jwt, pid);
         socket.on('connect', function () {});
-        socket.on('event', function (data) {});
+        socket.on('event', function (dat                                                                                george@george-pca) {});
         socket.on("update", (user, receivedUpdate) => {
             let newp = document.createElement("P");
             newp.innerText = "New query executed";

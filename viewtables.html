@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/viewtables.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
+    <title>View tables</title>
+</head>
+
+<body>
+    <div id="left" class="column">
+        <div class="top-left">
+            <ul>
+                <li><img src="img/user.svg">
+                </li>
+            </ul>
+        </div>
+        <div class="bottom">
+            <ul>
+                <a id="project" href="projects.html">
+                    <li>Project</li>
+                </a>
+                <a id="table" href="#">
+                    <li>Table</li>
+                </a>
+                <div class="table">
+                    <div id="additional-links">
+                        <a href="newtable.html">
+                            <li>New table</li>
+                        </a><a href="viewtables.html">
+                            <li>View tables</li>
+                        </a>
+                    </div>
+                </div>
+                <a id="query" href="singlecoding.html">
+                    <li>Query</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    <div id="right" class="column">
+        <div class="top-right">
+            <div class="dropdown">
+                <p class="textdropdown">
+                        ♾️️ Convert
+                </p>
+                <div class="contentdropdown">
+                    <a href="#1">Convert to PHP</a>
+                    <a href="#2">Convert to Python</a>
+                </div>
+            </div>
+        <p class="run">
+                ▶️ Run
+        </p>
+        <p id="output">Output
+        </p>
+        <p id="coding">Coding
+        </p>
+        <div class="dropdown2">
+                <p class="textdropdown2">
+                        🔔 Notification
+                </p>
+                <div class="contentdropdown2">
+                    <a href="#1">1</a>
+                    <a href="#2">2</a>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+                <div class="tablewrap">
+                <div class="caption">ay</div>	
+                <div id="table">
+                    <div class="header-row row">
+                    <span class="cell primary">bzx</span>
+                    <span class="cell">asd</span>
+                     <span class="cell">eeqweqior</span>
+                    <span class="cell">Eeeqwe</span>
+                    <span class="cell">Tfsdfsd</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="bzx">2012331X</span>
+                    <span class="cell" data-label="asd">weweqwe</span>
+                     <span class="cell" data-label="eeqweqior">Bsaddvk</span>
+                     <span class="cell" data-label="Eeeqwe">2432fsdo</span>
+                    <span class="cell" data-label="Tfsdfsd"><a href="">2312a21</a></span>
+                  </div>
+                  <!-- <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="Vehicle">2013 Subaru WRX STI</span>
+                    <span class="cell" data-label="Exterior">Crystal Black Silica</span>
+                     <span class="cell" data-label="Interior">Black</span>
+                     <span class="cell" data-label="Engine">2.5L H4 Turbo</span>
+                     <span class="cell" data-label="Trans">6 Speed</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="Vehicle">2013 Subaru BRZ</span>
+                    <span class="cell" data-label="Exterior">Dark Grey Metallic</span>
+                     <span class="cell" data-label="Interior">Black</span>
+                     <span class="cell" data-label="Engine">2.0L H4</span>
+                     <span class="cell" data-label="Trans">6 Speed</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="Vehicle">2013 Subaru Legacy</span>
+                    <span class="cell" data-label="Exterior">Satin White Pearl</span>
+                     <span class="cell" data-label="Interior">Black</span>
+                     <span class="cell" data-label="Engine">2.5L H4</span>
+                     <span class="cell" data-label="Trans">Auto</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="Vehicle">2013 Subaru Legacy</span>
+                    <span class="cell" data-label="Exterior">Twilight Blue Metallic</span>
+                     <span class="cell" data-label="Interior">Black</span>
+                     <span class="cell" data-label="Engine">2.5L H4</span>
+                     <span class="cell" data-label="Trans">Auto</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="Vehicle">2013 Subaru Forester</span>
+                    <span class="cell" data-label="Exterior">Ice Silver Metallic</span>
+                     <span class="cell" data-label="Interior">Black</span>
+                     <span class="cell" data-label="Engine">2.5L H4 Turbo</span>
+                     <span class="cell" data-label="Trans">Auto</span>
+                  </div> -->
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script>
+        let content = document.getElementById("additional-links");
+        content.hidden = true;
+        let table = document.getElementById("table");
+        const style = getComputedStyle(content);
+        table.addEventListener("click",
+            function () {
+                if (style.display == "block")
+                    content.hidden = true;
+                else
+                    content.hidden = false;
+            }, false);
+
+        let coding = document.getElementById("coding");
+        coding.hidden = true;
+        let output = document.getElementById("output");
+        let codetext = document.getElementById("codingtext");
+        let outputtext = document.getElementById("outputtext");
+        output.addEventListener("click", function(){
+            codetext.hidden = true;
+            output.hidden = true;
+            coding.hidden = false;
+            outputtext.hidden = false;
+        });
+
+        coding.addEventListener("click", function(){
+            outputtext.hidden = true;
+            coding.hidden = true;
+            output.hidden = false;
+            codetext.hidden = false;
+        });
+    </script>
+
+</body>
+
+</html>
