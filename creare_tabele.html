@@ -125,21 +125,21 @@
             let newTab = document.getElementById("newtable");
             let result="create table ";
             btrow.addEventListener("click", function() {
-
                 console.log("ok");
                 var clone = nrow.cloneNode(true);
                 clone.id = "addingntr" + ++i;
                 nrow.parentNode.appendChild(clone);
-                console.log(clone.id);
+                let row=document.getElementById("name").value;
+                row+=document.getElementById("type").value;
+                console.log(row);
+                
             });
             newTab.addEventListener("click",function(){
                 let tN=document.getElementById("name").value;
                 result+= tN;
                 console.log(result);
-                array.forEach(element => {
-                    
+
                 });
-            });
             let content = document.getElementById("additional-links");
             content.hidden = true;
             let table = document.getElementById("table");
