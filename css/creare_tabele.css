@@ -46,6 +46,16 @@ a {
     text-align: center;
 }
 
+.tablename{
+    background: transparent;
+    border: 0;
+}
+
+.tablename:focus,
+.tablename:active {
+    outline: none;
+}
+
 .top-right {
     flex-shrink: 0;
     display: inline-flex;
