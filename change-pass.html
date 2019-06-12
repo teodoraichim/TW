@@ -56,7 +56,7 @@
         let validateBut = document.getElementById('validateBut');
         changeBut.addEventListener('click', onClick);
         validateBut.addEventListener('click', onClick2);
-        let email='';
+        
 
         function onClick() {
             email = document.getElementById('email').value;
@@ -64,33 +64,35 @@
                 email: email
             });
             console.log(data);
+            localStorage.setItem("email",email);
 
-            let url = 'http://localhost:8000/changePassword';
-
-            fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
+            let url = 'http://192.168.1.8:8001/changePassword';
+             fetch(url,{
+                 method: 'POST',
+                 
+                 body: JSON.stringify(data),
+                 headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Origin": "*"
-                }
-            })
-                .then((resp) => {
-                    return resp.json();
-                }).then(jsonResp => {
-                    if (jsonResp.message == false) {
-                        let p = document.createElement(p);
-                        p.value = 'incorect data';
-                        box.appendChild(p);
-                    }
-                    else {
-                        accountData.hidden = "true";
-                        validate.hidden = "false";
-                    };
+                    
+                 }
+             })
+             .then((resp)=>{
+                 if (resp.status==200) return resp.json();
+                 else{
+                    let p=document.createElement(p);
+                    p.value = 'incorect data';
+                    box.appendChild(p);
+                 }
+            }).then(jsonResp=>{
 
-                }).catch(onError);
-            function onError(err) {
-
+                //localStorage.setItem("jwt",jsonResp.token);
+                //console.log(localStorage.getItem("jwt"));
+                location.href='./change-pass-validate.html';
+                
+            }).catch(onError);
+            function onError(err)
+            {
+                
                 console.log('error');
             }
         }
@@ -111,13 +113,13 @@
                     password: pass
                 })
 
-                let url = '';
+                let url = 'http://192.168.1.8:8001/changePasswordValidate';
                 fetch(url, {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/json',
-                        "Access-Control-Origin": "*"
+                        
                     }
                 })
                     .then((resp) => {

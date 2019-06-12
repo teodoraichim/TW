@@ -56,24 +56,28 @@
                 password : pass 
             });
             console.log(data);
-             let url = 'http://localhost:8000/login';
+             let url = 'http://192.168.1.8:8001/login';
              fetch(url,{
                  method: 'POST',
+                 
                  body: JSON.stringify(data),
                  headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Origin": "*"
+                    
                  }
              })
              .then((resp)=>{
-                return resp.json();
-            }).then(jsonResp=>{
-                if(jsonResp[message] != 'logged in') {
+                 if (resp.status==200) return resp.json();
+                 else{
                     let p=document.createElement(p);
                     p.value = 'incorect data';
                     box.appendChild(p);
-                }
-                else location.href='./mainpage.html';
+                 }
+            }).then(jsonResp=>{
+
+                localStorage.setItem("jwt",jsonResp.token);
+                console.log(localStorage.getItem("jwt"));
+                location.href='./projects.html';
                 
             }).catch(onError);
             function onError(err)
