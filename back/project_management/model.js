@@ -186,7 +186,7 @@ function getNumProjects() {
             if (err) return reject(err);
             console.log("Connected!");
         });
-        con.query('select max(project_id) as c from projects', function (err, rows, fields) {
+        con.query('SELECT AUTO_INCREMENT as c FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = \'project_management\' AND   TABLE_NAME   = \'projects\'', function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
             console.log(rows[0].c);
@@ -260,9 +260,10 @@ function createDatabase(database_id, dbUsername, dbPassword) {
 module.exports.addProject = function (user_id, proj_name, dbUsername, dbPassword) {
     return new Promise(function (resolve, reject) {
         getNumProjects().then(function (numRows) {
-            createDatabase(numRows + 1, dbUsername, dbPassword).then(function (resp) {
-                addIntoProjects(numRows + 1, proj_name, user_id, numRows + 1, dbUsername, dbPassword).then(function (resp1) {
-                    module.exports.addIntoColabs(user_id, numRows + 1).then(function (resp2) {
+            console.log("next proj id:"+numRows);
+            createDatabase(numRows , dbUsername, dbPassword).then(function (resp) {
+                addIntoProjects(numRows , proj_name, user_id, numRows , dbUsername, dbPassword).then(function (resp1) {
+                    module.exports.addIntoColabs(user_id, numRows ).then(function (resp2) {
                         resolve(numRows+1);
                     }).catch((err) => setImmediate(() => { reject(err);  }));
                 }).catch((err) => setImmediate(() => { reject(err);  }));

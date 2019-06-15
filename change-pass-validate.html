@@ -40,7 +40,7 @@
         
     </div>
     <script>
-
+        let address="http://localhost";
         let validate = document.getElementById("validate");
 
         validate.addEventListener("click",onClick2);
@@ -67,7 +67,7 @@
                     password: pass
                 })
 
-                let url = 'http://192.168.1.8:8001/changePasswordValidate';
+                let url = address+':8001/changePasswordValidate';
              fetch(url,{
                  method: 'POST',
                  

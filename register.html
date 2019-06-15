@@ -61,6 +61,7 @@
         </div>
     </div>
     <script>
+        let address="http://localhost";
 
         let regBtn = document.getElementById('register');
         let box = document.getElementById('box');
@@ -86,7 +87,7 @@
                     password: pass,
                     email: email
                 });
-                let url = 'http://192.168.1.8:8001/register';
+                let url = address+':8001/register';
              fetch(url,{
                  method: 'POST',
                  

@@ -67,13 +67,14 @@
     </div>
 
     <script>
-
+        
         //let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
+        let address="http://localhost";
         let jwt =localStorage.getItem("jwt");
         let seeCollab = document.getElementById("seecollaborators");
         function getProjectListFetch(jwt) {
             let bearer = 'Bearer ' + jwt;
-            fetch("http://192.168.1.8:8000/projects", {
+            fetch(address+":8000/projects", {
                 method: 'GET',
                 headers: {
                     authorization: bearer,
@@ -137,7 +138,7 @@
         }
         function addProject(jwt, projectName, username, password) {
             let pN = document.getElementById("projectName").value;
-            let query = "http://192.168.1.8:8000/projects?project_name=" + projectName + "&username=" + username + "&password=" + password;
+            let query = address+":8000/projects?project_name=" + projectName + "&username=" + username + "&password=" + password;
             let bearer = 'Bearer ' + jwt;
             fetch(query, {
                 method: 'POST',
@@ -157,11 +158,12 @@
             }).then((jsonResp) => {
                 if (jsonResp) {
                     console.log(jsonResp);
-                    myFunction(pN, jsonResp["projects_id"]);
+                    myFunction(pN, jsonResp["project_id"]);
                 }
             })
         }
         function myFunction(name, id) {
+            
             var para = document.createElement("DIV");
             para.className += "projectview";
             para.id = projcount++;
@@ -181,9 +183,10 @@
                         let id = acproj.dataset.id;
 
                         localStorage.setItem("selected", i);
+                        localStorage.setItem("project_id",id);
                         console.log(localStorage.getItem("selected"));
                         deleteB.addEventListener("click", function () {
-                            let query = "http://192.168.1.8:8000/projects?project_id=" + id;
+                            let query = address+":8000/projects?project_id=" + id;
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'DELETE',
@@ -206,7 +209,7 @@
                         addCollabB.addEventListener("click", function () {
                             let uC = document.getElementById("userColab").value;
                             console.log(uC);
-                            let query = "http://192.168.1.8:8000/projects/colabs?project_id=" + id + "&user_id=" + uC;
+                            let query = address+":8000/projects/colabs?project_id=" + id + "&user_id=" + uC;
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'POST',
@@ -226,7 +229,8 @@
                             });
                         });
                         seeCollab.addEventListener("click", function () {
-                            let query = "http://192.168.1.8:8000/projects/" + id;
+                            let query = address+":8000/projects/" + id;
+                            console.log(query);
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'GET',

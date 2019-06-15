@@ -65,7 +65,7 @@
                 <p class="textdropdown2">
                     🔔 Notification
                 </p>
-                <div class="contentdropdown2"id="contentdropdown2">
+                <div class="contentdropdown2" id="contentdropdown2">
                     <a href="#1">1</a>
                     <a href="#2">2</a>
                 </div>
@@ -78,7 +78,8 @@
     </div>
 
     <script>
-        const socket = io('http://192.168.1.8:3000');
+        let address = "http://localhost";
+        const socket = io(address + ':3000');
         let content = document.getElementById("additional-links");
         content.hidden = true;
         let table = document.getElementById("table");
@@ -103,13 +104,11 @@
             coding.hidden = false;
             outputtext.hidden = false;
         });
-        localStorage.setItem('JWT',
-            'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyOTA1MjQsImV4cCI6MTU2MDMzMzcyNCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.cVGz_Ic81LZVrBeKxqwlM-T80mJx_3hZo82Hj4iqDkX3fF7bB232n6G3GUtdA8iW8SCfJ2lgocKlSRGjY1P2KA'
-        );
-        localStorage.setItem('PID', '1');
+        // );
+        // localStorage.setItem('PID', '1');
         let content2 = document.getElementById("contentdropdown2");
-        let jwt = localStorage.getItem('JWT');
-        let pid = localStorage.getItem('PID');
+        let jwt = localStorage.getItem('jwt');
+        let pid = localStorage.getItem('project_id');
         // socket.on('event', function(data){});                                                                                
         // socket.on("update", (user, receivedUpdate) => {
         //     let newp = document.createElement("P");
@@ -135,7 +134,7 @@
         });
 
         function ExecuteQuery(jwt, projectID, querysql) {
-            let query = "http://192.168.1.8:8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+            let query = address + ":8000/projects/query?project_id=" + projectID + "&query=" + querysql;
             let bearer = 'Bearer ' + jwt;
             fetch(query, {
                 method: 'POST',
@@ -158,78 +157,119 @@
 
 
             }).then(jsonResp => {
-                if (jsonResp)
-                    document.getElementById("outputtext") = jsonResp["result"];
-            });
-            let javaC = document.getElementById("javaConvert");
-            javaC.addEventListener("click", function () {
-                let code = document.getElementById("codingtext").value;
-                GenerateJavaCode(jwt, 14, code)
-            });
-
-            function GenerateJavaCode(jwt, projectID, querysql) {
-                let query = "http://192.168.1.8:8000/generateCode/Java?project_id=" + projectID + "&query=" + querysql;
-                let bearer = 'Bearer ' + jwt;
-                fetch(query, {
-                    method: 'POST',
-                    // withCredentials: true,
-                    // credentials: 'include',
-                    // mode:"no-cors",
-                    headers: {
-                        'Authorization': bearer,
-                        // 'Content-Type': 'application/json'
-                    }
-                }).then((resp) => {
-                    if (resp.status == 200) {
-                        return resp.json();
-                    } else if (resp.status == 500) {
-                        console.log("500");
-                    } else if (resp.status = 401) {
-                        console.log("401");
-                    }
-
-
-                }).then(jsonResp => {
-                    if (jsonResp)
-                        document.getElementById("outputtext") = jsonResp["result"];
-                });
-                let phpC = document.getElementById("phpConvert");
-                phpC.addEventListener("click", function () {
-                    let code = document.getElementById("codingtext").value;
-                    GeneratePhpCode(jwt, 14, code);
-                });
-
-                function GeneratePhpCode(jwt, projectID, querysql) {
-                    let query = "http://192.168.1.8:8000/generateCode/Php?project_id=" + projectID + "&query=" +
-                        querysql;
-                    let bearer = 'Bearer ' + jwt;
-                    fetch(query, {
-                        method: 'POST',
-                        // withCredentials: true,
-                        // credentials: 'include',
-                        // mode:"no-cors",
-                        headers: {
-                            'Authorization': bearer,
-                            // 'Content-Type': 'application/json'
-                        }
-                    }).then((resp) => {
-                        if (resp.status == 200) {
-                            return resp.json();
-                        } else if (resp.status == 500) {
-                            console.log("500");
-                        } else if (resp.status = 401) {
-                            console.log("401");
-                        }
-
-
-                    }).then(jsonResp => {
-                        if (jsonResp)
-                            console.log(jsonResp["result"]);
-                    });
-
+                if (jsonResp) {
+                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    console.log(jsonResp["result"]);
                 }
-            }
+            });
         }
+        let pythonC = document.getElementById("pythonConvert");
+        pythonC.addEventListener("click", function () {
+            let code = document.getElementById("codingtext").value;
+            GeneratePythonCode(jwt, pid, code)
+        });
+        function GeneratePythonCode(jwt, projectID, querysql) {
+            let query = address + ":8000/generateCode/Python?project_id=" + projectID + "&query=" + querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
+
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    console.log(jsonResp["result"]);
+                }
+            });
+        }
+
+        let javaC = document.getElementById("javaConvert");
+        javaC.addEventListener("click", function () {
+            let code = document.getElementById("codingtext").value;
+            GenerateJavaCode(jwt, pid, code)
+        });
+        function GenerateJavaCode(jwt, projectID, querysql) {
+            let query = address + ":8000/generateCode/Java?project_id=" + projectID + "&query=" + querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
+
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    console.log(jsonResp["result"]);
+                }
+            });
+        }
+        let phpC = document.getElementById("phpConvert");
+        phpC.addEventListener("click", function () {
+            let code = document.getElementById("codingtext").value;
+            GeneratePhpCode(jwt, pid, code);
+        });
+
+        function GeneratePhpCode(jwt, projectID, querysql) {
+            let query = address + ":8000/generateCode/Php?project_id=" + projectID + "&query=" +
+                querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
+
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    console.log(jsonResp["result"]);
+                }
+            });
+
+        }
+
         coding.addEventListener("click", function () {
             outputtext.hidden = true;
             coding.hidden = true;

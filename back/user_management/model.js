@@ -139,13 +139,13 @@ module.exports.activateAccount = function (mail) {
 
         var con = mysql.createConnection({ host: 'localhost', user: 'test', password: '', database: 'manage_users' });
         con.connect(function (err) {
-            if (err) return reject(err);
+            if (err) return reject(false);
             console.log("Connected!");
         });
         con.query('update users set status=1 where email=?', [mail], function (err, rows, fields) {
-            if (err) return reject(err);
+            if (err) return reject(false);
             con.end();
-            resolve('account activated');
+            resolve(true);
         });
     })
 }

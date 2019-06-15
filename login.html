@@ -41,7 +41,7 @@
         
     </div>
     <script>
-        
+        let address="http://localhost";
         let logBtn = document.getElementById('login');
         let box = document.getElementsByClassName('login-box');
 
@@ -56,7 +56,7 @@
                 password : pass 
             });
             console.log(data);
-             let url = 'http://192.168.1.8:8001/login';
+             let url = address+':8001/login';
              fetch(url,{
                  method: 'POST',
                  

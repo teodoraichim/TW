@@ -27,8 +27,8 @@
                     
                     
                     <form id="validate">
-                    <input class="input-box" type="text" name="code-register" placeholder="validation code" required>
-                        <button class="login-btn" type="button">Submit</button>
+                    <input class="input-box" type="text" name="code-register" id='code' placeholder="validation code" required>
+                        <button class="login-btn" type="button" id='validateBut'>Submit</button>
                     </form>
                 </div>
                 <div class="mobile">
@@ -39,20 +39,21 @@
         </div>
     </div>
     <script>
+        let address="http://localhost";
         let butVal = document.getElementById('validateBut');
         butVal.addEventListener('click', onClick2);
         
 
         function onClick2() {
-            let email=localStorage.getItem("email");
             let code = document.getElementById('code');
             let email=localStorage.getItem("email");
+            console.log("email from storage"+email);
             let data = ({
                 email: email,
                 code: code.value
             })
 
-            let url = 'http://192.168.1.8:8001/register-validate';
+            let url = address+':8001/register-validate';
              fetch(url,{
                  method: 'POST',
                  

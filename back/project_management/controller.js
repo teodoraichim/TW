@@ -3,9 +3,9 @@ const http = require('http');
 const url = require('url');
 const model = require('./model.js');
 const convert = require('./Convertor.js');
-const jsonType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*","Content-Type": "application/json" };
-const textType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*", "Content-Type": "text/plain" };
-const noType={"Access-Control-Allow-Methods":"GET,POST,DELETE","Access-Control-Allow-Credentials":true,"Access-Control-Allow-Headers":"authorization","Access-Control-Allow-Origin": "*"};
+const jsonType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" };
+const textType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*", "Content-Type": "text/plain" };
+const noType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*" };
 //for working with the file system
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
@@ -50,7 +50,7 @@ function getToken(request, response) {
 }
 function validateToken(token, response) {
 
-    var publicKEY = fs.readFileSync('/home/silviu/web_dev/Project/back/user_management/public.key', 'utf8');
+    var publicKEY = fs.readFileSync('./public.key', 'utf8');
     var i = 'UPNP';          // Issuer 
     var s = 'some@user.com';        // Subject 
     var a = 'http://localhost'; // Audience
@@ -65,7 +65,7 @@ function validateToken(token, response) {
         var legit = jwt.verify(token, publicKEY, verifyOptions);
     }
     catch (err) {
-        
+
         console.log(err);
     }
     console.log("\nJWT verification result: " + JSON.stringify(legit));
@@ -106,8 +106,10 @@ function onRequest(request, response) {
         if (token) {
             legit = validateToken(token, response);
             if (legit) {
+                console.log("user:" + legit.user_id);
                 model.getProjectList(legit.user_id).then(function (json) {
                     response.writeHead(200, jsonType);
+                    console.log("json sent:" + json);
                     response.write(json);
                     response.end();
                 }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -162,6 +164,7 @@ function onRequest(request, response) {
                     if (bool)
                         model.getProject(legit.user_id, project_id).then(function (json) {
                             response.writeHead(200, jsonType);
+                            console.log("json sent:" + json);
                             response.write(json);
                             response.end();
                         }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -202,7 +205,7 @@ function onRequest(request, response) {
             if (proj_name != null && legit != null) {
                 model.addProject(legit.user_id, proj_name, dbUsername, dbPassword).then(function (project_id) {
                     let json = {};
-                    json['project_id']=project_id;
+                    json['project_id'] = project_id;
                     response.writeHead(200, jsonType);
                     response.write(JSON.stringify(json));
                     response.end();
@@ -289,7 +292,7 @@ function onRequest(request, response) {
                 }
                 else {
                     let json = { "isColab": false };
-                    response.writeHead(200,jsonType );
+                    response.writeHead(200, jsonType);
                     response.write(JSON.stringify(json));
                     response.end();
                 }
@@ -315,7 +318,7 @@ function onRequest(request, response) {
                 model.getDBCredentials(project_id).then(function (credentials) {
 
                     model.postQuery(legit.user_id, project_id, queryReq, credentials.username, credentials.password).then(function (json) {
-                        response.writeHead(200,jsonType);
+                        response.writeHead(200, jsonType);
                         response.write(json);
                         response.end();
                     }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
@@ -375,16 +378,26 @@ function onRequest(request, response) {
                     if (request.url.indexOf('/generateCode/Java') == 0) {
                         console.log("JavaGen");
                         var json = {};
-                        let javaCode= convert.fromQueryToJava('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
+                        let javaCode = convert.fromQueryToJava('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
                         console.log(javaCode);
                         json['result'] = javaCode;
                         response.writeHead(200, jsonType);
                         // console.log(json);
                         response.write(JSON.stringify(json));
                         response.end();
+                    } else if (request.url.indexOf('/generateCode/Python') == 0) {
+                        console.log("PythonGen");
+                        var json = {};
+                        let pythonCode = convert.fromQueryToPython('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
+                        console.log(pythonCode);
+                        json['result'] = pythonCode;
+                        response.writeHead(200, jsonType);
+                        // console.log(json);
+                        response.write(JSON.stringify(json));
+                        response.end();
                     }
                     else if (request.url.indexOf('/generateCode/Php') == 0) {
-                        console.log("JavaGen");
+                        console.log("PhpGen");
                         var json = {};
                         let phpCode = convert.fromQueryToPhp('localhost', credentials.username, credentials.password, credentials.id, queryReq);//host,username,password,path_database,query
                         console.log(phpCode);
@@ -403,14 +416,13 @@ function onRequest(request, response) {
         else send401Response(response);
 
     }
-    else if(request.method=='OPTIONS')
-    {
-        console.log("Options "+request.url)
-        response.writeHead(200,noType);
+    else if (request.method == 'OPTIONS') {
+        console.log("Options " + request.url)
+        response.writeHead(200, noType);
         response.end();
     }
     else {
-        console.log("Else"+request.method+" "+request.url);
+        console.log("Else" + request.method + " " + request.url);
         send404Response(response);
     }
 }

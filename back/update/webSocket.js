@@ -1,7 +1,7 @@
 const server = require('http').createServer();
 const io = require('socket.io')(server);
 const jwt = require('jsonwebtoken');
-const projMng = require('/home/silviu/web_dev/Project/back/update/projMngCommunication.js');
+const projMng = require('./projMngCommunication.js');
 const fs = require('fs');
 //clients object
 /*
@@ -17,11 +17,12 @@ const fs = require('fs');
 
 */
 let clients = {};
+let numProjects = 0;
 
 //returns the jwt object if the jwt is valid;an undefined obj otherwise
 function validateToken(token) {
 
-  var publicKEY = fs.readFileSync('/home/silviu/web_dev/Project/back/user_management/public.key', 'utf8');
+  var publicKEY = fs.readFileSync('./public.key', 'utf8');
   var i = 'UPNP';          // Issuer 
   var s = 'some@user.com';        // Subject 
   var a = 'http://localhost'; // Audience
@@ -58,18 +59,27 @@ io.on('connection', client => {
           console.log("User:" + user_id);
           console.log("Project:" + project_id);
           //add client to the clients object
-          for (var i = 0; i < clients[project_id].length; i++) {
-            console.log(clients[project_id][i].user_id);
-            if(clients[project_id][i].user_id==)
-            
-          }
-          if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
-          else clients[project_id] = [{ "client": client, "user_id": user_id }];
+          let isAlready = false;
+          if (clients[project_id])
+            for (var i = 0; i < clients[project_id].length; i++) {
+              console.log(clients[project_id][i].user_id);
+              if (clients[project_id][i].user_id == user_id)
+                isAlready = true;
+              if (!isAlready) {
+
+                if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
+                else {
+                  clients[project_id] = [{ "client": client, "user_id": user_id }]; 
+                }
+              }
+            }
+          else { clients[project_id] = [{ "client": client, "user_id": user_id }];}
+
           console.log(clients);
 
         }
         else client.emit("invalid");
-      }).catch((err) => setImmediate(() => { console.log(err);client.emit("error","Could not fulfill the request"); }));
+      }).catch((err) => setImmediate(() => { console.log(err); client.emit("error", "Could not fulfill the request"); }));
     }
   });
   //receive update from a client and send it to all the connected colabs
@@ -101,15 +111,22 @@ io.on('connection', client => {
   });
 
   client.on('disconnect', () => {
-    for (var i = 0; i < clients.length; i++) {
-      if (clients[i] === client) {
-        clients.splice(i, 1);
-        i--;
+    
+    Reflect.ownKeys(clients).forEach(project_id => {
+      console.log(clients[project_id]);
+      for (var i = 0; i < clients[project_id].length; i++) {
+        if (clients[project_id][i].client === client) {
+          clients[project_id].splice(i, 1);
+
+          i--;
+        }
+
       }
 
-    }
+    });
     console.log("Popped client");
     console.log(clients);
+    
   });
 });
 server.listen(3000);
