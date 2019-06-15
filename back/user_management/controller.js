@@ -93,7 +93,8 @@ function onRequest(request, response) {
          console.log("P" + body['password'])
 
          model.login(body['username'], body['password']).then(function (resp) {
-            if (resp) {
+            console.log(resp);
+            if (!resp) {
                send403Response(response);
             }
             else {
@@ -194,8 +195,8 @@ function onRequest(request, response) {
       request.on('end', () => {
          body = JSON.parse(buff);
 
-
-         model.changePassword(body["mail"]).then(function (bool1) {
+         console.log("change pass")
+         model.changePassword(body["email"]).then(function (bool1) {
             let json = { "status": bool1 };
             console.log(json);
             response.writeHead(200, jsonType);
@@ -219,10 +220,12 @@ function onRequest(request, response) {
       })
       request.on('end', () => {
          body = JSON.parse(buff);
+         console.log("change pass"+body['code']);  
 
-         model.changePassValidate(body['mail'], body['code'], body['pass']).then(function (bool1) {
+         model.changePassValidate(body['email'], body['code'], body['password']).then(function (bool1) {
             let json = { "status": bool1 };
             response.writeHead(200, jsonType);
+            console.log(json);
             response.write(JSON.stringify(json));
             response.end();
 

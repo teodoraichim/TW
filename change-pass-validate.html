@@ -3,8 +3,8 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="style/intro.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,11 @@
 
 <body>
     <div class="all">
-            <div class="left">
-                    <h2 class="head">Recover your password</h2>
-                    <button class="register" type="button" id="login-back" onclick="location.href='./intro.html'"><b> Back to first page </b></button>
-                </div>
+        <div class="left">
+            <h2 class="head">Recover your password</h2>
+            <button class="register" type="button" id="login-back" onclick="location.href='./intro.html'"><b> Back to
+                    first page </b></button>
+        </div>
         <div class="forget-page right">
             <div class="right-upper">
 
@@ -25,39 +26,37 @@
 
             </div>
             <div class="login-box">
-                
-                <form class="change-pass-code hide" id="validate">
-                    <input class="input-box" type="text" name= "code-change" placeholder="validation code" required>
-                    <input class="input-box" type="password" name= "pass-change" placeholder="new Password" required>
-                    <input class="input-box" type="password" name= "cpass-change" placeholder="confirm password" required>
-                    <input class="login-btn" type="submit" value="Submit">
+
+                <form class="change-pass-code hide">
+                    <input class="input-box" type="text" name="code-change" placeholder="validation code" required
+                        id="code">
+                    <input class="input-box" type="password" name="pass-change" placeholder="new Password" required
+                        id="password">
+                    <input class="input-box" type="password" name="cpass-change" placeholder="confirm password" required
+                        id="cpassword">
+                    <input class="login-btn" type="button" value="Submit" id="validate">
                 </form>
             </div>
             <div class="mobile">
-                <button class="register" type="button" id="login-back3" onclick="location.href='./intro.html'"><b>Back</b></button>
+                <button class="register" type="button" id="login-back3"
+                    onclick="location.href='./intro.html'"><b>Back</b></button>
             </div>
         </div>
-        
+
     </div>
     <script>
-        let address="http://localhost";
+        let address = "http://localhost";
         let validate = document.getElementById("validate");
 
-        validate.addEventListener("click",onClick2);
+        validate.addEventListener("click", onClick2);
 
-        
-
-    
-
-
-
-    function onClick2() {
+        function onClick2() {
 
             let code = document.getElementById('code').value;
             let pass = document.getElementById('password').value;
             let cpass = document.getElementById('cpassword').value;
             let box = document.getElementById('login-box');
-            let email=localStorage.getItem("email");
+            let email = localStorage.getItem("email");
 
             if (pass == cpass) {
 
@@ -67,39 +66,40 @@
                     password: pass
                 })
 
-                let url = address+':8001/changePasswordValidate';
-             fetch(url,{
-                 method: 'POST',
-                 
-                 body: JSON.stringify(data),
-                 headers: {
-                    'Content-Type': 'application/json',
-                    
-                 }
-             })
-             .then((resp)=>{
-                 if (resp.status==200) return resp.json();
-                 else{
-                    let p=document.createElement(p);
-                    p.value = 'incorect data';
-                    box.appendChild(p);
-                 }
-            }).then(jsonResp=>{
+                let url = address + ':8001/changePasswordValidate';
+                fetch(url, {
+                    method: 'POST',
 
-                //localStorage.setItem("jwt",jsonResp.token);
-                //console.log(localStorage.getItem("jwt"));
-                location.href='./login.html';
-                
-            }).catch(onError);
-            function onError(err)
-            {
-                
-                console.log('error');
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    }
+                }).then((resp) => {
+                    console.log("response received");
+                    if (resp.status == 200) return resp.json();
+                    else {
+                        let p = document.createElement(p);
+                        p.value = 'incorect data';
+                        box.appendChild(p);
+                    }
+                }).then(jsonResp => {
+                    if (jsonResp) {
+                        console.log(JSON.stringify(jsonResp));
+
+                        //localStorage.setItem("jwt",jsonResp.token);
+                        //console.log(localStorage.getItem("jwt"));
+                        if (jsonResp.status) location.href = './login.html';
+                    }
+                }).catch(onError);
+                function onError(err) {
+
+                    console.log('error');
+                }
             }
         }
-    }
-    
-        
+
+
     </script>
 
 </body>

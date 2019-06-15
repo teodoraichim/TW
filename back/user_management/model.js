@@ -181,14 +181,15 @@ module.exports.login = function (user_name, password) {
             if (err) return reject(err);
             console.log("Connected!");
         });
-
+        console.log("username:"+user_name);
         con.query('select password from users where username=? and status=1', [user_name], function (err, rows, fields) {
-            if (err) return reject(err);
+            if (err) return reject(false);
             con.end();
             if (rows[0] == null) resolve(false);
-            let hash = toString(rows[0]);
-            if (!bcrypt.compareSync(password, hash)) resolve(false);
-            resolve(true);
+            let hash = rows[0].password;
+            console.log("password:"+hash);
+            resolve(bcrypt.compareSync(password, hash));
+            
 
         });
 
@@ -201,12 +202,14 @@ module.exports.updatePassword = function (email, password) {
         var con = mysql.createConnection({ host: 'localhost', user: 'test', password: '', database: 'manage_users' });
 
         con.connect(function (err) {
-            if (err) return reject(err);
+            if (err) return reject(false);
             console.log("Connected!");
         });
+        console.log("unhashed pass:"+password);
         let hash = hashPassword(password);
+        console.log("new password:"+hash);
         con.query('update users set password=? where email=?', [hash, email], function (err, rows, fields) {
-            if (err) return reject(err);
+            if (err) return reject(false);
             con.end();
 
             resolve(true);
