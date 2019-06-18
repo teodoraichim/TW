@@ -185,13 +185,9 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) {
-                                    console.log("Ok");
-                                } else if (resp.status == 500) {
-                                    console.log("500");
-                                } else if (resp.status = 401) {
-                                    console.log("401");
-                                }
+                                if (resp.status == 200) { console.log("Ok"); }
+                                else if (resp.status == 500) { console.log("500"); }
+                                else if (resp.status = 401) { console.log("401"); }
 
                             });
                             acproj.parentNode.removeChild(acproj);
@@ -200,31 +196,45 @@
                         addCollabB.addEventListener("click", function () {
                             let uC = document.getElementById("userColab").value;
                             console.log(uC);
-                            let query = address + ":8000/projects/colabs?project_id=" + id +
-                                "&user_id=" + uC;
-                            let bearer = 'Bearer ' + jwt;
-                            fetch(query, {
-                                method: 'POST',
-                                // withCredentials: true,
-                                // credentials: 'include',
-                                // mode:"no-cors",
-                                headers: {
-                                    'Authorization': bearer,
-                                    // 'Content-Type': 'application/json'
-                                }
-                            }).then((resp) => {
+                            let query1 = address + ":8001/getId?username=" + uC;
+                            fetch(query1, { method: 'GET' }).then((resp) => {
                                 if (resp.status == 200) {
-                                    console.log(uC);
+                                    return resp.json();
                                 } else if (resp.status == 500) {
                                     console.log("500");
                                 } else if (resp.status = 401) {
                                     console.log("401");
-                                } else if (resp.status = 403) {
-                                    console.log("403");
                                 }
 
+
+                            }).then(jsonResp => {
+                                if (jsonResp) {
+                                    console.log(jsonResp["id"]);
+                                    console.log("PLm");
+
+                                    let query = address + ":8000/projects/colabs?project_id=" + id + "&user_id=" + jsonResp["id"];
+                                    let bearer = 'Bearer ' + jwt;
+                                    fetch(query, {
+                                        method: 'POST',
+                                        // withCredentials: true,
+                                        // credentials: 'include',
+                                        // mode:"no-cors",
+                                        headers: {
+                                            'Authorization': bearer,
+                                            // 'Content-Type': 'application/json'
+                                        }
+                                    }).then((resp) => {
+                                        if (resp.status == 200) { console.log("done "); }
+                                        else if (resp.status == 500) { console.log("500"); }
+                                        else if (resp.status = 401) { console.log("401"); }
+                                        else if (resp.status = 403) { console.log("403"); }
+
+                                    });
+
+                                }
                             });
                         });
+
                         seeCollab.addEventListener("click", function () {
                             let query = address + ":8000/projects/" + id;
                             console.log(query);
@@ -239,38 +249,57 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) {
-                                    return resp.json();
-                                } else if (resp.status == 500) {
-                                    console.log("500");
-                                } else if (resp.status = 401) {
-                                    console.log("401");
-                                } else if (resp.status = 403) {
-                                    console.log("403");
-                                }
+                                if (resp.status == 200) { return resp.json(); }
+                                else if (resp.status == 500) { console.log("500"); }
+                                else if (resp.status = 401) { console.log("401"); }
+                                else if (resp.status = 403) { console.log("403"); }
 
                             }).then(jsonResp => {
                                 if (jsonResp) {
                                     let col = '';
                                     console.log(jsonResp);
+                                    let num = jsonResp["colabs"].length;
+                                    console.log("num:" + num);
                                     jsonResp["colabs"].forEach(element => {
                                         console.log(element.user_id);
-                                        col = col + " " + element.user_id;
+                                        let query1 = address + ":8001/getUsername?userId=" + element.user_id;
+                                        fetch(query1, {
+                                            method: 'GET',
+                                            // withCredentials: true,
+                                            // credentials: 'include',
+                                            // mode:"no-cors",
+                                            headers: {
+                                                'Authorization': bearer,
+                                                // 'Content-Type': 'application/json'
+                                            }
+                                        }).then((resp) => {
+                                            if (resp.status == 200) { return resp.json(); }
+                                            else if (resp.status == 500) { console.log("500"); }
+                                            else if (resp.status = 401) { console.log("401"); }
+                                            else if (resp.status = 403) { console.log("403"); }
+
+                                        }).then(jsonResp => {
+                                            if (jsonResp) {
+                                                console.log("username:" + jsonResp["username"]);
+                                                col = col + "\n" + jsonResp["username"];
+                                                num--;
+                                                if (num == 0)
+                                                    alert(col);
+                                                console.log(col + " " + num);
+                                            }
+                                        });
 
                                     });
-                                    alert(col);
+
                                 }
 
-                            })
-                        })
+                            });
+
+                        });
                     }
-
                 });
-
-
             }
         }
-
         id = localStorage.getItem("selected");
         //console.log(id);
     </script>
