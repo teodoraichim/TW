@@ -300,8 +300,11 @@
 
 
         }).then(jsonResp => {
-            if (jsonResp)
+            if (jsonResp){
+                alert("The table was created succesfuly");
                 console.log(jsonResp["result"]);
+                location.reload();
+            }
         });
 
     }

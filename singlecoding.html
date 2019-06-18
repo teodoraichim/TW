@@ -158,10 +158,10 @@
                 }
             }).then((resp) => {
                 if (resp.status == 200) {
-                    console.log("OK");
+                    alert("Query executed succesfully! See the \"Output\" page");
                     return resp.json();
                 } else if (resp.status == 500) {
-                    console.log("500");
+                    alert("Invalid Query! Verify the name of the table and the data!");
                 } else if (resp.status = 401) {
                     console.log("401");
                 }
