@@ -120,14 +120,24 @@
             let result="create table ";
             btrow.addEventListener("click", function() {
                 var clone = nrow.cloneNode(true);
-                clone.id = "addingtr" + ++i;        
+                clone.id = "addingtr" + ++i;  
+                clone.classList.add("addingtr" + i);      
                 nrow.parentNode.appendChild(clone);
-                console.log(clone.childNodes.item("delete"));
-                clone.querySelector["#delete"].addEventListener("click",function(){
-                    clone.parentNode.removeChild(clone);
+                // console.log(clone.childNodes.item("delete"));
+                // clone.querySelector["#delete"].addEventListener("click",function(){
+                //     clone.parentNode.removeChild(clone);
+                let newelement = document.getElementById("addingtr" + i);
+                let newcontent = document.getElementsByClassName("deletebtn");
+                let j = i;
+                if (j != 0)
+                {
+                    newcontent[j].addEventListener("click", function() {
+                        let deleteelem = document.getElementById("addingtr" + j);
+                        deleteelem.parentNode.removeChild(deleteelem); 
+                    })
+                }
                 }); 
-                   
-            });
+
             newTab.addEventListener("click",function(){
                 let Names=[];
                 let Types=[];
@@ -291,19 +301,7 @@
         });
 
     }
-            let content = document.getElementById("additional-links");
-            content.hidden = true;
-            let table = document.getElementById("table");
-            const style = getComputedStyle(content);
-            table.addEventListener("click",
-                function () {
-                    if (style.display == "block")
-                        content.hidden = true;
-                    else
-                        content.hidden = false;
-                }, false);
-
-        
+   
         </script>
 
 </body>
