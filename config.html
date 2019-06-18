@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Configuration</title>
+</head>
+<body>
+    <input type="text" value="name" id="config" required>
+    <button id="submitbtn">Submit</button>
+
+    <script>
+        let sub = document.getElementById("submitbtn");
+        let x = document.getElementById("config");
+        sub.addEventListener("click", function() {
+            localStorage.setItem("ipadd", x.value);
+            let a = localStorage.getItem("ipadd");
+            console.log(a);
+        })
+    </script>
+</body>
+</html>

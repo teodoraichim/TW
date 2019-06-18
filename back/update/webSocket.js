@@ -62,20 +62,18 @@ io.on('connection', client => {
           let isAlready = false;
           if (clients[project_id])
             for (var i = 0; i < clients[project_id].length; i++) {
-              console.log("user_id:" + clients[project_id][i].user_id);
+              console.log(clients[project_id][i].user_id);
               if (clients[project_id][i].user_id == user_id)
                 isAlready = true;
+              if (!isAlready) {
+
+                if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
+                else {
+                  clients[project_id] = [{ "client": client, "user_id": user_id }]; 
+                }
+              }
             }
-          if (!isAlready) {
-
-            if (clients[project_id]) clients[project_id].push({ "client": client, "user_id": user_id });
-            else {
-              clients[project_id] = [{ "client": client, "user_id": user_id }];
-            }
-          }
-          else { clients[project_id].push({ "client": client, "user_id": user_id }); }
-
-
+          else { clients[project_id] = [{ "client": client, "user_id": user_id }];}
 
           console.log(clients);
 
@@ -113,7 +111,7 @@ io.on('connection', client => {
   });
 
   client.on('disconnect', () => {
-
+    
     Reflect.ownKeys(clients).forEach(project_id => {
       console.log(clients[project_id]);
       for (var i = 0; i < clients[project_id].length; i++) {
@@ -128,7 +126,7 @@ io.on('connection', client => {
     });
     console.log("Popped client");
     console.log(clients);
-
+    
   });
 });
 server.listen(3000);
