@@ -40,7 +40,6 @@
                     <button class="dropbtn" id="notifbtn">Notifications ⬇
                     </button>
                     <div class="dropdown-content" id="notification">
-                        <a href="#">Testing</a>
                     </div>
                 </div>
                 <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
@@ -102,8 +101,8 @@
         socket.on('event', function (data) { });
         socket.on("update", (user, receivedUpdate) => {
             let newp = document.createElement("A");
-            // let notifbtn = getElementById("notifbtn");
-            // notifbtn.innerText = "New notification ⬇";
+            let notbtn = document.getElementById("notifbtn");
+            notbtn.innerText = "New notification";
             newp.href = "#";
             newp.innerText = "New query executed";
             console.log("receivedUpdate:" + receivedUpdate);
