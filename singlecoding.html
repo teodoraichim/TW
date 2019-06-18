@@ -14,36 +14,36 @@
 <body>
     <div id="right" class="column">
         <div class="topnav" id="myTopnav">
-                <a href="projects.html">Projects</a>
-                <div class="dropdown">
-                    <button class="dropbtn">Table ⬇
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="creare_tabele.html">Create table</a>
-                        <a href="viewtables.html">View table</a>
-                    </div>
+            <a href="projects.html">Projects</a>
+            <div class="dropdown">
+                <button class="dropbtn">Table ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="creare_tabele.html">Create table</a>
+                    <a href="viewtables.html">View table</a>
                 </div>
-                <a href="singlecoding.html" class="active">Query</a>
-                <div class="dropdown">
-                        <button class="dropbtn">Convert ⬇
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="#" id="phpConvert">PHP</a>
-                            <a href="#" id="javaConvert">Java</a>
-                            <a href="#" id="pythonConvert">Python</a>
-                        </div>
-                    </div>
-                <a href="#" id="coding">Coding</a>
-                <a href="#" id="output">Output</a>
-                <a href="#" id="run">Run</a>
-                <div class="dropdown">
-                    <button class="dropbtn" id="notifbtn">Notifications ⬇
-                    </button>
-                    <div class="dropdown-content" id="notification">
-                    </div>
-                </div>
-                <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
             </div>
+            <a href="singlecoding.html" class="active">Query</a>
+            <div class="dropdown">
+                <button class="dropbtn">Convert ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="#" id="phpConvert">PHP</a>
+                    <a href="#" id="javaConvert">Java</a>
+                    <a href="#" id="pythonConvert">Python</a>
+                </div>
+            </div>
+            <a href="#" id="coding">Coding</a>
+            <a href="#" id="output">Output</a>
+            <a href="#" id="run">Run</a>
+            <div class="dropdown">
+                <button class="dropbtn" id="notifbtn">Notifications ⬇
+                </button>
+                <div class="dropdown-content" id="notification">
+                </div>
+            </div>
+            <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
+        </div>
         <div class="bottom">
             <textarea class="scroll" id="codingtext"></textarea>
             <textarea class="scroll" id="outputtext"></textarea>
@@ -55,13 +55,13 @@
         const socket = io(address + ':3000');
 
         function showMenu() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "topnav";
-                }
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
             }
+        }
 
         let coding = document.getElementById("coding");
         coding.classList.add("active");
@@ -104,9 +104,35 @@
             let notbtn = document.getElementById("notifbtn");
             notbtn.innerText = "New notification";
             newp.href = "#";
-            newp.innerText = "New query executed";
+            let query1 = address + ":8001/getUsername?userId=" + user;
+            bearer="Bearer "+jwt;
+            fetch(query1, {
+                method: 'GET',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) { return resp.json(); }
+                else if (resp.status == 500) { console.log("500"); }
+                else if (resp.status = 401) { console.log("401"); }
+                else if (resp.status = 403) { console.log("403"); }
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    newp.innerText = jsonResp["username"]+" executed a query";
+                    newp.addEventListener("click",function(){
+                        alert(receivedUpdate);
+                    })
+                    content2.appendChild(newp);
+                    
+                }
+            });
             console.log("receivedUpdate:" + receivedUpdate);
-            content2.appendChild(newp);
+            
         });
         // console.log(content2);
 
@@ -114,7 +140,8 @@
             let code = document.getElementById("codingtext").value;
             console.log(code);
             ExecuteQuery(jwt, pid, code);
-            socket.emit("addUpdate", jwt, pid, "am venit");
+
+            socket.emit("addUpdate", jwt, pid, code);
         });
 
         function ExecuteQuery(jwt, projectID, querysql) {
@@ -176,7 +203,7 @@
 
             }).then(jsonResp => {
                 if (jsonResp) {
-                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    document.getElementById("outputtext").value = jsonResp["result"];
                     console.log(jsonResp["result"]);
                 }
             });
@@ -211,7 +238,7 @@
 
             }).then(jsonResp => {
                 if (jsonResp) {
-                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    document.getElementById("outputtext").value = jsonResp["result"];
                     console.log(jsonResp["result"]);
                 }
             });
@@ -247,7 +274,7 @@
 
             }).then(jsonResp => {
                 if (jsonResp) {
-                    document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    document.getElementById("outputtext").value = jsonResp["result"];
                     console.log(jsonResp["result"]);
                 }
             });

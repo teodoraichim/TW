@@ -5,9 +5,9 @@ const bodyParse = require('body-parser');
 const url = require('url');
 const model = require('./model.js');
 
-const jsonType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization", "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" };
-const textType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization", "Access-Control-Allow-Origin": "*", "Content-Type": "text/plain" };
-const noType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization", "Access-Control-Allow-Origin": "*" };
+const jsonType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" };
+const textType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*", "Content-Type": "text/plain" };
+const noType = { "Access-Control-Allow-Methods": "GET,POST,DELETE", "Access-Control-Allow-Credentials": true, "Access-Control-Allow-Headers": "authorization,content-type", "Access-Control-Allow-Origin": "*" };
 //for working with the file system
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
@@ -93,18 +93,19 @@ function onRequest(request, response) {
          console.log("P" + body['password'])
 
          model.login(body['username'], body['password']).then(function (resp) {
-            if (resp) {
+            console.log(resp);
+            if (!resp) {
                send403Response(response);
             }
             else {
-               model.getId(body['username']).then(function(user_id){
-                  let json = { "token":  createToken(user_id)};
+               model.getId(body['username']).then(function (user_id) {
+                  let json = { "token": createToken(user_id) };
                   response.writeHead(200, jsonType);
                   response.write(JSON.stringify(json));
                   response.end();
 
                }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
-            
+
             }
 
 
@@ -127,6 +128,7 @@ function onRequest(request, response) {
          buff += chunk;
       })
       request.on('end', () => {
+         console.log("Register-" + buff);
          body = JSON.parse(buff);
 
          model.register(body['username'], body['password'], body['email']).then(function (message) {
@@ -159,22 +161,17 @@ function onRequest(request, response) {
       request.on('end', () => {
          body = JSON.parse(buff);
          //JSON.stringify(buf);
-         model.validateCode(body['mail'], body['code']).then(function (bool) {
+         model.validateCode(body['email'], body['code']).then(function (bool) {
             if (bool) {
-               model.activateAccount(body['mail']).then(function (bool) {
+               model.activateAccount(body['email']).then(function (bool) {
                   let json = { "validate": bool };
                   response.writeHead(200, jsonType);
                   response.write(JSON.stringify(json));
                   response.end();
 
                });
-
             }
-            let json = { "validate": bool };
-            response.writeHead(200, jsonType);
-            response.write(JSON.stringify(json));
-            response.end();
-
+            else send403Response(response);
 
          }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
 
@@ -197,9 +194,9 @@ function onRequest(request, response) {
       })
       request.on('end', () => {
          body = JSON.parse(buff);
-         
 
-         model.changePassword(body["mail"]).then(function (bool1) {
+         console.log("change pass")
+         model.changePassword(body["email"]).then(function (bool1) {
             let json = { "status": bool1 };
             console.log(json);
             response.writeHead(200, jsonType);
@@ -223,10 +220,12 @@ function onRequest(request, response) {
       })
       request.on('end', () => {
          body = JSON.parse(buff);
+         console.log("change pass"+body['code']);  
 
-         model.changePassValidate(body['mail'], body['code'], body['pass']).then(function (bool1) {
-            let json ={ "status": bool1 };
+         model.changePassValidate(body['email'], body['code'], body['password']).then(function (bool1) {
+            let json = { "status": bool1 };
             response.writeHead(200, jsonType);
+            console.log(json);
             response.write(JSON.stringify(json));
             response.end();
 
@@ -247,6 +246,21 @@ function onRequest(request, response) {
 
       model.getId(username).then(function (id) {
          let json = { "id": id };
+         console.log(json);
+         response.writeHead(200, jsonType);
+         response.write(JSON.stringify(json));
+         response.end();
+
+      }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+   }
+   else if (request.method == "GET" && request.url.indexOf('/getUsername') == 0) {
+
+      var queryData = url.parse(request.url, true).query;
+      let userId = queryData.userId;
+
+      model.getUsername(userId).then(function (username) {
+         let json = { "username": username };
+         console.log(json);
          response.writeHead(200, jsonType);
          response.write(JSON.stringify(json));
          response.end();
