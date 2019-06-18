@@ -226,7 +226,10 @@
                     });
                 let ppk="PRIMARY KEY("
                 let tN=document.getElementById("Tname").value;
-                result+= tN + "(" + " ";
+                if (tN=="")
+                    alert("Table name is mandatory!")
+                else    
+                    result+= tN + "(" + " ";
                 let pkn=0;
                 for(let j=0;j<PKs.length;j++)
                 {
@@ -275,6 +278,7 @@
                 }
                 result+=");";
                 postExecuteQueryFetch(jwt,pid,result);
+                result="create table ";
                 
         });
         function postExecuteQueryFetch(jwt, projectID, querysql) {
@@ -291,7 +295,7 @@
             }
         }).then((resp) => {
             if (resp.status == 200) { return resp.json(); }
-            else if (resp.status == 500) { console.log("500"); }
+            else if (resp.status == 500) { alert("Invalid Columns"); }
             else if (resp.status = 401) { console.log("401"); }
 
 
