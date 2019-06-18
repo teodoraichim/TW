@@ -13,17 +13,17 @@
 <body>
     <div id="right" class="column">
         <div class="topnav" id="myTopnav">
-            <a href="projects.html" class="active">Project</a>
+            <a href="projects.html" class="active">Projects</a>
             <div class="dropdown">
                 <button class="dropbtn">Table ⬇
                 </button>
                 <div class="dropdown-content">
-                    <a href="creare_tabele.html">New table</a>
+                    <a href="creare_tabele.html">Create table</a>
                     <a href="viewtables.html">View table</a>
                 </div>
             </div>
-            <a href="singlecoding.html">Query</a>
-            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+            <a href="singlecoding.html">Coding</a>
+            <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
         </div>
         <div class="bottom">
             <div class="addproject">
@@ -45,6 +45,15 @@
     </div>
 
     <script>
+        function showMenu() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+
         //let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
         let address = "http://localhost";
         let jwt = localStorage.getItem("jwt");
@@ -92,18 +101,6 @@
 
         let projcount = 0;
         let clicked = "false";
-
-        let content = document.getElementById("additional-links");
-        content.hidden = true;
-        let table = document.getElementById("table");
-        const style = getComputedStyle(content);
-        table.addEventListener("click",
-            function () {
-                if (style.display == "block")
-                    content.hidden = true;
-                else
-                    content.hidden = false;
-            }, false);
 
         let button = document.getElementById("addbutton");
         let deleteB = document.getElementById("deletebutton");

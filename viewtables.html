@@ -12,74 +12,75 @@
 
 <body>
     <div id="right" class="column">
-        <div class="topnav" id="myTopnav">
-            <a href="projects.html">Project</a>
-            <div class="dropdown">
-                <button class="dropbtn">Table ⬇
-                </button>
-                <div class="dropdown-content">
-                    <a href="creare_tabele.html">New table</a>
-                    <a href="viewtables.html" class="active">View table</a>
+            <div class="topnav" id="myTopnav">
+                    <a href="projects.html">Projects</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">Table ⬇
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="creare_tabele.html">Create table</a>
+                            <a href="viewtables.html" class="active">View table</a>
+                        </div>
+                    </div>
+                    <a href="singlecoding.html">Coding</a>
+                    <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
                 </div>
-            </div>
-            <a href="singlecoding.html">Query</a>
-            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-        </div>
         <div class="bottom">
-            <div class="tablewrap">
-                <div class="caption">ay</div>
+                <div class="tablewrap">
+                <div class="caption">ay</div>	
                 <div id="table">
                     <div class="header-row row">
-                        <span class="cell primary">bzx</span>
-                        <span class="cell">asd</span>
-                        <span class="cell">eeqweqior</span>
-                        <span class="cell">Eeeqwe</span>
-                        <span class="cell">Tfsdfsd</span>
-                    </div>
-                    <div class="row">
-                        <input type="radio" name="expand">
-                        <span class="cell primary" data-label="bzx">2012331X</span>
-                        <span class="cell" data-label="asd">weweqwe</span>
-                        <span class="cell" data-label="eeqweqior">Bsaddvk</span>
-                        <span class="cell" data-label="Eeeqwe">2432fsdo</span>
-                        <span class="cell" data-label="Tfsdfsd"><a href="">2312a21</a></span>
-                    </div>
+                    <span class="cell primary">bzx</span>
+                    <span class="cell">asd</span>
+                     <span class="cell">eeqweqior</span>
+                    <span class="cell">Eeeqwe</span>
+                    <span class="cell">Tfsdfsd</span>
+                  </div>
+                  <div class="row">
+                    <input type="radio" name="expand">
+                    <span class="cell primary" data-label="bzx">2012331X</span>
+                    <span class="cell" data-label="asd">weweqwe</span>
+                     <span class="cell" data-label="eeqweqior">Bsaddvk</span>
+                     <span class="cell" data-label="Eeeqwe">2432fsdo</span>
+                    <span class="cell" data-label="Tfsdfsd"><a href="">2312a21</a></span>
+                  </div>
                 </div>
             </div>
+
+
+
         </div>
     </div>
 
     <script>
-        let content = document.getElementById("additional-links");
-        content.hidden = true;
-        let table = document.getElementById("table");
-        const style = getComputedStyle(content);
-        table.addEventListener("click",
-            function () {
-                if (style.display == "block")
-                    content.hidden = true;
-                else
-                    content.hidden = false;
-            }, false);
+        function showMenu() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
 
         let coding = document.getElementById("coding");
         coding.hidden = true;
         let output = document.getElementById("output");
         let codetext = document.getElementById("codingtext");
         let outputtext = document.getElementById("outputtext");
-        output.addEventListener("click", function () {
+        output.addEventListener("click", function(){
             codetext.hidden = true;
             output.hidden = true;
             coding.hidden = false;
             outputtext.hidden = false;
         });
 
-        coding.addEventListener("click", function () {
+        coding.addEventListener("click", function(){
             outputtext.hidden = true;
             coding.hidden = true;
             output.hidden = false;
             codetext.hidden = false;
         });
+        
     </script>
 
 </body>

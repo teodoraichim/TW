@@ -13,17 +13,17 @@
 <body>
     <div id="right" class="column">
         <div class="topnav" id="myTopnav">
-            <a href="projects.html">Project</a>
+            <a href="projects.html">Projects</a>
             <div class="dropdown">
                 <button class="dropbtn">Table ⬇
                 </button>
                 <div class="dropdown-content">
-                    <a href="creare_tabele.html" class="active">New table</a>
+                    <a href="creare_tabele.html" class="active">Create table</a>
                     <a href="viewtables.html">View table</a>
                 </div>
             </div>
-            <a href="singlecoding.html">Query</a>
-            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+            <a href="singlecoding.html">Coding</a>
+            <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
         </div>
         <div class="bottom">
             <div class="tablesubttons">
@@ -98,7 +98,7 @@
         </div>
 
         <script>
-            function myFunction() {
+            function showMenu() {
                 var x = document.getElementById("myTopnav");
                 if (x.className === "topnav") {
                     x.className += " responsive";
@@ -129,17 +129,6 @@
                 console.log(result);
 
             });
-            let content = document.getElementById("additional-links");
-            content.hidden = true;
-            let table = document.getElementById("table");
-            const style = getComputedStyle(content);
-            table.addEventListener("click",
-                function () {
-                    if (style.display == "block")
-                        content.hidden = true;
-                    else
-                        content.hidden = false;
-                }, false);
         </script>
 
 </body>

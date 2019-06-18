@@ -10,62 +10,61 @@
     <script src="./back/update/socket.io/socket.io.js"></script>
     <title>Code</title>
 </head>
-<!-- 
-<div class="top-right">
-    <div class="dropdown">
-        <p class="textdropdown">
-            ♾️️ Convert
-        </p>
-        <div class="contentdropdown">
-            <button class="button" id="phpConvert">Convert to PHP</button>
-            <button class="button" id="javaConvert">Convert to Java</button>
-            <button class="button" id="pythonConvert">Convert to Python</button>
-        </div>
-    </div>
-    <button class="run" id="run">
-        ▶️ Run
-    </button>
-    <p id="output">Output
-    </p>
-    <p id="coding">Coding
-    </p>
-    <div class="dropdown2">
-        <p class="textdropdown2">
-            🔔 Notification
-        </p>
-        <div class="contentdropdown2" id="contentdropdown2">
-            <a href="#1">1</a>
-            <a href="#2">2</a>
-        </div>
-</div> -->
 
 <body>
     <div id="right" class="column">
+        <!-- <div class="top-right">
+            <div class="dropdown">
+                <p class="textdropdown">
+                    ♾️️ Convert
+                </p>
+                <div class="contentdropdown">
+                    <button class="button" id="phpConvert">Convert to PHP</button>
+                    <button class="button" id="javaConvert">Convert to Java</button>
+                    <button class="button" id="pythonConvert">Convert to Python</button>
+                </div>
+            </div>
+            <button class="run" id="run">
+                ▶️ Run
+            </button>
+            <p id="output">Output
+            </p>
+            <p id="coding">Coding
+            </p>
+            <div class="dropdown2">
+                <p class="textdropdown2">
+                    🔔 Notification
+                </p>
+                <div class="contentdropdown2" id="contentdropdown2">
+                    <a href="#1">1</a>
+                    <a href="#2">2</a>
+                </div>
+            </div>
+        </div> -->
         <div class="topnav" id="myTopnav">
-            <a href="projects.html">Project</a>
-            <div class="dropdown">
-                <button class="dropbtn">Table ⬇
-                </button>
-                <div class="dropdown-content">
-                    <a href="creare_tabele.html">New table</a>
-                    <a href="viewtables.html">View table</a>
+                <a href="projects.html">Projects</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Table ⬇
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="creare_tabele.html">Create table</a>
+                        <a href="viewtables.html">View table</a>
+                    </div>
                 </div>
+                <a href="singlecoding.html" class="active">Query</a>
+                <div class="dropdown">
+                        <button class="dropbtn">Convert ⬇
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#" id="phpConvert">PHP</a>
+                            <a href="#" id="javaConvert">Java</a>
+                            <a href="#" id="pythonConvert">Python</a>
+                        </div>
+                    </div>
+                <a href="#" id="coding">Coding</a>
+                <a href="#" id="output">Output</a>
+                <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
             </div>
-            <a href="singlecoding.html" class="active">Query</a>
-            <div class="dropdown">
-                <button class="dropbtn">Convert
-                </button>
-                <div class="dropdown-content">
-                    <a href="#" id="phpConvert">PHP</a>
-                    <a href="#" id="javaConvert">Java</a>
-                    <a href="#" id="pythonConvert">Python</a>
-                </div>
-            </div>
-            <a href="#" id="output">Output</a>
-            <a href="#2" id="coding">Coding</a>
-            <a href="#" id="run">Run</a>
-            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-        </div>
         <div class="bottom">
             <textarea class="scroll" id="codingtext"></textarea>
             <textarea class="scroll" id="outputtext"></textarea>
@@ -75,6 +74,15 @@
     <script>
         let address = "http://localhost";
         const socket = io(address + ':3000');
+
+        function showMenu() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
 
         let coding = document.getElementById("coding");
         coding.classList.add("active");
@@ -95,8 +103,8 @@
             coding.hidden = true;
             output.hidden = false;
             codetext.hidden = false;
-            coding.classList.add("active");
             output.classList.remove("active");
+            coding.classList.add("active");
         });
         // );
         // localStorage.setItem('PID', '1');
