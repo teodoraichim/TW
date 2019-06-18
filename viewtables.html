@@ -12,82 +12,176 @@
 
 <body>
     <div id="right" class="column">
-            <div class="topnav" id="myTopnav">
-                    <a href="projects.html">Projects</a>
-                    <div class="dropdown">
-                        <button class="dropbtn">Table ⬇
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="creare_tabele.html">Create table</a>
-                            <a href="viewtables.html" class="active">View table</a>
-                        </div>
-                    </div>
-                    <a href="singlecoding.html">Coding</a>
-                    <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
+        <div class="topnav" id="myTopnav">
+            <a href="projects.html">Projects</a>
+            <div class="dropdown">
+                <button class="dropbtn">Table ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="creare_tabele.html">Create table</a>
+                    <a href="viewtables.html" class="active">View table</a>
                 </div>
+            </div>
+            <a href="singlecoding.html">Coding</a>
+            <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
+        </div>
         <div class="bottom">
             <div class="tablewrap">
-                <div style="overflow-x:auto;">
-                    <button class="newadd">Table name</button>
+                <div id="wrapper" style="overflow-x:auto;">
                     <table id="type-table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>PK</th>
-                            <th>NN</th>
-                            <th>UQ</th>
-                            <th>BIN</th>
-                            <th>UN</th>
-                            <th>ZF</th>
-                            <th>AI</th>
-                        </tr>
-                        <tr>
-                            <td>Name</td>
-                            <td>Type</td>
-                            <td>PK</td>
-                            <td>NN</td>
-                            <td>UQ</td>
-                            <td>BIN</td>
-                            <td>UN</td>
-                            <td>ZF</td>
-                            <td>AI</td>
+                        <tr id="header">
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
-</div>
+    </div>
     <script>
+        let contenttable = document.getElementById("wrapper");
+        let headertable = document.getElementById("header");
+        let trtable = document.getElementById("type-table");
+
         let address = "http://" + localStorage.getItem("ipadd");
-        console.log(address);
+        // console.log(address);
+
         function showMenu() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "topnav";
-                }
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
             }
+        }
 
-        let coding = document.getElementById("coding");
-        coding.hidden = true;
-        let output = document.getElementById("output");
-        let codetext = document.getElementById("codingtext");
-        let outputtext = document.getElementById("outputtext");
-        output.addEventListener("click", function(){
-            codetext.hidden = true;
-            output.hidden = true;
-            coding.hidden = false;
-            outputtext.hidden = false;
-        });
+        function ExecuteQuery(jwt, projectID, querysql) {
+            let query = address + ":8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    console.log("OK");
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
 
-        coding.addEventListener("click", function(){
-            outputtext.hidden = true;
-            coding.hidden = true;
-            output.hidden = false;
-            codetext.hidden = false;
-        });
-        
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    // document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    // console.log(jsonResp["result"]);
+                    jsonResp["result"].forEach(element => {
+                        // console.log(Object.values(element)[0]);
+                        let newbtn = document.createElement("button");
+                        newbtn.classList.add("newadd");
+                        newbtn.innerText = Object.values(element)[0];
+                        newbtn.addEventListener("click", function() {
+                            headertable.innerHTML = '';
+                            let conttr = document.getElementsByClassName("contenttr");
+                            console.log(conttr);
+                            for (i = 0; i < conttr.length; i++)
+                            {
+                                conttr[i].innerHTML = '';
+                            }
+                            getColumnName(localStorage.getItem("jwt"), localStorage.getItem("project_id"), "describe " + Object.values(element)[0]);
+                            getColumnValues(localStorage.getItem("jwt"), localStorage.getItem("project_id"), "select * from " + Object.values(element)[0]);
+                        })
+                        contenttable.insertBefore(newbtn, contenttable.firstChild);
+                    });
+                }
+            });
+        }
+
+        function getColumnName(jwt, projectID, querysql) {
+            let query = address + ":8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    console.log("OK");
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
+
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    // document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    // console.log(jsonResp["result"]);
+                    jsonResp["result"].forEach(element => {
+                        // console.log(Object.values(element)[0]);
+                        let newbtn = document.createElement("th");
+                        newbtn.innerText = element["Field"];
+                        headertable.appendChild(newbtn);
+                    });
+                }
+            });
+        }
+
+        function getColumnValues(jwt, projectID, querysql) {
+            let query = address + ":8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+            let bearer = 'Bearer ' + jwt;
+            fetch(query, {
+                method: 'POST',
+                // withCredentials: true,
+                // credentials: 'include',
+                // mode:"no-cors",
+                headers: {
+                    'Authorization': bearer,
+                    // 'Content-Type': 'application/json'
+                }
+            }).then((resp) => {
+                if (resp.status == 200) {
+                    console.log("OK");
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
+
+
+            }).then(jsonResp => {
+                if (jsonResp) {
+                    // document.getElementById("outputtext").value = JSON.stringify(jsonResp["result"]);
+                    // console.log(jsonResp["result"]);
+                    jsonResp["result"].forEach(element => {
+                        let newtr = document.createElement("tr");
+                        newtr.classList.add("contenttr");
+                        trtable.appendChild(newtr);
+                        let arr = Object.values(element);
+                        arr.forEach(value => {
+                            let newtd = document.createElement("td");
+                            newtr.appendChild(newtd);
+                            newtd.innerText = value;
+                        })                        
+                    });
+                }
+            });
+        }
+
+        ExecuteQuery(localStorage.getItem("jwt"), localStorage.getItem("project_id"), "show tables");
     </script>
 
 </body>
