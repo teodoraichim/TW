@@ -90,7 +90,7 @@
                                 <td><input name= "UN" type="checkbox" id="un"></td>
                                 <td><input name= "ZF" type="checkbox" id="zf"></td>
                                 <td><input name= "AI" type="checkbox" id="ai"></td>
-                            <td><a href="#">X</a></td>
+                            <td><a name="deleterow" href="#" id="delete" class = "deletebtn">X</a></td>
                         </tr>
                     </table>
                 </div>
@@ -106,7 +106,6 @@
                     x.className = "topnav";
                 }
             }
-
             let jwt =localStorage.getItem("jwt");
             let pid =localStorage.getItem("project_id");
             var i = 0;
@@ -114,13 +113,19 @@
             let btrow = document.getElementById("newcolumn");
             let newTab = document.getElementById("newtable");
             let address = "http://" + localStorage.getItem("ipadd");
+            let del= document.getElementById("delete"); 
+            del.addEventListener("click",function(){
+                    alert("You can't delete this row,it is mandatory!")
+                });
             let result="create table ";
-                
             btrow.addEventListener("click", function() {
                 var clone = nrow.cloneNode(true);
-                clone.id = "addingtr" + ++i;
-                nrow.parentNode.appendChild(clone);                
-                
+                clone.id = "addingtr" + ++i;        
+                nrow.parentNode.appendChild(clone);
+                clone.addEventListener("click",function(){
+                    clone.parentNode.removeChild(clone);
+                }); 
+                   
             });
             newTab.addEventListener("click",function(){
                 let Names=[];
@@ -296,6 +301,8 @@
                     else
                         content.hidden = false;
                 }, false);
+
+        
         </script>
 
 </body>
