@@ -69,9 +69,7 @@
              .then((resp)=>{
                  if (resp.status==200) return resp.json();
                  else{
-                    let p=document.createElement(p);
-                    p.value = 'incorect data';
-                    box.appendChild(p);
+                    alert("Invalid data inserted");
                  }
             }).then(jsonResp=>{
 
