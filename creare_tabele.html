@@ -11,46 +11,25 @@
 </head>
 
 <body>
-    <div id="left" class="column">
-        <div class="top-left">
-            <ul>
-                <li><img src="img/user.svg">
-                </li>
-            </ul>
-        </div>
-        <div class="bottom">
-            <ul>
-                <a id="project" href="projects.html">
-                    <li>Project</li>
-                </a>
-                <a id="table" href="#">
-                    <li>Table</li>
-                </a>
-                <div class="table">
-                    <div id="additional-links">
-                        <a href="newtable.html">
-                            <li>New table</li>
-                        </a><a href="viewtables.html">
-                            <li>View tables</li>
-                        </a>
-                    </div>
-                </div>
-                <a id="query" href="singlecoding.html">
-                    <li>Query</li>
-                </a>
-            </ul>
-        </div>
-    </div>
     <div id="right" class="column">
-        <div class="top-right">
-            <p>
-                <br>
-            </p>
+        <div class="topnav" id="myTopnav">
+            <a href="projects.html">Project</a>
+            <div class="dropdown">
+                <button class="dropbtn">Table ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="creare_tabele.html" class="active">New table</a>
+                    <a href="viewtables.html">View table</a>
+                </div>
+            </div>
+            <a href="singlecoding.html">Query</a>
+            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
         </div>
         <div class="bottom">
             <div class="tablesubttons">
                 <br>
-                <span style="margin-top: 20px;"><input type="text" class="tablename" placeholder="Table name" required id="name"></span>
+                <span style="margin-top: 20px;"><input type="text" class="tablename" placeholder="Table name" required
+                        id="name"></span>
                 <br>
                 <span>
                     <button class="newadd" id="newcolumn">New column</button>
@@ -61,15 +40,15 @@
                 <div style="overflow-x:auto;">
                     <table id="type-table">
                         <tr class="rrow">
-                            <th >Name</th>
-                            <th >Type</th>
-                            <th >PK</th>
-                            <th >NN</th>
-                            <th >UQ</th>
-                            <th >BIN</th>
-                            <th >UN</th>
-                            <th >ZF</th>
-                            <th >AI</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>PK</th>
+                            <th>NN</th>
+                            <th>UQ</th>
+                            <th>BIN</th>
+                            <th>UN</th>
+                            <th>ZF</th>
+                            <th>AI</th>
                             <th></th>
                         </tr>
                         <tr class="rrow" id="addingtr">
@@ -119,28 +98,37 @@
         </div>
 
         <script>
+            function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
+
             var i = 0;
             var nrow = document.getElementById("addingtr");
             let btrow = document.getElementById("newcolumn");
             let newTab = document.getElementById("newtable");
-            let address="http://localhost";
-            let result="create table ";
-            btrow.addEventListener("click", function() {
+            let address = "http://localhost";
+            let result = "create table ";
+            btrow.addEventListener("click", function () {
                 console.log("ok");
                 var clone = nrow.cloneNode(true);
                 clone.id = "addingntr" + ++i;
                 nrow.parentNode.appendChild(clone);
-                let row=document.getElementById("name").value;
-                row+=document.getElementById("type").value;
+                let row = document.getElementById("name").value;
+                row += document.getElementById("type").value;
                 console.log(row);
-                
+
             });
-            newTab.addEventListener("click",function(){
-                let tN=document.getElementById("name").value;
-                result+= tN;
+            newTab.addEventListener("click", function () {
+                let tN = document.getElementById("name").value;
+                result += tN;
                 console.log(result);
 
-                });
+            });
             let content = document.getElementById("additional-links");
             content.hidden = true;
             let table = document.getElementById("table");

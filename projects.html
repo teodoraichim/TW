@@ -11,41 +11,19 @@
 </head>
 
 <body>
-    <div id="left" class="column">
-        <div class="top-left">
-            <ul>
-                <li><img src="img/user.svg">
-                </li>
-            </ul>
-        </div>
-        <div class="bottom">
-            <ul>
-                <a id="project" href="projects.html">
-                    <li>Project</li>
-                </a>
-                <a id="table" href="#">
-                    <li>Table</li>
-                </a>
-                <div class="table">
-                    <div id="additional-links">
-                        <a href="newtable.html">
-                            <li>New table</li>
-                        </a><a href="viewtables.html">
-                            <li>View tables</li>
-                        </a>
-                    </div>
-                </div>
-                <a id="query" href="singlecoding.html">
-                    <li>Query</li>
-                </a>
-            </ul>
-        </div>
-    </div>
     <div id="right" class="column">
-        <div class="top-right">
-            <p>
-                <br>
-            </p>
+        <div class="topnav" id="myTopnav">
+            <a href="projects.html" class="active">Project</a>
+            <div class="dropdown">
+                <button class="dropbtn">Table ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="creare_tabele.html">New table</a>
+                    <a href="viewtables.html">View table</a>
+                </div>
+            </div>
+            <a href="singlecoding.html">Query</a>
+            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
         </div>
         <div class="bottom">
             <div class="addproject">
@@ -59,7 +37,7 @@
                 <button class="addbutton" id="deletebutton">Delete</button>
                 <button class="addbutton" id="addcollaborator">Add collaborator</button>
                 <button class="addbutton" id="seecollaborators">See collaborators</button>
-                
+
             </div>
             <div id="projectslist">
             </div>
@@ -67,14 +45,14 @@
     </div>
 
     <script>
-        
         //let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
-        let address="http://localhost";
-        let jwt =localStorage.getItem("jwt");
+        let address = "http://localhost";
+        let jwt = localStorage.getItem("jwt");
         let seeCollab = document.getElementById("seecollaborators");
+
         function getProjectListFetch(jwt) {
             let bearer = 'Bearer ' + jwt;
-            fetch(address+":8000/projects", {
+            fetch(address + ":8000/projects", {
                 method: 'GET',
                 headers: {
                     authorization: bearer,
@@ -82,9 +60,13 @@
                 }
 
             }).then((resp) => {
-                if (resp.status == 200) { return resp.json(); }
-                else if (resp.status == 500) { console.log("500"); }
-                else if (resp.status = 401) { console.log("401"); }
+                if (resp.status == 200) {
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                }
 
             }).then(jsonResp => {
                 if (jsonResp) {
@@ -106,7 +88,7 @@
 
 
 
-        
+
 
         let projcount = 0;
         let clicked = "false";
@@ -136,9 +118,11 @@
             console.log(pN, uN, pS)
             addProject(jwt, pN, uN, pS);
         }
+
         function addProject(jwt, projectName, username, password) {
             let pN = document.getElementById("projectName").value;
-            let query = address+":8000/projects?project_name=" + projectName + "&username=" + username + "&password=" + password;
+            let query = address + ":8000/projects?project_name=" + projectName + "&username=" + username +
+                "&password=" + password;
             let bearer = 'Bearer ' + jwt;
             fetch(query, {
                 method: 'POST',
@@ -150,10 +134,15 @@
                     // 'Content-Type': 'application/json'
                 }
             }).then((resp) => {
-                if (resp.status == 200) { return resp.json(); }
-                else if (resp.status == 500) { console.log("500"); }
-                else if (resp.status = 401) { console.log("401"); }
-                else if (resp.status = 403) { console.log("403"); }
+                if (resp.status == 200) {
+                    return resp.json();
+                } else if (resp.status == 500) {
+                    console.log("500");
+                } else if (resp.status = 401) {
+                    console.log("401");
+                } else if (resp.status = 403) {
+                    console.log("403");
+                }
 
             }).then((jsonResp) => {
                 if (jsonResp) {
@@ -162,8 +151,9 @@
                 }
             })
         }
+
         function myFunction(name, id) {
-            
+
             var para = document.createElement("DIV");
             para.className += "projectview";
             para.id = projcount++;
@@ -183,10 +173,10 @@
                         let id = acproj.dataset.id;
 
                         localStorage.setItem("selected", i);
-                        localStorage.setItem("project_id",id);
+                        localStorage.setItem("project_id", id);
                         console.log(localStorage.getItem("selected"));
                         deleteB.addEventListener("click", function () {
-                            let query = address+":8000/projects?project_id=" + id;
+                            let query = address + ":8000/projects?project_id=" + id;
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'DELETE',
@@ -198,9 +188,13 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) { console.log("Ok"); }
-                                else if (resp.status == 500) { console.log("500"); }
-                                else if (resp.status = 401) { console.log("401"); }
+                                if (resp.status == 200) {
+                                    console.log("Ok");
+                                } else if (resp.status == 500) {
+                                    console.log("500");
+                                } else if (resp.status = 401) {
+                                    console.log("401");
+                                }
 
                             });
                             acproj.parentNode.removeChild(acproj);
@@ -209,7 +203,8 @@
                         addCollabB.addEventListener("click", function () {
                             let uC = document.getElementById("userColab").value;
                             console.log(uC);
-                            let query = address+":8000/projects/colabs?project_id=" + id + "&user_id=" + uC;
+                            let query = address + ":8000/projects/colabs?project_id=" + id +
+                                "&user_id=" + uC;
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
                                 method: 'POST',
@@ -221,15 +216,20 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) { console.log(uC); }
-                                else if (resp.status == 500) { console.log("500"); }
-                                else if (resp.status = 401) { console.log("401"); }
-                                else if (resp.status = 403) { console.log("403"); }
+                                if (resp.status == 200) {
+                                    console.log(uC);
+                                } else if (resp.status == 500) {
+                                    console.log("500");
+                                } else if (resp.status = 401) {
+                                    console.log("401");
+                                } else if (resp.status = 403) {
+                                    console.log("403");
+                                }
 
                             });
                         });
                         seeCollab.addEventListener("click", function () {
-                            let query = address+":8000/projects/" + id;
+                            let query = address + ":8000/projects/" + id;
                             console.log(query);
                             let bearer = 'Bearer ' + jwt;
                             fetch(query, {
@@ -242,18 +242,23 @@
                                     // 'Content-Type': 'application/json'
                                 }
                             }).then((resp) => {
-                                if (resp.status == 200) { return resp.json(); }
-                                else if (resp.status == 500) { console.log("500"); }
-                                else if (resp.status = 401) { console.log("401"); }
-                                else if (resp.status = 403) { console.log("403"); }
+                                if (resp.status == 200) {
+                                    return resp.json();
+                                } else if (resp.status == 500) {
+                                    console.log("500");
+                                } else if (resp.status = 401) {
+                                    console.log("401");
+                                } else if (resp.status = 403) {
+                                    console.log("403");
+                                }
 
                             }).then(jsonResp => {
                                 if (jsonResp) {
-                                    let col='';
+                                    let col = '';
                                     console.log(jsonResp);
                                     jsonResp["colabs"].forEach(element => {
                                         console.log(element.user_id);
-                                        col=col+" "+element.user_id;
+                                        col = col + " " + element.user_id;
 
                                     });
                                     alert(col);
@@ -270,14 +275,9 @@
         }
 
         id = localStorage.getItem("selected");
-    //console.log(id);
-
-
-
-
-
+        //console.log(id);
     </script>
 
 </body>
 
-</html>ss
+</html>

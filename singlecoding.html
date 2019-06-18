@@ -10,66 +10,61 @@
     <script src="./back/update/socket.io/socket.io.js"></script>
     <title>Code</title>
 </head>
-
-<body>
-    <div id="left" class="column">
-        <div class="top-left">
-            <ul>
-                <li><img src="img/user.svg">
-                </li>
-            </ul>
-        </div>
-        <div class="bottom">
-            <ul>
-                <a id="project" href="projects.html">
-                    <li>Project</li>
-                </a>
-                <a id="table" href="#">
-                    <li>Table</li>
-                </a>
-                <div class="table">
-                    <div id="additional-links">
-                        <a href="newtable.html">
-                            <li>New table</li>
-                        </a><a href="viewtables.html">
-                            <li>View tables</li>
-                        </a>
-                    </div>
-                </div>
-                <a id="query" href="singlecoding.html">
-                    <li>Query</li>
-                </a>
-            </ul>
+<!-- 
+<div class="top-right">
+    <div class="dropdown">
+        <p class="textdropdown">
+            ♾️️ Convert
+        </p>
+        <div class="contentdropdown">
+            <button class="button" id="phpConvert">Convert to PHP</button>
+            <button class="button" id="javaConvert">Convert to Java</button>
+            <button class="button" id="pythonConvert">Convert to Python</button>
         </div>
     </div>
+    <button class="run" id="run">
+        ▶️ Run
+    </button>
+    <p id="output">Output
+    </p>
+    <p id="coding">Coding
+    </p>
+    <div class="dropdown2">
+        <p class="textdropdown2">
+            🔔 Notification
+        </p>
+        <div class="contentdropdown2" id="contentdropdown2">
+            <a href="#1">1</a>
+            <a href="#2">2</a>
+        </div>
+</div> -->
+
+<body>
     <div id="right" class="column">
-        <div class="top-right">
+        <div class="topnav" id="myTopnav">
+            <a href="projects.html">Project</a>
             <div class="dropdown">
-                <p class="textdropdown">
-                    ♾️️ Convert
-                </p>
-                <div class="contentdropdown">
-                    <button class="button" id="phpConvert">Convert to PHP</button>
-                    <button class="button" id="javaConvert">Convert to Java</button>
-                    <button class="button" id="pythonConvert">Convert to Python</button>
+                <button class="dropbtn">Table ⬇
+                </button>
+                <div class="dropdown-content">
+                    <a href="creare_tabele.html">New table</a>
+                    <a href="viewtables.html">View table</a>
                 </div>
             </div>
-            <button class="run" id="run">
-                ▶️ Run
-            </button>
-            <p id="output">Output
-            </p>
-            <p id="coding">Coding
-            </p>
-            <div class="dropdown2">
-                <p class="textdropdown2">
-                    🔔 Notification
-                </p>
-                <div class="contentdropdown2" id="contentdropdown2">
-                    <a href="#1">1</a>
-                    <a href="#2">2</a>
+            <a href="singlecoding.html" class="active">Query</a>
+            <div class="dropdown">
+                <button class="dropbtn">Convert
+                </button>
+                <div class="dropdown-content">
+                    <a href="#" id="phpConvert">PHP</a>
+                    <a href="#" id="javaConvert">Java</a>
+                    <a href="#" id="pythonConvert">Python</a>
                 </div>
             </div>
+            <a href="#" id="output">Output</a>
+            <a href="#2" id="coding">Coding</a>
+            <a href="#" id="run">Run</a>
+            <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
         </div>
         <div class="bottom">
             <textarea class="scroll" id="codingtext"></textarea>
@@ -80,20 +75,9 @@
     <script>
         let address = "http://localhost";
         const socket = io(address + ':3000');
-        let content = document.getElementById("additional-links");
-        content.hidden = true;
-        let table = document.getElementById("table");
-        const style = getComputedStyle(content);
-        table.addEventListener("click",
-            function () {
-                if (style.display == "block")
-                    content.hidden = true;
-                else
-                    content.hidden = false;
-            }, false);
 
         let coding = document.getElementById("coding");
-        coding.hidden = true;
+        coding.classList.add("active");
         let output = document.getElementById("output");
         let codetext = document.getElementById("codingtext");
         let outputtext = document.getElementById("outputtext");
@@ -103,6 +87,16 @@
             output.hidden = true;
             coding.hidden = false;
             outputtext.hidden = false;
+            output.classList.add("active");
+            coding.classList.remove("active");
+        });
+        coding.addEventListener("click", function () {
+            outputtext.hidden = true;
+            coding.hidden = true;
+            output.hidden = false;
+            codetext.hidden = false;
+            coding.classList.add("active");
+            output.classList.remove("active");
         });
         // );
         // localStorage.setItem('PID', '1');
@@ -269,13 +263,6 @@
             });
 
         }
-
-        coding.addEventListener("click", function () {
-            outputtext.hidden = true;
-            coding.hidden = true;
-            output.hidden = false;
-            codetext.hidden = false;
-        });
     </script>
 
 </body>
