@@ -113,7 +113,7 @@
             var nrow = document.getElementById("addingtr");
             let btrow = document.getElementById("newcolumn");
             let newTab = document.getElementById("newtable");
-            let address="http://localhost";
+            let address = "http://" + localStorage.getItem("ipadd");
             let result="create table ";
                 
             btrow.addEventListener("click", function() {
@@ -140,14 +140,15 @@
                     type.forEach(function(item){
                         if(item.value=="VARCHAR")
                         {let aux=item.value+ "(200)";
+                         console.log(aux);
                         Types.push(aux);}
-                        if(item.value=="DECIMAL")
+                        else if(item.value=="DECIMAL")
                         {let aux=item.value+ "(16,4)";
                         Types.push(aux);}
-                        if(item.value=="CHAR")
+                        else if(item.value=="CHAR")
                         {let aux=item.value+ "(5)";
                         Types.push(aux);}
-
+                        else Types.push(item.value);
                     });
                 let pkc=0;
                 let pk=document.getElementsByName("PK");
@@ -261,7 +262,7 @@
                 
         });
         function postExecuteQueryFetch(jwt, projectID, querysql) {
-        let query = "http:localhost:8000/projects/query?project_id=" + projectID + "&query=" + querysql;
+        let query = address + ":8000/projects/query?project_id=" + projectID + "&query=" + querysql;
         let bearer = 'Bearer ' + jwt;
         fetch(query, {
             method: 'POST',
