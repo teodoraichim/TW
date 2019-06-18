@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/help-page.css"/>
+    <title>Help page</title>
+</head>
+<body>
+    <header>
+    <h1 class="title">Help page</h1>
+    <div class="contentinfo">
+        <section typeof="sa:AuthorsList">
+            <h2>Authors:</h2>
+            <ul>
+                <li>Silviu-Andrei Mariuta</li>
+                <li>Victor Paval</li>
+                <li>George Alexandru Tarnauceanu</li>
+                <li>Teodora Ichim</li>
+            </ul>
+        </section>
+        </div>
+
+    </header>
+    <section>
+        <h5>Applications requirements</h5>
+        <article>The main tehnology used in the development of this application is NodeJS. We also used MySQL databases.</article>
+        <h5>NodeJs modules used:</h5>
+        <ul>
+            <li>Jsonwebtoken</li>
+            <li>mysql</li>
+            <li>nodemailer</li>
+            <li>bcrypt</li>
+            <li>body-parser</li>
+            
+        </ul>
+    </section>
+    <section>
+        <h5>Application structure:</h5>
+        <article>The application is divaded in 3 services: one for the users management(login,register,forget password), one for managing the projects for each user and one that takes care of the cooperative part of the applivation - ending the updates. </article>
+        <figure typeof="sa:image">
+            <img src="Arhitectura/MVCDiag.png">
+
+        </figure>
+    </section>
+    <section>
+        <h5>User Management Service</h5>
+        <figure typeof="sa:image">
+            <img src="./Arhitectura/User UML.png">
+        </figure>
+        <article>This service makes sure user can register and log into our website.</article>
+        <h5>Endpoints:</h5>
+        <ul>
+            <li>
+                <h6>./register</h6>
+                <article>This endpoint requires a POST request to the server. The data from the registration form will be send to the server in a request body. After receiving the data, the server will add them into a database. The password willbe hashed using the bcrypt module. The account won't be active untill the user verifies the email adress. Using the email specified at registration, the server will send a random string via email, using nodemailer</article>
+
+            </li>
+            <li>
+                <h6>/register-valdate</h6>
+                <article>POST request to the server, sending a string via request body. It the string is correct, the account will be activated(=the column 'status' from the databese will pe updated to the value '1').</article>
+            </li>
+            <li>
+                <h6>/login</h6>
+                <article>POST request to the server, sending the credentials via request body. Verifies if the data that was sent exists in the users db.If the login is succesfull, the server will generate and return a jsonwebtoken, that we will store on a localstorage.</article>
+            </li>
+            <li>
+                <h6>/changePAssword</h6>
+                <article>POST request to the server, sending an email adress via request body. The server verifies if the email adress is a valide one and if it is it sends a mail with a code.</article>
+            </li>
+            <li>
+                <h6>/changePasswordValidate</h6>
+                <article>POST request to the server, sending the code and then the new password via request body. The server verifies the code and if it is okay, it updates the passwords. Return a true/false response</article>
+            </li>
+        </ul>
+    </section>
+    <section>
+        <h5>Project managemnt service</h5>
+        <figure typeof="sa:image">
+            <img src="Arhitectura/Project UML.png">
+        </figure>
+        <h5>Endpoints:</h5>
+        <ul>
+            <li>
+                <h6>/projects</h6>
+                <article>GET request that receives a jsonweb token via authorization header, verifies if it is valide and if it is, it will get the user id from the jwt and will return all the projecs this user is a collab of. The response will be a list PRoject jsons .</article>
+            </li>
+            <li>
+                <h6>/projets/project_id</h6>
+                <article>GET regiest that takes a jwt via authorization header and verifies if it id valide. If it is, than return the description of the project with tha id from the url. The response will be a json containing the collabs of the project.</article>
+            </li>
+            <li>
+                <h6>/projects?project_name=?username=?&password=?</h6>
+                <article>POST request, that takes and verifies the jwt. Than the server will add to the projects tabel, a new project with the details from the url.</article>
+            </li>
+            <li>
+                <h6>/projects/colabs?project_id=&user_id=</h6>
+                <article>POST request that takes and verifies a hwt. Than, the server will a add a new entry in the collaborators tabel with the details from the url.</article>
+            </li>
+            <li>
+                <h6>/projects/colabs?project_id=&user_id=</h6>
+                <artcicle>DELETE request that takes and verifies a jwt. Than, deletes from the project tabel the entry with the details from the url.</artcicle>
+            </li>
+            <li>
+                <h6>/isColab?project_id=&user_id=</h6>
+                <article>GET request that takes and verifies a jwt. Than, verifies if in the collaborators tabel, exists an entry withe the details from the url. It returns a true/false respons via json.</article>
+            </li>
+            <li>
+                    <h6>/projects/query?project_id=&query=</h6>
+                    <article>POST request, that takes and verifies a jwt. Than, on the database specified in the url, will execute the mysql query from the url. The response will be the result of the query via json.</article>
+            </li>
+            <li>
+                <h6>/generateCode/PHP?project_id=&query=? or /generateCode/Java?project_id=&query=?</h6>
+                <article>POST request that takes and verifies a jwt. Than, gets the query from the url and converts it in php/java code depindig on the url. The response will be a json containing the genarated code.</article>
+            </li>
+            <li>
+                <h6>/projects?project_id=</h6>
+                <article>DELETE request that takes and verifies a jwt. Than, deletes from the projects tabel the entry with the details from the url.</article>
+            </li>
+            
+        </ul>
+    </section>
+    <section>
+        <h5>Update service</h5>
+        <figure typeof="sa:image">
+            <img src="Arhitectura/Update UML.png">
+        </figure>
+        <article>This module establishes a websocket client-server connection using socket.io
+
+                The html client shows how to establish the connection and communicate with the server.
+                
+                the actions are:</article>
+                <ul>
+                    <li>addClient(jwt,project_id):</li>
+                    <li>extracts the user_id from the jwt</li>
+                    <li>adds the client to the list of connected clients for the project_id project</li>
+                    <li>addUpdate(jwt,project_id,message)</li>
+                    <li>sends the update to all the connected clients</li>
+                    <li>invalid error for when the jwt is invalid or the user is not a valid collaborator or the client didn't login before sending an update</li>
+                    <li>error if the project_management microservice cannot send respond if an user is a collaborator</li>
+                </ul>
+    </section>
+    <section>
+        <h5>Errors list:</h5>
+        <ul>
+            <li>401 unauthorized</li>
+            <li>404 page not found</li>
+            <li>500 internal server error</li>
+            <li>403 invalid query params</li>
+        </ul>
+    </section>
+    <section>
+        <h5>Application flow and use cases</h5>
+        <figure typeof="sa:image">
+            <img src="Arhitectura/Flow.png">
+            <img src="Arhitectura/UseCase/LogIn.jpg">
+            <img src="Arhitectura/UseCase/Register.png">
+            <img src="Arhitectura/UseCase/CreateProject.png">
+            <img src="Arhitectura/UseCase/addColab.png">
+            <img src="Arhitectura/UseCase/generateCode.png">
+            <img src="Arhitectura/UseCase/modifyProject.png">
+        </figure>
+    </section>
+    </body>
+    </html>
