@@ -52,8 +52,8 @@
                             <th></th>
                         </tr>
                         <tr class="rrow" id="addingtr">
-                            <td><input type="text" placeholder="Name" required id="name"></td>
-                            <td><select name="denumire" class="select-type" id="type" name="selector">
+                            <td><input name="denumire" type="text" placeholder="Name" required id="name"></td>
+                            <td><select  class="select-type" id="type" name="selector">
                                     <option disabled="disabled" selected="selected" >Select Type</option>
                                     <optgroup label="NUMERIC">
                                         <option value="BINARY">BINARY</option>
@@ -117,7 +117,6 @@
             let result="create table ";
                 
             btrow.addEventListener("click", function() {
-                // console.log("ok")
                 var clone = nrow.cloneNode(true);
                 clone.id = "addingtr" + ++i;
                 nrow.parentNode.appendChild(clone);                
@@ -139,7 +138,13 @@
                 });
                 let type=document.getElementsByName("selector");
                     type.forEach(function(item){
-                        Types.push(item.value);
+                        if(item.value=="VARCHAR")
+                        Types.push(item.value + "(200)");
+                        if(item.value=="DECIMAL")
+                        Types.push(item.value + "(16,4)");
+                        if(item.value=="CHAR")
+                        Types.push(item.value + "(5)");
+
                     });
                 let pkc=0;
                 let pk=document.getElementsByName("PK");
