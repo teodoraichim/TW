@@ -55,7 +55,7 @@
         }
 
         //let jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE1NjAyODE2MjgsImV4cCI6MTU2MDMyNDgyOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImlzcyI6IlVQTlAiLCJzdWIiOiJzb21lQHVzZXIuY29tIn0.P1PJEuW3LKBOPXVyNUUyI5MuYGAqh236jL2r85EN7ZqGnwPcSGXXTIS3eOeb-n6c7f2OKv1FaiviDAAOCEE7jg";
-        let address = "http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
         let jwt = localStorage.getItem("jwt");
         let seeCollab = document.getElementById("seecollaborators");
 

@@ -18,7 +18,7 @@
         <div class="login-page">
             <div class="left">
                 <h2 class="head">Log into your account</h2>
-                <button class="register" type="button" id="login-back" onclick="location.href='./intro.html'"><b> Back to first page </b></button>
+                <button class="register" type="button" id="login-back" onclick="location.href='./Intro.html'"><b> Back to first page </b></button>
             </div>
             <div class="right" id="loin">
                 
@@ -32,7 +32,7 @@
                     <p class="forgot-psw" id="p-psw">Forgot your password? Click <a href="./change-pass.html">here</a></p>
                 </div>
                 <div class="mobile">
-                    <button class="register" type="button" id="login-back2" onclick="location.href='./intro.html'"><b>Back</b></button>
+                    <button class="register" type="button" id="login-back2" onclick="location.href='./Ontro.html'"><b>Back</b></button>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
         
     </div>
     <script>
-        let address="http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
         let logBtn = document.getElementById('login');
         let box = document.getElementsByClassName('login-box');
 

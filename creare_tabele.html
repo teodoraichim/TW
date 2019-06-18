@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,7 +29,7 @@
             <div class="tablesubttons">
                 <br>
                 <span style="margin-top: 20px;"><input type="text" class="tablename" placeholder="Table name" required
-                        id="Tname"></span>
+                        id="name"></span>
                 <br>
                 <span>
                     <button class="newadd" id="newcolumn">New column</button>
@@ -52,9 +52,9 @@
                             <th></th>
                         </tr>
                         <tr class="rrow" id="addingtr">
-                            <td><input name="denumire" type="text" placeholder="Name" required id="name"></td>
-                            <td><select  class="select-type" id="type" name="selector">
-                                    <option disabled="disabled" selected="selected" >Select Type</option>
+                            <td><input type="text" placeholder="Name" required id="name"></td>
+                            <td><select class="select-type">
+                                    <option disabled="disabled" selected="selected" id="type">Select Type</option>
                                     <optgroup label="NUMERIC">
                                         <option value="BINARY">BINARY</option>
                                         <option value="INTEGER">INTEGER</option>
@@ -83,13 +83,13 @@
                                         <option value="SET">SET</option>
                                     </optgroup>
                                 </select></td>
-                                <td><input name="PK" type="checkbox" id="pk"></td>
-                                <td><input name= "NN" type="checkbox" id="nn"></td>
-                                <td><input name= "UQ" type="checkbox" id="uq"></td>
-                                <td><input name= "BIN" type="checkbox" id="bin"></td>
-                                <td><input name= "UN" type="checkbox" id="un"></td>
-                                <td><input name= "ZF" type="checkbox" id="zf"></td>
-                                <td><input name= "AI" type="checkbox" id="ai"></td>
+                            <td><input type="checkbox" id="pk"></td>
+                            <td><input type="checkbox" id="nn"></td>
+                            <td><input type="checkbox" id="uq"></td>
+                            <td><input type="checkbox" id="bin"></td>
+                            <td><input type="checkbox" id="un"></td>
+                            <td><input type="checkbox" id="zf"></td>
+                            <td><input type="checkbox" id="ai"></td>
                             <td><a href="#">X</a></td>
                         </tr>
                     </table>
@@ -107,194 +107,28 @@
                 }
             }
 
-            let jwt =localStorage.getItem("jwt");
-            let pid =localStorage.getItem("project_id");
             var i = 0;
             var nrow = document.getElementById("addingtr");
             let btrow = document.getElementById("newcolumn");
             let newTab = document.getElementById("newtable");
-            let address="http://localhost";
-            let result="create table ";
-                
-            btrow.addEventListener("click", function() {
+            let address = "http://" + localStorage.getItem("ipadd");
+            let result = "create table ";
+            btrow.addEventListener("click", function () {
+                console.log("ok");
                 var clone = nrow.cloneNode(true);
-                clone.id = "addingtr" + ++i;
-                nrow.parentNode.appendChild(clone);                
-                
+                clone.id = "addingntr" + ++i;
+                nrow.parentNode.appendChild(clone);
+                let row = document.getElementById("name").value;
+                row += document.getElementById("type").value;
+                console.log(row);
+
             });
-            newTab.addEventListener("click",function(){
-                let Names=[];
-                let Types=[];
-                let PKs=[];
-                let NNs=[];
-                let UQs=[];
-                let BINs=[];
-                let UNs=[];
-                let ZFs=[];
-                let AIs=[];
-                let name=document.getElementsByName("denumire");
-                    name.forEach(function(item){
-                       Names.push(item.value);
-                });
-                let type=document.getElementsByName("selector");
-                    type.forEach(function(item){
-                        if(item.value=="VARCHAR")
-                        {let aux=item.value+ "(200)";
-                        Types.push(aux);}
-                        if(item.value=="DECIMAL")
-                        {let aux=item.value+ "(16,4)";
-                        Types.push(aux);}
-                        if(item.value=="CHAR")
-                        {let aux=item.value+ "(5)";
-                        Types.push(aux);}
+            newTab.addEventListener("click", function () {
+                let tN = document.getElementById("name").value;
+                result += tN;
+                console.log(result);
 
-                    });
-                let pkc=0;
-                let pk=document.getElementsByName("PK");
-                    pk.forEach(function(item){
-                        if(item.checked)
-                        {
-                            PKs.push(1);
-                            pkc++;
-                        } else
-                        { PKs.push(0);}
-                    });
-                let nn=document.getElementsByName("NN");
-                    nn.forEach(function(item){
-                        if(item.checked)
-                        {
-                            NNs.push(1);
-                        } else
-                        { NNs.push(0);}
-                    });
-                let uq=document.getElementsByName("UQ");
-                    uq.forEach(function(item){
-                        if(item.checked)
-                        {
-                            UQs.push(1);
-                        } else
-                        { UQs.push(0);}
-                    });
-                let bin=document.getElementsByName("BIN");
-                    bin.forEach(function(item){
-                        if(item.checked)
-                        {
-                            BINs.push(1);
-                        } else
-                        { BINs.push(0);}
-                    });
-                let un=document.getElementsByName("UN");
-                    un.forEach(function(item){
-                        if(item.checked)
-                        {
-                            UNs.push(1);
-                        } else
-                        { UNs.push(0);}
-                    });
-                let zf=document.getElementsByName("ZF");
-                    zf.forEach(function(item){
-                        if(item.checked)
-                        {
-                            ZFs.push(1);
-                        } else
-                        { ZFs.push(0);}
-                    });
-                let ai=document.getElementsByName("AI");
-                    ai.forEach(function(item){
-                        if(item.checked)
-                        {
-                            AIs.push(1);
-                        } else
-                        { AIs.push(0);}
-                    });
-                let ppk="PRIMARY KEY("
-                let tN=document.getElementById("Tname").value;
-                result+= tN + "(" + " ";
-                let pkn=0;
-                for(let j=0;j<PKs.length;j++)
-                {
-                    result +=Names[j] +" "+ Types[j] +" " ;
-                    if(PKs[j]==1)
-                    {
-                        pkn++;
-                        ppk+=Names[j];
-                        if (j<PKs.length-1 && pkn<pkc)
-                    {
-                        ppk+=",";
-                    }
-
-                    }
-                    if(NNs[j]==1) 
-                    {
-                        result +=" NOT NULL ";
-                    }
-                    if(UQs[j]==1)
-                    {
-                        result+= "UNIQUE ";
-                    }
-                    if(BINs[j]==1)
-                    {
-                        result+="BINARY "
-                    }
-                    if(UNs[j]==1)
-                    {
-                        result+="UNSIGNED "
-                    }if(ZFs[j]==1)
-                    {
-                        result+="ZEROFILL "
-                    }if(AIs[j]==1)
-                    {
-                        result+="AUTO_INCREMENT "
-                    }
-                    if (j<PKs.length-1)
-                    {
-                        result+=",";
-                    }
-                }
-                if(ppk!="PRIMARY KEY(")
-                {
-                    result+=",";
-                    result+=ppk +") );";
-                }
-
-                postExecuteQueryFetch(jwt,pid,result);
-                
-        });
-        function postExecuteQueryFetch(jwt, projectID, querysql) {
-        let query = "http:localhost:8000/projects/query?project_id=" + projectID + "&query=" + querysql;
-        let bearer = 'Bearer ' + jwt;
-        fetch(query, {
-            method: 'POST',
-            // withCredentials: true,
-            // credentials: 'include',
-            // mode:"no-cors",
-            headers: {
-                'Authorization': bearer,
-                // 'Content-Type': 'application/json'
-            }
-        }).then((resp) => {
-            if (resp.status == 200) { return resp.json(); }
-            else if (resp.status == 500) { console.log("500"); }
-            else if (resp.status = 401) { console.log("401"); }
-
-
-        }).then(jsonResp => {
-            if (jsonResp)
-                console.log(jsonResp["result"]);
-        });
-
-    }
-            let content = document.getElementById("additional-links");
-            content.hidden = true;
-            let table = document.getElementById("table");
-            const style = getComputedStyle(content);
-            table.addEventListener("click",
-                function () {
-                    if (style.display == "block")
-                        content.hidden = true;
-                    else
-                        content.hidden = false;
-                }, false);
+            });
         </script>
 
 </body>

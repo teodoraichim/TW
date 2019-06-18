@@ -45,7 +45,7 @@
 
     </div>
     <script>
-        let address = "http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
         let validate = document.getElementById("validate");
 
         validate.addEventListener("click", onClick2);

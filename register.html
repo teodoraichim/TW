@@ -18,7 +18,7 @@
         <div class="register-page">
             <div class="register-right">
                 <h2 class="head">Create you account.</h2>
-                <button class="login" type="button" id="register-back" onclick="location.href='./intro.html'"><b>Back
+                <button class="login" type="button" id="register-back" onclick="location.href='./Intro.html'"><b>Back
                         to first
                         page </b></button>
             </div>
@@ -54,14 +54,14 @@
 
                 </div>
                 <div class="mobile">
-                    <button class="login" type="button" id="register-back2" onclick="location.href='./intro.html'"><b>Back</b></button>
+                    <button class="login" type="button" id="register-back2" onclick="location.href='./Intro.html'"><b>Back</b></button>
                 </div>
             </div>
 
         </div>
     </div>
     <script>
-        let address="http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
 
         let regBtn = document.getElementById('register');
         let box = document.getElementById('box');

@@ -16,7 +16,7 @@
     <div class="all">
         <div class="left">
             <h2 class="head">Recover your password</h2>
-            <button class="register" type="button" id="login-back" onclick="location.href='./intro.html'"><b> Back to
+            <button class="register" type="button" id="login-back" onclick="location.href='./login.html'"><b> Back to
                     first page </b></button>
         </div>
         <div class="forget-page right">
@@ -29,7 +29,7 @@
             <div class="login-box">
                 <form id="accountData">
                     <input class="input-box" id="email" type="text" name="name" placeholder="Email address" required>
-                    <button class="login-btn" id="changeBut" type="button">submit</button>
+                    <button class="login-btn" id="changeBut" type="button">Submit</button>
                 </form>
                 <form id="validate">
                     <input class="input-box" id="code" type="text" name="code-change" placeholder="validation code"
@@ -43,13 +43,13 @@
 
             </div>
             <div class="mobile">
-                <button class="register" type="button" id="login-back3" onclick="location.href='./intro.html'"><b>Back</b></button>
+                <button class="register" type="button" id="login-back3" onclick="location.href='./Intro.html'"><b>Back</b></button>
             </div>
         </div>
 
     </div>
     <script>
-        let address="http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
         let accountData = document.getElementById('accountData');
         let validate = document.getElementById('validate');
         validate.hidden = "true";

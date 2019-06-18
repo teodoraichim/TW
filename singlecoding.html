@@ -36,6 +36,13 @@
                 <a href="#" id="coding">Coding</a>
                 <a href="#" id="output">Output</a>
                 <a href="#" id="run">Run</a>
+                <div class="dropdown">
+                    <button class="dropbtn" id="notifbtn">Notifications ⬇
+                    </button>
+                    <div class="dropdown-content" id="notification">
+                        <a href="#">Testing</a>
+                    </div>
+                </div>
                 <a href="javascript:void(0);" style="font-size:12px;" class="icon" onclick="showMenu()">&#9776;</a>
             </div>
         <div class="bottom">
@@ -45,7 +52,7 @@
     </div>
 
     <script>
-        let address = "http://localhost";
+        let address = "http://" + localStorage.getItem("ipadd");
         const socket = io(address + ':3000');
 
         function showMenu() {
@@ -81,7 +88,7 @@
         });
         // );
         // localStorage.setItem('PID', '1');
-        let content2 = document.getElementById("contentdropdown2");
+        let content2 = document.getElementById("notification");
         let jwt = localStorage.getItem('jwt');
         let pid = localStorage.getItem('project_id');
         // socket.on('event', function(data){});                                                                                
@@ -94,7 +101,10 @@
         socket.emit("addClient", jwt, pid);
         socket.on('event', function (data) { });
         socket.on("update", (user, receivedUpdate) => {
-            let newp = document.createElement("P");
+            let newp = document.createElement("A");
+            // let notifbtn = getElementById("notifbtn");
+            // notifbtn.innerText = "New notification ⬇";
+            newp.href = "#";
             newp.innerText = "New query executed";
             console.log("receivedUpdate:" + receivedUpdate);
             content2.appendChild(newp);
