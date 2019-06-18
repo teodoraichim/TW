@@ -139,14 +139,14 @@
                 let type=document.getElementsByName("selector");
                     type.forEach(function(item){
                         if(item.value=="VARCHAR")
-                        let aux=item.value+ "(200)";
-                        Types.push(aux);
+                        {let aux=item.value+ "(200)";
+                        Types.push(aux);}
                         if(item.value=="DECIMAL")
-                        let aux=item.value+ "(16,4)";
-                        Types.push(aux);
+                        {let aux=item.value+ "(16,4)";
+                        Types.push(aux);}
                         if(item.value=="CHAR")
-                        let aux=item.value+ "(5)";
-                        Types.push(aux);
+                        {let aux=item.value+ "(5)";
+                        Types.push(aux);}
 
                     });
                 let pkc=0;
