@@ -100,6 +100,7 @@
              .then((resp)=>{
                  if (resp.status==200) return resp.json();
                  else{
+                    alert("Mail or username already exists!");
                     let p=document.createElement(p);
                     p.value = 'incorect data';
                     box.appendChild(p);
