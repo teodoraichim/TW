@@ -96,7 +96,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
         <script>
             function showMenu() {
                 var x = document.getElementById("myTopnav");
@@ -122,7 +122,8 @@
                 var clone = nrow.cloneNode(true);
                 clone.id = "addingtr" + ++i;        
                 nrow.parentNode.appendChild(clone);
-                clone.addEventListener("click",function(){
+                console.log(clone.childNodes.item("delete"));
+                clone.querySelector["#delete"].addEventListener("click",function(){
                     clone.parentNode.removeChild(clone);
                 }); 
                    
