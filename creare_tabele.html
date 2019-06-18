@@ -254,9 +254,9 @@
                 if(ppk!="PRIMARY KEY(")
                 {
                     result+=",";
+                    result+=ppk +") );";
                 }
 
-                result+=ppk +") );";
                 postExecuteQueryFetch(jwt,pid,result);
                 
         });
