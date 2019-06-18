@@ -202,7 +202,7 @@ function onRequest(request, response) {
         token = getToken(request, response);
         if (token) {
             legit = validateToken(token, response);
-            if (proj_name != null && legit != null) {
+            if (proj_name != null && legit != null&&proj_name!=''&&proj_name) {
                 model.addProject(legit.user_id, proj_name, dbUsername, dbPassword).then(function (project_id) {
                     let json = {};
                     json['project_id'] = project_id;
@@ -230,7 +230,7 @@ function onRequest(request, response) {
         token = getToken(request, response);
         if (token) {
             legit = validateToken(token, response);
-            if (proj_name != null && legit != null) {
+            if (proj_name != null && legit != null&&user_id!=null&&user_id) {
                 model.isColab(legit.user_id, proj_name).then(function (bool) {
                     if (bool) {
                         model.isColab(user_id,proj_name).then(function(bool2){

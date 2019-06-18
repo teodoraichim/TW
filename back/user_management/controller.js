@@ -90,8 +90,8 @@ function onRequest(request, response) {
          // body = parse.parse(buff);
          body = JSON.parse(buff);
          console.log("U:" + body['username']);
-         console.log("P" + body['password'])
-
+         console.log("P" + body['password']);
+         if(body['username']&& body['password'])
          model.login(body['username'], body['password']).then(function (resp) {
             console.log(resp);
             if (!resp) {
@@ -110,7 +110,10 @@ function onRequest(request, response) {
 
 
          }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
-
+         else 
+         {
+            send401Response(response);
+         }
          //response.end('ok');
       });
 
@@ -243,7 +246,7 @@ function onRequest(request, response) {
 
       var queryData = url.parse(request.url, true).query;
       let username = queryData.username;
-
+      if(username&&userId!='')
       model.getId(username).then(function (id) {
          let json = { "id": id };
          console.log(json);
@@ -252,12 +255,13 @@ function onRequest(request, response) {
          response.end();
 
       }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+      else send403Response(response);
    }
    else if (request.method == "GET" && request.url.indexOf('/getUsername') == 0) {
 
       var queryData = url.parse(request.url, true).query;
       let userId = queryData.userId;
-
+      if(userId&&userId!='')
       model.getUsername(userId).then(function (username) {
          let json = { "username": username };
          console.log(json);
@@ -266,6 +270,7 @@ function onRequest(request, response) {
          response.end();
 
       }).catch((err) => setImmediate(() => { send500Response(response); console.log(err); }));
+      else send403Response(response);
    }
    else if (request.method == 'OPTIONS') {
       console.log("Options " + request.url)

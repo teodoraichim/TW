@@ -185,11 +185,14 @@ module.exports.login = function (user_name, password) {
         con.query('select password from users where username=? and status=1', [user_name], function (err, rows, fields) {
             if (err) return reject(false);
             con.end();
-            if (rows[0] == null) resolve(false);
-            let hash = rows[0].password;
+            if (rows[0] == null|| !rows[0]) resolve(false);
+            else
+            {let hash = rows[0].password;
             console.log("password:"+hash);
+            if(hash)
             resolve(bcrypt.compareSync(password, hash));
-            
+            else reject(false);
+            }
 
         });
 
@@ -232,9 +235,9 @@ module.exports.getId = function (username) {
         con.query('select userId from users where username=? or email=?', [username, username], function (err, rows, fields) {
             if (err) return reject(err);
             con.end();
-
-            resolve(rows[0].userId);
-
+            if(rows[0])
+            rwesolve(rows[0].userId);
+            else reject(err);
         });
 
     })
