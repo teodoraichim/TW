@@ -236,7 +236,7 @@ module.exports.getId = function (username) {
             if (err) return reject(err);
             con.end();
             if(rows[0])
-            rwesolve(rows[0].userId);
+            resolve(rows[0].userId);
             else reject(err);
         });
 

@@ -246,7 +246,7 @@ function onRequest(request, response) {
 
       var queryData = url.parse(request.url, true).query;
       let username = queryData.username;
-      if(username&&userId!='')
+      if(username&&username!='')
       model.getId(username).then(function (id) {
          let json = { "id": id };
          console.log(json);
